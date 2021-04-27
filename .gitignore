@@ -41,6 +41,9 @@ build/Release
 node_modules/
 jspm_packages/
 
+#.DS_Store
+.DS_Store
+
 # TypeScript v1 declaration files
 typings/
 
@@ -102,4 +105,12 @@ dist
 
 # TernJS port file
 .tern-port
-*.json
+
+# Stupid Files Added by Windows
+desktop.ini
+
+# Oops
+serviceAccountKey.json
+
+# Build Folder
+build

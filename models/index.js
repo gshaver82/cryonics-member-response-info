@@ -1,3 +1,3 @@
 module.exports = {
-    RecipesModel: require("./memberModel"),
+    exampleModel: require("./exampleModel")
 };

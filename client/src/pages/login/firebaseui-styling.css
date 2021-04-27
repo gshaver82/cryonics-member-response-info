@@ -1,0 +1,21 @@
+  
+  .firebaseui-container {
+    margin: 0rem !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+  
+  .firebaseui-idp-icon {
+      margin: 0rem;
+  }
+
+  .firebaseui-idp-button {
+      display: flex !important;
+      justify-content: center;
+      align-items: center;
+      max-width: 100% !important;
+  }
+
+  .firebaseui-card-content {
+      padding: 0rem !important;
+  }

@@ -1,6 +1,6 @@
 const express = require("express");
 const path = require("path");
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
 
 const PORT = process.env.PORT || 3001;
 const app = express();
@@ -17,7 +17,7 @@ if (process.env.NODE_ENV === "production") {
 }
 
 // mongoose.connect(
-//     process.env.MONGODB_URI || "mongodb://localhost/X",
+//     process.env.MONGODB_URI || "mongodb://localhost/example_DB",
 //     {
 //         useUnifiedTopology: true,
 //         useNewUrlParser: true,

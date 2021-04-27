@@ -1,0 +1,452 @@
+/* @import url("https://fonts.googleapis.com/css2?family=Great+Vibes&family=Homemade+Apple&family=Open+Sans:ital@1&display=swap");
+
+/* Seriffed Fonts: */
+/* @import url('https://fonts.googleapis.com/css2?family=Prata&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica:ital@0;1&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&display=swap'); */
+
+/* Scripts: */
+/* @import url('https://fonts.googleapis.com/css2?family=Tangerine&display=swap'); */
+/* @import url('https://fonts.googleapis.com/css2?family=Beth+Ellen&display=swap'); */
+
+
+/* Sans Serif: */
+/* @import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&display=swap'); */ */
+
+:root {
+    --measurement: 0.125em;
+    --book: 'IM Fell Double Pica', serif;
+    --sans: 'Montserrat', sans-serif;
+    --script: 'Tangerine', cursive;
+    --fashion: 'Beth Ellen', cursive;
+}
+
+body {
+    font-family: var(--sans);
+    /* background-color: gray !important; */
+}
+
+td, th {
+    padding: 0.4rem 0.6rem !important;
+}
+
+video {
+    width: 45vw;
+}
+
+.font-brand {
+    font-family: "Prata";
+}
+
+.font-brand-small {
+    font-family: "Prata";
+    font-size: 3.5rem;
+}
+
+.font-book {
+    font-family: var(--book);
+}
+
+.font-book-italic {
+    font-family: var(--book);
+    font-style: italic;
+    color: var(--tag-color);
+}
+
+.firebaseui-idp-google, 
+.firebaseui-idp-google:hover, 
+.mdl-button.firebaseui-idp-google:active, 
+.mdl-button.firebaseui-idp-google:focus {
+    background-color: var(--google-color) !important;
+}
+
+.firebaseui-idp-google>.firebaseui-idp-text {
+    color: var(--google-text) !important;
+}
+
+.form-control, .form-select {
+    border-top-color: var(--form-border);
+    border-right-color: var(--form-border);
+    border-bottom-color: var(--form-border);
+    border-left-color: var(--form-border);
+}
+
+.form-control, .form-control:focus, .form-select {
+    background-color: var(--text-input-color);
+    color: var(--btn-subtle);
+}
+
+.form-control::-webkit-input-placeholder {
+    color: var(--placeholder);
+}
+
+.input-group-text {
+    font-family: var(--book);
+    font-style: italic;
+    background-color: var(--input-timer-color);
+    color: var(--input-timer-text);
+}
+
+input:-webkit-autofill, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--text-fill);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-outer-spin-button:hover,
+input[type=number]::-webkit-outer-spin-button:focus,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-inner-spin-button:hover,
+input[type=number]::-webkit-inner-spin-button:focus {
+    -webkit-appearance: none;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    color: var(--tag-color);
+    background-color: var(--modal-bgcolor);
+    border-color: var(--nav-border) var(--nav-border) var(--modal-bgcolor);
+}
+
+.nav-tabs { 
+    border-bottom: 1px solid var(--nav-border);
+}
+
+.img-thumbnail {
+    background-color: var(--primary-color);
+    border-color: var(--card-border);
+}
+
+.splashName {
+  /* font-family: "Homemade Apple", cursive; */
+  font-size: 100px;
+}
+
+.font-script {
+    font-family: var(--script);
+    font-size: 1.5rem;
+}
+
+.font-sans {
+    font-family: var(--sans);
+    font-weight: 300;
+}
+
+.font-sans-500 {
+    font-family: var(--sans);
+    font-weight: 500;
+}
+
+.font-fashion {
+    font-family: var(--fashion);
+}
+
+.text-smaller {
+    font-size: smaller;
+}
+
+.card-img {
+    height: 15rem;
+    object-fit: cover;
+}
+
+.rb-img {
+    /* border: var(--measurement) solid var(--prime-border, black);
+    text-decoration: none;
+    padding: 0.75rem; */
+    object-fit: cover;
+    height: 30vw;
+}
+
+.rb-icon {
+    background: var(--primary-color);
+    color: #F78DA4;
+    border: thin solid var(--secondary-border);
+    border-radius:1rem;
+    cursor: pointer;
+    font-family: var(--book);
+    /* letter-spacing: var(--measurement); */
+    text-transform: capitalize;
+    padding: 0.5rem;
+}
+
+.rb-icon:hover {
+    color: #EF2D56;
+}
+
+.rb-btn {
+    background: var(--primary-color, white);
+    border: var(--measurement) solid var(--prime-border);
+    cursor: pointer;
+    font: 600 1rem/1.5 var(--sans);
+    text-decoration: none;
+    color: var(--prime-border);
+    letter-spacing: var(--measurement);
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.rb-header {
+    background: var(--primary-color, white);
+    border: var(--measurement) solid var(--prime-border);
+    font: 600 1rem/1.5 var(--sans);
+    text-decoration: none;
+    color: var(--prime-border);
+    letter-spacing: var(--measurement);
+    padding: 0.5rem 0.75rem;
+    position: relative;
+    text-transform: uppercase;
+}
+
+.rb-btn-subtle {
+    background: var(--primary-color);
+    border: thin solid var(--secondary-border);
+    color: var(--btn-subtle);
+    border-radius: 0.2rem;
+    padding: 0.5rem 1rem;
+}
+
+.rb-btn-subtle:hover {
+    box-shadow: -2px 4px 16px 0px var(--card-hover, rgba(0,0,0,0.05));
+}
+
+.rb-btn-subtle:hover .rb-btn-icon{
+    color: #EF2D56;
+}
+
+.rb-btn-icon {
+    background: var(--primary-color);
+    color: #F78DA4;
+    border: none;
+    cursor: pointer;
+    font: 600 1rem/1.5 var(--sans);
+    letter-spacing: var(--measurement);
+    text-transform: uppercase;
+}
+
+.rb-btn-icon :hover {
+    color: #EF2D56;
+}
+
+.rb-btn-form {
+    border: var(--measurement) solid var(--prime-border);
+    border-radius: 0rem;
+    font: 600 1rem/1.5 var(--sans);
+    letter-spacing: var(--measurement);
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--prime-border);
+    cursor: pointer;
+}
+
+.form-tweak {
+    height: 2.8rem;
+    line-height: 2rem;
+}
+
+.form-tweak-2 {
+    padding: 9px 1rem;
+}
+
+.btn-outline-secondary {
+    color: var(--timer-btns);
+    border-color: var(--timer-btns) !important;
+}
+
+.btn-outline-secondary:hover {
+    background: var(--timer-btns-hover);
+    color: white;
+}
+
+.btn-transparent {
+    background: transparent !important;
+}
+
+.btn-transparent:hover {
+    background: transparent !important;
+}
+
+.btn-add {
+    color: #F78DA4 !important;
+}
+
+.btn-add:hover {
+    color: #EF2D56 !important;
+}
+
+.btn-delete {
+    color: var(--prime-border);
+    text-decoration: none !important;
+}
+
+.btn-delete:hover {
+    color: #EF2D56 !important;
+}
+
+.btn-transparent {
+    background-color: transparent !important;
+}
+
+.btn-transparent:hover {
+    background-color: transparent !important;
+}
+
+.recipe-border-1 {
+    border: var(--measurement) solid var(--prime-border, black);
+    border-radius: 1rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.divider {
+    display: flex;
+    align-items: center;
+    margin: 1.2rem;
+}
+
+.divider::before {
+    margin-right: 16px;
+}
+
+.divider::after {
+    margin-left: 16px;
+}
+
+.divider::before, .divider::after {
+    content: '';
+    -webkit-box-flex: 1;
+    flex-grow: 1;
+    border-top: 1px solid var(--divider);
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.divider-color {
+    display: flex;
+    border-top: 1px solid var(--divider);
+    margin: 16px 8px;
+}
+
+.privacy {
+    font-size: smaller;
+}
+
+::placeholder {
+    font-family: var(--book);
+    font-style: italic;
+}
+
+.nounderline {
+    text-decoration: none !important
+}
+
+.recipe-border-2 {
+    border: thin solid var(--prime-border);
+    border-radius: 0.8rem;
+    margin: 0.2rem;
+    padding: 1rem
+}
+
+.recipe-card {
+    border-top-color: var(--card-border);
+    border-right-color: var(--card-border);
+    border-bottom-color: var(--card-border);
+    border-left-color: var(--card-border);
+    height: 400px !important;
+}
+
+.card-footer {
+    border-top-color: var(--card-border);
+}
+
+.recipe-card:hover {
+    box-shadow: -2px 4px 16px 0px var(--card-hover);
+    cursor: pointer;
+}
+
+.recipe-text {
+    color: #737373;
+}
+
+.category-badge {
+    color: var(--badge-text);
+    border: thin solid lightgray;
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.2rem;
+    margin-left: 0.1rem;
+    background-color: var(--category-badge);
+    border-top-color: var(--badge-border);
+    border-right-color: var(--badge-border);
+    border-bottom-color: var(--badge-border);
+    border-left-color: var(--badge-border);
+}
+
+.category-badge:hover {
+    color: var(--badge-text-hover);
+    background-color: var(--badge-bg-hover);
+    border: thin solid var(--badge-border-hover);
+}
+
+.tags {
+    color: white;
+    background-color: darkgray;
+    border: thin solid darkgray;
+    border-radius: 0.4rem;
+    padding: 0.1rem 0.2rem;
+    margin-left: 0.1rem;
+    text-transform: lowercase;
+}
+
+.background-tiny-stripes {
+    background-image: linear-gradient(90deg, transparent 50%, currentColor 50%);
+    background-size: 10px 10px;
+}
+
+.delete {
+    border-width: 0px;
+    line-height: 0px;
+    box-shadow: none;
+    color: inherit;
+    background-color: inherit;
+}
+
+.delete:hover {
+    color: lightgray;
+}
+
+.error-margin {
+    margin-bottom: 2.1rem !important;
+}
+
+.table-head-style {
+    color: var(--table-style);
+    border-bottom-width: 2px;
+    border-bottom-color: var(--table-border-style);
+}
+
+.table-style {
+    color: var(--table-style);
+    border-bottom-color: var(--table-border-style);
+}
+
+.about-us {
+    margin: auto;
+    width: 60%;
+}
+
+.nav-link {
+    color: var(--bs-secondary);
+    font-family: var(--book);
+    font-style: italic;
+    cursor: pointer;
+}
+
+:focus {
+    outline: none !important;
+}
+
+
