@@ -12,6 +12,8 @@ import { useDarkMode } from "./quickstartComponents/DarkMode/useDarkMode";
 import Toggle from "./quickstartComponents/DarkMode/Toggler";
 import { GlobalStyles } from "./quickstartComponents/DarkMode/GlobalStyles";
 import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
+import TOSPage from "./pages/TOSFolder/TOSPage";
+import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
 
 function App() {
     const [theme, toggleTheme, componentMounted] = useDarkMode();
@@ -38,7 +40,9 @@ function App() {
                     <Route exact path="/Login" component={Login} />
                     <Route path="/publicHomePage" component={publicHomePage} />
                     <PrivateRoute exact path="/publicHomePage" component={publicHomePage} /> 
-                    <PrivateRoute exact path="/exampleHomePage" component={exampleHomePage} />                    
+                    <PrivateRoute exact path="/exampleHomePage" component={exampleHomePage} /> 
+                    <Route path="/TOSPage" component={TOSPage} />
+                    <Route path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />                   
                     <Route path="/" component={publicHomePage} />
                 </Switch>
             </Router>
