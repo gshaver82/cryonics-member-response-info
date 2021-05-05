@@ -13,24 +13,26 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
             setCurrentUser(user);
+            if (user) {
+                console.log("current user set");
+                console.log(user.uid);
+            }
 
-            console.log("current user set");
-            console.log(user.uid);
 
             //DO a route here to create user record IF not already created
-            API.findOneAndUpdate(user.uid)
-            .then(res => {
-                console.log("res.data");
-                console.log(res.data);
-            })
-            .catch(err => console.log(err));
+            // API.findOneAndUpdate(user.uid)
+            // .then(res => {
+            //     console.log("res.data");
+            //     console.log(res.data);
+            // })
+            // .catch(err => console.log(err));
 
-        
+
             setPending(false)
         });
     }, []);
 
-    if(pending) {
+    if (pending) {
         // This needs to be replaced with some kind of white fade in.
         return <>Loading...</>
     }

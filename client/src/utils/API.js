@@ -26,13 +26,13 @@ firebase.auth().onAuthStateChanged(function (user) {
     }
 });
 
-export default {
-    findOneAndUpdate: function (userid) {
-        console.log("[api] find one and update " + userid);
+// export default {
+//     findOneAndUpdate: function (userid) {
+//         console.log("[api] find one and update " + userid);
 
         
-        return authorize.post("/api/example", userid);
-    }
-};
+//         return authorize.post("/api/example", userid);
+//     }
+// };
 
 
