@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import firebaseEnvConfigs from "../firebase";
+import API from "../utils/API";
 
 const firebase = firebaseEnvConfigs.firebase_;
 
@@ -11,7 +12,20 @@ export const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         firebase.auth().onAuthStateChanged((user) => {
-            setCurrentUser(user)
+            setCurrentUser(user);
+
+            console.log("current user set");
+            console.log(user.uid);
+
+            //DO a route here to create user record IF not already created
+            API.findOneAndUpdate(user.uid)
+            .then(res => {
+                console.log("res.data");
+                console.log(res.data);
+            })
+            .catch(err => console.log(err));
+
+        
             setPending(false)
         });
     }, []);

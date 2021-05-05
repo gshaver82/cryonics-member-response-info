@@ -2,19 +2,19 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const exampleSchema = new Schema({
-    userID: {
+    firebaseAuthID: {
         type: String,
         required: true,
-    },
-    name: {
-        type: String,
-        required: true,
-        lowercase: true,
     },
     dateCreated: {
         type: Date,
         default: Date.now,
         required: true,
+    },
+    name: {
+        type: String,
+        required: false,
+        lowercase: false,
     }
 }
 );
