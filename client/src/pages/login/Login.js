@@ -38,7 +38,7 @@ function Login({ history }) {
             } else {
                 return;
             }
-            history.push("/exampleHomePage");
+            history.push("/privateHomePage");
         } catch (error) {
             console.log(error);
         }
@@ -70,7 +70,7 @@ function Login({ history }) {
     return (
         <AuthCard>
             {currentUser ? (
-                history.push("/ExampleHomePage")
+                history.push("/privateHomePage")
             ) : (
                 <>
                     <SignUpForm

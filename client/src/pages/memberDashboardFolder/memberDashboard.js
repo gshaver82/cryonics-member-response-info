@@ -10,7 +10,7 @@ function memberDashboard() {
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <h3>
-                        You are now logged in and viewing your private dashboard
+                        You are now logged in and viewing the cryonics member dashboard
         </h3>
                 </div>
             </div>
