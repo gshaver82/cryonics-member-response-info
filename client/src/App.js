@@ -16,6 +16,7 @@ import { GlobalStyles } from "./quickstartComponents/DarkMode/GlobalStyles";
 import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
 import TOSPage from "./pages/TOSFolder/TOSPage";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
+import NavTabs from "./components/NavTabs";
 
 function App() {
     const [theme, toggleTheme, componentMounted] = useDarkMode();
@@ -30,17 +31,18 @@ function App() {
                 <Toggle theme={theme} toggleTheme={toggleTheme} />
                 <AuthProvider>
                     <Router>
-                        <Switch>
-                            <Route exact path="/publicHomePage" component={publicHomePage} />
-                            <Route exact path="/TOSPage" component={TOSPage} />
-                            <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
-                            <Route exact path="/Login" component={Login} />
-                            <PrivateRoute exact path="/secondPage" component={secondPage} />
-                            <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
-                            <PrivateRoute exact path="/memberDashboard" component={memberDashboard} />
-                            <PrivateRoute exact path="/profile" component={profile} />
-                            <Route path="/" component={publicHomePage} />
-                        </Switch>
+                            <NavTabs />
+                            <Switch>
+                                <Route exact path="/publicHomePage" component={publicHomePage} />
+                                <Route exact path="/TOSPage" component={TOSPage} />
+                                <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
+                                <Route exact path="/Login" component={Login} />
+                                <PrivateRoute exact path="/secondPage" component={secondPage} />
+                                <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
+                                <PrivateRoute exact path="/memberDashboard" component={memberDashboard} />
+                                <PrivateRoute exact path="/profile" component={profile} />
+                                <Route path="/" component={publicHomePage} />
+                            </Switch>
                     </Router>
                 </AuthProvider>
             </>
