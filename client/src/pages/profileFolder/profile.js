@@ -11,7 +11,15 @@ function profile() {
                 <div className="d-flex justify-content-between">
                     <h3>
                         You are now logged in and viewing your profile!
-        </h3>
+                    </h3>
+                    <p>
+                        the profile is where all your information will live. 
+
+                        if you are viewing the page you will be able to edit the information.
+
+                        if someone else is viewing this page (coming in from the member dashboard)
+                        they will be able to view, but not edit information
+                    </p>
                 </div>
             </div>
 
