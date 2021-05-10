@@ -2,7 +2,7 @@ import React from "react";
 import firebaseEnvConfigs from '../../firebase';
 import { Link } from 'react-router-dom';
 
-function ExampleHomePage() {
+function profile() {
 
 
     return (
@@ -10,7 +10,7 @@ function ExampleHomePage() {
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <h3>
-                        You are now logged in and viewing your private home page!
+                        You are now logged in and viewing your profile!
         </h3>
                 </div>
             </div>
@@ -27,4 +27,4 @@ function ExampleHomePage() {
     );
 }
 
-export default ExampleHomePage;
+export default profile;
