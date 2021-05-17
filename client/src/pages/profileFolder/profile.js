@@ -12,8 +12,12 @@ function profile() {
                     <h3>
                         You are now logged in and viewing your profile!
                     </h3>
+                </div>
+            </div>
+            <div className="mb-2">
+                <div className="d-flex justify-content-between">
                     <p>
-                        the profile is where all your information will live. 
+                        the profile is where all your information will live.
 
                         if you are viewing the page you will be able to edit the information.
 

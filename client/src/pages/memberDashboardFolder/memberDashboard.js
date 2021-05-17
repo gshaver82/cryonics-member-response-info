@@ -12,6 +12,10 @@ function memberDashboard() {
                     <h3>
                         You are now logged in and viewing the cryonics member dashboard
                     </h3>
+                </div>
+            </div>
+            <div className="mb-2">
+                <div className="d-flex justify-content-between">
                     <p>
                         This is where all the MN cryonics members info will be displayed.
                         it will be a full list of all member with abridged info.
