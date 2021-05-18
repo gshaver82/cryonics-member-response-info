@@ -51,6 +51,14 @@ function NavTabs() {
           profile
         </Link>
       </li>
+      <li className="nav-item display-4">
+        <Link
+          to="/test"
+          className={location.pathname === "/test" ? "nav-link active" : "nav-link"}
+        >
+          test
+        </Link>
+      </li>
     </ul>
   );
 }

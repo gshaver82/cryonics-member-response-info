@@ -15,6 +15,7 @@ import Toggle from "./quickstartComponents/DarkMode/Toggler";
 import { GlobalStyles } from "./quickstartComponents/DarkMode/GlobalStyles";
 import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
 import TOSPage from "./pages/TOSFolder/TOSPage";
+import test from "./pages/TestFolder/test";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
 import NavTabs from "./components/NavTabs";
 
@@ -37,6 +38,7 @@ function App() {
                                 <Route exact path="/TOSPage" component={TOSPage} />
                                 <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
                                 <Route exact path="/Login" component={Login} />
+                                <Route exact path="/test" component={test} />
                                 <PrivateRoute exact path="/secondPage" component={secondPage} />
                                 <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
                                 <PrivateRoute exact path="/memberDashboard" component={memberDashboard} />

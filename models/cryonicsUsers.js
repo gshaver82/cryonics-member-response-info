@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const exampleSchema = new Schema({
+const cryonicsSchema = new Schema({
     firebaseAuthID: {
         type: String,
         required: true,
@@ -18,6 +18,6 @@ const exampleSchema = new Schema({
     }
 }
 );
-const exampleModel = mongoose.model("exampleTable", exampleSchema);
+const cryonicsModel = mongoose.model("cryonicsTable", cryonicsSchema);
 
-module.exports = exampleModel;
+module.exports = cryonicsModel;
