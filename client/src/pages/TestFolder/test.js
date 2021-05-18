@@ -1,90 +1,62 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
 import { UlList, ListItem, } from "../../components/List/index";
+import firebaseEnvConfigs from '../../firebase';
 
+const firebase = firebaseEnvConfigs.firebase_;
 
 function Test() {
-    const [recipes, setRecipes] = useState([]);
+    const firebaseUserID = firebase.auth().currentUser.uid
+    //userList is the array of objects that this webpage will map through and display 
+    //designed for the member dashboard. should only show public/MN cryo member info from profile
 
-    let [newRecipe, setNewRecipe] = useState([
-        {
-            firebaseAuthID: "default firebaseAuthID",
-            name: "default Name",
-        },
-    ]);
+    //setUsers is the thing that will grab user list from the mongo database 
 
-    const recipeSubmit = event => {
-        event.preventDefault();
-        API.getAllRecipes()
-            .then(res => setRecipes(res.data))
-            .catch(err => console.log(err));
-    };
+//use effect here?
 
-    const createRecipeSubmit = event => {
-        event.preventDefault();
-        console.log('creating dummy object');
-        function setDummyObject() {
-            setNewRecipe({
-                userID: "usernumber1",
-                name: "asdfasdfasdf pancakes",
-            })
-        };
-        setDummyObject();
-        API.createRecipe(newRecipe)
-            .catch(err => console.log(err));
-    };
+    const [userList, setUsers] = useState([]);
+    console.log("[test] get user list")
+    //this runnings in an endless loop
+    API.getuserList()
+        .then(res => setUsers(res.data))
+        .catch(err => console.log(err));
 
-    const createRecipeUpdateSubmit = event => {
-        event.preventDefault();
-        API.updateRecipe()
-            .then(res => setNewRecipe(res.data))
-            .catch(err => console.log(err));
-    };
-    const deleteRecipe = event => {
-        event.preventDefault();
-        // manually put the recipe id here to verify this works 
-        API.deleteRecipe("5f5550b4ea82aa49a4f93a84")
-            .catch(err => console.log(err));
-    };
-    const oneRecipe = event => {
-        event.preventDefault();
-        API.getOneRecipe("5f5550b4ea82aa49a4f93a84")
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
-    };
+        //this will be for new info?
+    // let [newRecipe, setNewRecipe] = useState([
+    //     {
+    //         firebaseUserID: firebaseUserID,
+    //         name: "default Name",
+    //     },
+    // ]);
+
+    // const createRecipeSubmit = event => {
+    //     event.preventDefault();
+    //     console.log('creating dummy object');
+    //     setNewRecipe({
+    //         firebaseUserID: firebaseUserID,
+    //         name: "created name",
+    //     })
+    //     API.createRecipe(newRecipe)
+    //         .catch(err => console.log(err));
+    // };
+
     return (
         <div>
             <h1>testing page</h1>
 
-            <button onClick={deleteRecipe} className="btn btn-info">
-                {" "}deleteRecipe Test{" "}
-            </button>
 
-            <button onClick={createRecipeSubmit} className="btn btn-info">
+            {/* <button onClick={createRecipeSubmit} className="btn btn-info">
                 {" "}create Test{" "}
-            </button>
+            </button> */}
 
-            <button onClick={createRecipeUpdateSubmit} className="btn btn-info">
-                {" "}Update Test{" "}
-            </button>
-
-            <button onClick={oneRecipe} className="btn btn-info">
-                {" "}One recipe{" "}
-            </button>
-            <button onClick={recipeSubmit} className="btn btn-info">
-                {" "}RecipeList{" "}
-            </button>
+            <p>mapping through all users here</p>
             <UlList>
-                {recipes.map(recipe => {
+                {userList.map(user => {
                     return (<div>
                         <ListItem
-                            key={recipe._id}
-                            name={recipe.name}
-                            description={recipe.description}
-                            imageUrls={recipe.imageUrls}
-                            category={recipe.category}
-                            title={recipe.actions[0].title}
-                            text={recipe.actions[0].text}
+                            key={user._id}
+                            firebaseAuthID={user.firebaseAuthID}
+                            name={user.name}
                         />
                     </div>
                     );

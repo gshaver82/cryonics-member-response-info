@@ -12,22 +12,22 @@ const admin = require('firebase-admin');
 
 // is this only for firebase database auth, or does login auth need this too?
 //database URL is the url of the realtime database under firebase
-// try {
-//     const serviceAccount = require("../config/serviceAccountKey.json");
-//     admin.initializeApp({
-//         credential: admin.credential.cert(serviceAccount),
-//         // databaseURL: ""
-//     });
-// } catch (error) {
-//     admin.initializeApp({
-//         credential: admin.credential.cert({
-//             "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-//             "private_key": process.env.FIREBASE_PRIVATE_KEY,
-//             "project_id": process.env.FIREBASE_PROJECT_ID,
-//         }),
-//         // databaseURL: ""
-//     });
-// }
+try {
+    const serviceAccount = require("../config/serviceAccountKey.json");
+    admin.initializeApp({
+        credential: admin.credential.cert(serviceAccount),
+        // databaseURL: ""
+    });
+} catch (error) {
+    admin.initializeApp({
+        credential: admin.credential.cert({
+            "client_email": process.env.FIREBASE_CLIENT_EMAIL,
+            "private_key": process.env.FIREBASE_PRIVATE_KEY,
+            "project_id": process.env.FIREBASE_PROJECT_ID,
+        }),
+        // databaseURL: ""
+    });
+}
 
 function checkAuth(req, res, next) {
     console.log("================================================")
