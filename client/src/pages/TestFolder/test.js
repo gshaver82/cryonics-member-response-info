@@ -59,7 +59,6 @@ function Test() {
                 {userList.map(user => {
                     return (
                         <ListItem
-                            key={user._id}
                             _id={user._id}
                             firebaseAuthID={user.firebaseAuthID}
                             name={user.name}
