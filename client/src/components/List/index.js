@@ -15,18 +15,13 @@ export function UlList({ children }) {
 export function ListItem({
   name,
   firebaseAuthID,
+  _id,
 }) {
   return (
-    <li className="list-group-item">
-      <div>
-        <div>
-          <div >
-            <h6>name: {name}</h6>
-
-            <h6>firebaseAuthID: {firebaseAuthID}</h6>
-          </div>
-        </div>
-      </div>
+    <li className="list-group-item" key={_id}>
+      name: {name}
+      _id: {_id}
+      firebaseAuthID: {firebaseAuthID}
     </li>
   );
 }

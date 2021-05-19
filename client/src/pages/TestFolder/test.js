@@ -12,21 +12,21 @@ function Test() {
 
     //setUsers is the thing that will grab user list from the mongo database 
 
-//use effect here?
+    //use effect here?
 
     const [userList, setUsers] = useState([]);
     console.log("[test] get user list")
     //this runnings in an endless loop
- 
 
-        
-        const getalluserstest = event => {
-            event.preventDefault();
-            API.getuserList()
+
+
+    const getalluserstest = event => {
+        event.preventDefault();
+        API.getuserList()
             .then(res => setUsers(res.data))
             .catch(err => console.log(err));
-        };
-        //this will be for new info?
+    };
+    //this will be for new info?
     // let [newRecipe, setNewRecipe] = useState([
     //     {
     //         firebaseUserID: firebaseUserID,
@@ -57,13 +57,13 @@ function Test() {
             <p>mapping through all users here</p>
             <UlList>
                 {userList.map(user => {
-                    return (<div>
+                    return (
                         <ListItem
                             key={user._id}
+                            _id={user._id}
                             firebaseAuthID={user.firebaseAuthID}
                             name={user.name}
                         />
-                    </div>
                     );
                 })}
 

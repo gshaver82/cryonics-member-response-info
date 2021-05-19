@@ -1,7 +1,7 @@
 {
   "name": "mncryonicswebsite",
   "version": "1.0.0",
-  "description": "firebase quickstart with google auth, built using react",
+  "description": "mncryonicswebsite",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
