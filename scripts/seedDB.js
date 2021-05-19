@@ -2,7 +2,7 @@
 // "seed": "node scripts/seedDB.js"
 
 let mongoose = require("mongoose");
-let cryonicsModel = require("../models/cryonicsUsers");
+let cryonicsModel = require("../models/cryonicsModel");
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/cryonics_localtest_db", {
     useNewUrlParser: true,
