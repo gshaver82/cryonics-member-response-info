@@ -1,11 +1,11 @@
 {
-  "name": "firebase-quickstart",
+  "name": "mncryonicswebsite",
   "version": "1.0.0",
   "description": "firebase quickstart with google auth, built using react",
   "main": "server.js",
   "scripts": {
     "start": "if-env NODE_ENV=production && npm run start:prod || npm run start:dev",
-    "start:prod": "node server.js",
+    "start:prod": "node scripts/seedDB.js && node server.js",
     "start:dev": "concurrently \"nodemon --ignore 'client/*'\" \"npm run client\"",
     "client": "cd client && npm run start",
     "install": "cd client && npm install",
