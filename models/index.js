@@ -1,3 +1,3 @@
 module.exports = {
-    cryonicsModel: require("./cryonicsUsers")
+    CryonicsModel: require("./cryonicsModel")
 };

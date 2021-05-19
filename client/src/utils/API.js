@@ -40,11 +40,15 @@ export default {
     // getAllRecipes: function () {
     //     return authorize.get("/api/recipes");
     // },
-    createRecipe: function (newUser) {
-        console.log("[API] test create. ", newUser);
-        return authorize.post("/api/example", newUser);
+    // createRecipe: function (newUser) {
+    //     console.log("[API] test create. ", newUser);
+    //     return authorize.post("/api/example", newUser);
+    // },
+    getuserList: function () {
+        console.log("[API] getting all users");
+        return authorize.get("/api/users");
     },
-    
+
     // updateRecipe: function (_id, recipe) {
     //     return authorize.put("/api/recipes/" + _id, recipe);
     // },
