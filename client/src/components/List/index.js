@@ -14,38 +14,16 @@ export function UlList({ children }) {
 // ListItem renders a bootstrap list item containing data from the recipe api call
 export function ListItem({
   name,
-  description,
-  imageUrls,
-  category,
-  ingredientCategoryIconLink,
-  title,
-  text
+  firebaseAuthID,
 }) {
   return (
     <li className="list-group-item">
       <div>
         <div>
-          <div className="xs-8 sm-9">
-            <h6>name</h6>
-            <h1>{name}</h1>
+          <div >
+            <h6>name: {name}</h6>
 
-            <h6>description</h6>
-            <h1>{description}</h1>
-
-            <h6>imageUrls</h6>
-            <h1>{imageUrls}</h1>
-
-            <h6>category</h6>
-            <h1>{category}</h1>
-
-            <h6>ingredientCategoryIconLink</h6>
-            <h1>{ingredientCategoryIconLink}</h1>
-
-            <h6>title</h6>
-            <h1>{title}</h1>
-
-            <h6>text</h6>
-            <h1>{text}</h1>
+            <h6>firebaseAuthID: {firebaseAuthID}</h6>
           </div>
         </div>
       </div>

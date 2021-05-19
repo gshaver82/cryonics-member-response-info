@@ -17,10 +17,15 @@ function Test() {
     const [userList, setUsers] = useState([]);
     console.log("[test] get user list")
     //this runnings in an endless loop
-    API.getuserList()
-        .then(res => setUsers(res.data))
-        .catch(err => console.log(err));
+ 
 
+        
+        const getalluserstest = event => {
+            event.preventDefault();
+            API.getuserList()
+            .then(res => setUsers(res.data))
+            .catch(err => console.log(err));
+        };
         //this will be for new info?
     // let [newRecipe, setNewRecipe] = useState([
     //     {
@@ -45,9 +50,9 @@ function Test() {
             <h1>testing page</h1>
 
 
-            {/* <button onClick={createRecipeSubmit} className="btn btn-info">
-                {" "}create Test{" "}
-            </button> */}
+            <button onClick={getalluserstest} className="btn btn-info">
+                {" "}getalluserstest{" "}
+            </button>
 
             <p>mapping through all users here</p>
             <UlList>
