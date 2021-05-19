@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
-import { UlList, ListItem, } from "../../components/List/index";
+import { ListItem, } from "../../components/List/index";
 import firebaseEnvConfigs from '../../firebase';
 
 const firebase = firebaseEnvConfigs.firebase_;
@@ -24,6 +24,17 @@ function Test() {
         event.preventDefault();
         API.getuserList()
             .then(res => setUsers(res.data))
+            .catch(err => console.log(err));
+    };
+    const adduser = event => {
+        event.preventDefault();
+        const newUser = {
+            firebaseAuthID: firebaseUserID,
+            name: "new user name2"
+        }
+        console.log("inside button, new user is " + newUser)
+        console.log(newUser)
+        API.adduser(newUser)
             .catch(err => console.log(err));
     };
     //this will be for new info?
@@ -53,20 +64,28 @@ function Test() {
             <button onClick={getalluserstest} className="btn btn-info">
                 {" "}getalluserstest{" "}
             </button>
+            <button onClick={adduser} className="btn btn-info">
+                {" "}adduser{" "}
+            </button>
 
             <p>mapping through all users here</p>
-            <UlList>
+            <ul>
                 {userList.map(user => {
                     return (
-                        <ListItem
-                            _id={user._id}
-                            firebaseAuthID={user.firebaseAuthID}
-                            name={user.name}
-                        />
+                        // <ListItem
+                        //     _id={user._id}
+                        //     firebaseAuthID={user.firebaseAuthID}
+                        //     name={user.name}
+                        // />
+                        <li className="list-group-item" key={user._id}>
+                            name: {user.name}
+                            _id: {user._id}
+                            firebaseAuthID: {user.firebaseAuthID}
+                        </li>
                     );
                 })}
 
-            </UlList>
+            </ul>
         </div>
     );
 }

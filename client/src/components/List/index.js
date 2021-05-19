@@ -20,7 +20,7 @@ export function ListItem({
   return (
     <li className="list-group-item" key={_id}>
       name: {name}
-      _id: {_id}
+      {/* _id: {_id} */}
       firebaseAuthID: {firebaseAuthID}
     </li>
   );

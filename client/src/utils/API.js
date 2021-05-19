@@ -49,6 +49,12 @@ export default {
         return authorize.get("/api/users");
     },
 
+    
+    adduser: function (newUser) {
+        console.log("[API] add 1 user " + newUser);
+        return authorize.put("/api/users", newUser);
+    },
+
     // updateRecipe: function (_id, recipe) {
     //     return authorize.put("/api/recipes/" + _id, recipe);
     // },
