@@ -14,10 +14,19 @@ function Test() {
 
     //use effect here?
 
-    const [userList, setUsers] = useState([]);
+    const [userList, setUsers] = useState([{name: "Loading...."}]);
     console.log("[test] get user list")
     //this runnings in an endless loop
 
+    //use effect that runs once to pull the complete user list.  the  .[] at the end means
+    // empty dependancy so it will only run ONCE after initial rerender
+    //if there was something in there then the use effect runs any time that something runs.
+    useEffect(() => {
+        console.log("use effect ran")
+        API.getuserList()
+        .then(res => setUsers(res.data))
+        .catch(err => console.log(err));
+    }, []);
 
 
     const getalluserstest = event => {
