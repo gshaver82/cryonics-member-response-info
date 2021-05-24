@@ -8,15 +8,31 @@ function NavTabs() {
     <ul className="nav nav-tabs">
       <li className="nav-item display-4">
         <Link to="/publicHomePage" className={(location.pathname === "/" ||location.pathname === "/publicHomePage" ) ? "nav-link active" : "nav-link"}>
-        publicHomePage
+        publicHome
+        </Link>
+      </li>
+      <li className="nav-item display-4">
+        <Link
+          to="/AlcorPage"
+          className={location.pathname === "/AlcorPage" ? "nav-link active" : "nav-link"}
+        >
+          Alcor
+        </Link>
+      </li>
+      <li className="nav-item display-4">
+        <Link
+          to="/CIPage"
+          className={location.pathname === "/CIPage" ? "nav-link active" : "nav-link"}
+        >
+          CI
         </Link>
       </li>
       <li className="nav-item display-4">
         <Link
           to="/TOSPage"
-          className={location.pathname === "/portfolio" ? "nav-link active" : "nav-link"}
+          className={location.pathname === "/TOSPage" ? "nav-link active" : "nav-link"}
         >
-          TOSPage
+          TOS
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -24,7 +40,7 @@ function NavTabs() {
           to="/PrivacyPolicyPage"
           className={location.pathname === "/PrivacyPolicyPage" ? "nav-link active" : "nav-link"}
         >
-          PrivacyPolicyPage
+          PrivacyPol
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -32,7 +48,7 @@ function NavTabs() {
           to="/privateHomePage"
           className={location.pathname === "/privateHomePage" ? "nav-link active" : "nav-link"}
         >
-          privateHomePage
+          prvtHomePage
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -40,7 +56,7 @@ function NavTabs() {
           to="/memberDashboard"
           className={location.pathname === "/memberDashboard" ? "nav-link active" : "nav-link"}
         >
-          memberDashboard
+          memberDash
         </Link>
       </li>
       <li className="nav-item display-4">
