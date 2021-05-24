@@ -1,19 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
-import { ListItem, } from "../../components/List/index";
+// import { ListItem, } from "../../components/List/index";
 import firebaseEnvConfigs from '../../firebase';
 
 const firebase = firebaseEnvConfigs.firebase_;
 
 function Test() {
+    
     const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
 
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
-    console.log("[test] get user list")
-    //this runnings in an endless loop
 
     //use effect that runs once to pull the complete user list.  the  .[] at the end means
     // empty dependancy so it will only run ONCE after initial rerender
@@ -25,22 +24,26 @@ function Test() {
             .catch(err => console.log(err));
     }, []);
 
-    const adduser = event => {
-        event.preventDefault();
+    const handleadduserclick = () => {
         const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "new user name2"
         }
-        console.log("inside button, new user is " + newUser)
-        console.log(newUser)
         API.adduser(newUser)
             .catch(err => console.log(err));
     };
 
+    const handleDeleteClick = (event) => {
+        console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
+        const deletedUser_id = event.target.value;
+        API.deleteUser(deletedUser_id)
+            .catch(err => console.log(err));
+    }
+
     return (
         <div>
             <h1>testing page</h1>
-            <button onClick={adduser} className="btn btn-info">
+            <button onClick={handleadduserclick} className="btn btn-info">
                 {" "}adduser{" "}
             </button>
             <p>mapping through all users here</p>
@@ -51,10 +54,14 @@ function Test() {
                     {userList.map(user => {
                         return (
                             <li className="list-group-item" key={user._id}>
-                            name: {user.name}
+                                name: {user.name}
                             _id: {user._id}
                             firebaseAuthID: {user.firebaseAuthID}
+                                <button value={user._id} onClick={handleDeleteClick}>
+                                    Delete Profile
+                                </button>
                             </li>
+
                         );
                     })}
 
