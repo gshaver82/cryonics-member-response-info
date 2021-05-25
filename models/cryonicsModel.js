@@ -10,7 +10,6 @@ const Schema = mongoose.Schema;
 //street name location if available
 //building location if available (like a hospital)
 
-
 const cryonicsSchema = new Schema({
     firebaseAuthID: {
         type: String,
@@ -25,9 +24,24 @@ const cryonicsSchema = new Schema({
         type: String,
         required: false,
         lowercase: false,
-    }
+    },
+    GPSLocationArray: [
+        {
+            loc: {
+                type: { type: String },
+                coordinates: [Number],
+            },
+            dateCreated: {
+                type: Date,
+                default: Date.now,
+                required: true,
+            },       
+        }
+
+    ],
 }
 );
-const cryonicsModel = mongoose.model("cryonicsTable", cryonicsSchema);
+cryonicsSchema.index({ "loc": "2dsphere" });
 
+const cryonicsModel = mongoose.model("cryonicsTable", cryonicsSchema);
 module.exports = cryonicsModel;

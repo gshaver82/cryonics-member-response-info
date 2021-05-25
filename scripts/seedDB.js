@@ -12,13 +12,36 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/cryonics_localt
 
 let usersSeed = [
     {
-        firebaseAuthID:"seeded userID",
+        firebaseAuthID: "seeded userID",
         name: "Seeded user name",
+        GPSLocationArray: [
+            {
+                loc: {
+                    type: "Point",
+                    coordinates: [-73.97, 40.77],
+                }
+            }
+        ],
     },
     {
-        firebaseAuthID:"seeded userID 2",
+        firebaseAuthID: "seeded userID 2",
         name: "Seeded user name 2",
-    }
+        GPSLocationArray: [
+            {
+                loc: {
+                    type: "Point",
+                    coordinates: [-73.97, 40.77],
+                }
+            },
+            {
+                loc: {
+                    type: "Point",
+                    coordinates: [-73.97, 40.77],
+                }
+            }
+
+        ],
+    },
 ];
 
 
