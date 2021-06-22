@@ -25,23 +25,17 @@ const cryonicsSchema = new Schema({
         required: false,
         lowercase: false,
     },
-    WebsiteCheckIn: [
-        {
-            dateCreated: {
-                type: Date,
-                default: Date.now,
-                required: true,
-            },
-            GPSLocationArray: [
-                {
-                    loc: {
-                        type: { type: String },
-                        coordinates: [Number],
-                    },
-                }
-            ],
-        }
-    ]
+    WebsiteCheckIn: {
+        dateCreated: {
+            type: Date,
+            default: Date.now,
+            required: true,
+        },
+        loc: {
+            type: { type: String },
+            coordinates: [Number],
+        },
+    }
 }
 );
 cryonicsSchema.index({ "loc": "2dsphere" });

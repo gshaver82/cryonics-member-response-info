@@ -14,18 +14,12 @@ let usersSeed = [
     {
         firebaseAuthID: "seeded userID",
         name: "Seeded user name",
-        WebsiteCheckIn: [
-            {
-                GPSLocationArray: [
-                    {
-                        loc: {
-                            type: "Point",
-                            coordinates: [-73.97, 40.77],
-                        }
-                    }
-                ],
+        WebsiteCheckIn: {
+            loc: {
+                type: "Point",
+                coordinates: [-73.97, 40.77],
             }
-        ]
+        }
     },
     {
         firebaseAuthID: "seeded userID 2",

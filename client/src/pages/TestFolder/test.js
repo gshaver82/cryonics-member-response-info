@@ -57,6 +57,8 @@ function Test() {
                                 <p><strong>NAME: </strong>{user.name}</p>
                                 <p> _id: {user._id}</p>
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
+                                <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
+                                <p>Web Check in GPS: {user.WebsiteCheckIn.loc.coordinates[0]}  {user.WebsiteCheckIn.loc.coordinates[1]}</p>
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button>
@@ -70,4 +72,7 @@ function Test() {
         </div>
     );
 }
+//TODO add a Check in button that asks for GPS and then create a route to save that GPS data to DB
+//TODO find a way to extrapolate generic info from a GPS... like a city name. 
+//TODO create a link to google maps to the gps info. 
 export default Test;
