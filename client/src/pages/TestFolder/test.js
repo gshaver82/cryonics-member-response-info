@@ -6,7 +6,7 @@ import firebaseEnvConfigs from '../../firebase';
 const firebase = firebaseEnvConfigs.firebase_;
 
 function Test() {
-    
+
     const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
@@ -54,9 +54,9 @@ function Test() {
                     {userList.map(user => {
                         return (
                             <li className="list-group-item dashboard-li" key={user._id}>
-                                name: {user.name}
-                            _id: {user._id}
-                            firebaseAuthID: {user.firebaseAuthID}
+                                <p><strong>NAME: </strong>{user.name}</p>
+                                <p> _id: {user._id}</p>
+                                <p>firebaseAuthID: {user.firebaseAuthID}</p>
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button>

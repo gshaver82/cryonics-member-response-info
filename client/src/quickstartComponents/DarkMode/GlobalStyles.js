@@ -32,6 +32,7 @@ export const GlobalStyles = createGlobalStyle`
         --google-color: ${({ theme }) => theme.googleColor};
         --google-text: ${({ theme }) => theme.googleText};
         --MaxBlackOrWhite: ${({ theme }) => theme.MaxBlackOrWhite};
+        --MinBlackOrWhite: ${({ theme }) => theme.MinBlackOrWhite};
         transition: all 0.50s linear;
     }
     body {
