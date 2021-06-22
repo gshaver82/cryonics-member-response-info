@@ -72,6 +72,9 @@ function Test() {
         </div>
     );
 }
+//TODO put google name on for the add user click
+//TODO add a profile page to edit info
+
 //TODO add a Check in button that asks for GPS and then create a route to save that GPS data to DB
 //TODO find a way to extrapolate generic info from a GPS... like a city name. 
 //TODO create a link to google maps to the gps info. 
