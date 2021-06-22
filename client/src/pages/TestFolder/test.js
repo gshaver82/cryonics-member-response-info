@@ -50,10 +50,10 @@ function Test() {
             {/* if isLoading or userList is false, then the data following && will not be displayed */}
             {isLoading && <h1>please wait, loading the data now.</h1>}
             {userList &&
-                <ul>
+                <ul className="list-group">
                     {userList.map(user => {
                         return (
-                            <li className="list-group-item" key={user._id}>
+                            <li className="list-group-item dashboard-li" key={user._id}>
                                 name: {user.name}
                             _id: {user._id}
                             firebaseAuthID: {user.firebaseAuthID}

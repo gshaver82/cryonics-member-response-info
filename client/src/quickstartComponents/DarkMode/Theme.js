@@ -31,6 +31,7 @@ export const lightTheme = {
     textFill: 'black',
     googleColor: '#EEE',
     googleText: '#757575',
+    MaxBlackOrWhite:'White'
 }
 
 export const darkTheme = {
@@ -66,4 +67,5 @@ export const darkTheme = {
     textFill: '#CCC',
     googleColor: '#444',
     googleText: 'lightgray',
+    MaxBlackOrWhite:'Black'
 }

@@ -31,6 +31,7 @@ export const GlobalStyles = createGlobalStyle`
         --text-fill: ${({ theme }) => theme.textFill};
         --google-color: ${({ theme }) => theme.googleColor};
         --google-text: ${({ theme }) => theme.googleText};
+        --MaxBlackOrWhite: ${({ theme }) => theme.MaxBlackOrWhite};
         transition: all 0.50s linear;
     }
     body {

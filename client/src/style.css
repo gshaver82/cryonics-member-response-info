@@ -449,4 +449,6 @@ input[type=number]::-webkit-inner-spin-button:focus {
     outline: none !important;
 }
 
-
+.dashboard-li{
+    background-color: var(--MaxBlackOrWhite);
+}
