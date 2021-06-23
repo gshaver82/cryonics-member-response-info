@@ -36,6 +36,10 @@ export default {
 
     deleteUser: function (_id) {
         console.log("🚀 ~ file: API.js ~ line 52 ~ _id", _id)
-        return authorize.delete("/api/users/"+ _id);
+        return authorize.delete("/api/users/" + _id);
+    },
+    checkIn: function (checkinObject) {
+        console.log("🚀 ~ file: API.js ~ line 42 ~ checkinObject", checkinObject)
+        return authorize.put("/api/checkin", checkinObject);
     },
 };

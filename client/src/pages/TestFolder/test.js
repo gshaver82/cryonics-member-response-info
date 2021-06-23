@@ -25,10 +25,17 @@ function Test() {
     }, []);
 
     const handleadduserclick = () => {
-        const newUser = {
+        const newUser =  {
             firebaseAuthID: firebaseUserID,
-            name: "new user name2"
+            name: "clicked user name",
+            WebsiteCheckIn: {
+                loc: {
+                    type: "Point",
+                    coordinates: [-2, 2],
+                }
+            }
         }
+        console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
         API.adduser(newUser)
             .catch(err => console.log(err));
     };
@@ -75,7 +82,8 @@ function Test() {
 //TODO put google name on for the add user click
 //TODO add a profile page to edit info
 
-//TODO add a Check in button that asks for GPS and then create a route to save that GPS data to DB
+//TODO add a Check in button that
+//TODO make check in button ask for GPS and then create a route to save that GPS data to DB
 //TODO find a way to extrapolate generic info from a GPS... like a city name. 
 //TODO create a link to google maps to the gps info. 
 export default Test;

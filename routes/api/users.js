@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const exampleController = require("../../controllers/exampleController");
 
-//matches with /api route
+//matches with /api/users route
 router.route("/")
     .get(exampleController.findAll)
-    .put(exampleController.update)
+    .put(exampleController.create)
 
     router
     .route("/:_id")
