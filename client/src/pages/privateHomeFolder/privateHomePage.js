@@ -8,6 +8,11 @@ const firebase = firebaseEnvConfigs.firebase_;
 function privateHomePage() {
     const firebaseUserID = firebase.auth().currentUser.uid
 
+    const handlegetcheckIn = () => {
+        API.getcheckIn()
+            .catch(err => console.log(err));
+    };
+
     const handleCheckIn = () => {
         console.log("inside handle check in");
 
@@ -16,15 +21,18 @@ function privateHomePage() {
         // let GPSArray = [1,2];
         let checkinObject = {
             firebaseAuthID: firebaseUserID,
-            GPSArray: [1,2]
+            GPSArray: [1, 2]
         }
         console.log("🚀 ~ file: privateHomePage.js ~ line 21 ~ handleCheckIn ~ checkinObject", checkinObject)
         API.checkIn(checkinObject)
-        .catch(err => console.log(err));
+            .catch(err => console.log(err));
     };
 
     return (
         <>
+            <button onClick={handlegetcheckIn} className="btn btn-info">
+                {" "}getcheckIn{" "}
+            </button>
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <h3>

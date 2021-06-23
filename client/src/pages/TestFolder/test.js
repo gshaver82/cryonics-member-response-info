@@ -42,6 +42,11 @@ function Test() {
         window.location.reload();
     };
 
+    const handlegetcheckIn = () => {    
+        API.getcheckIn()
+            .catch(err => console.log(err));
+    };
+
     const handleDeleteClick = (event) => {
         console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
         const deletedUser_id = event.target.value;
@@ -56,6 +61,9 @@ function Test() {
             <h1>testing page</h1>
             <button onClick={handleadduserclick} className="btn btn-info">
                 {" "}adduser{" "}
+            </button>
+            <button onClick={handlegetcheckIn} className="btn btn-info">
+                {" "}getcheckIn{" "}
             </button>
             <p>mapping through all users here</p>
             {/* if isLoading or userList is false, then the data following && will not be displayed */}
