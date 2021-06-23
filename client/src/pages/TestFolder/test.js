@@ -25,7 +25,7 @@ function Test() {
     }, []);
 
     const handleadduserclick = () => {
-        const newUser =  {
+        const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "clicked user name",
             WebsiteCheckIn: {
@@ -38,6 +38,8 @@ function Test() {
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
         API.adduser(newUser)
             .catch(err => console.log(err));
+        //TODO make this list refresh cleanly using react
+        window.location.reload();
     };
 
     const handleDeleteClick = (event) => {
@@ -45,6 +47,8 @@ function Test() {
         const deletedUser_id = event.target.value;
         API.deleteUser(deletedUser_id)
             .catch(err => console.log(err));
+        //TODO make this list refresh cleanly using react
+        window.location.reload();
     }
 
     return (
