@@ -5,7 +5,7 @@ import API from "../../utils/API";
 
 const firebase = firebaseEnvConfigs.firebase_;
 
-function MemberDashboard() {
+function MemberDash() {
     // const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
@@ -90,4 +90,4 @@ function MemberDashboard() {
     );
 }
 
-export default MemberDashboard;
+export default MemberDash;

@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Login from "./pages/login/Login";
 import privateHomePage from "./pages/privateHomeFolder/privateHomePage";
-import MemberDashboard from "./pages/memberDashboardFolder/MemberDashboard";
+import MemberDash from "./pages/memberDashboardFolder/MemberDash";
 import profile from "./pages/profileFolder/profile";
 import { AuthProvider } from "./quickstartComponents/Auth";
 import PrivateRoute from "./quickstartComponents/PrivateRoute";
@@ -45,7 +45,7 @@ function App() {
                                 <Route exact path="/CIPage" component={CIPage} />
                                 <PrivateRoute exact path="/secondPage" component={secondPage} />
                                 <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
-                                <PrivateRoute exact path="/MemberDashboard" component={MemberDashboard} />
+                                <PrivateRoute exact path="/MemberDashboard" component={MemberDash} />
                                 <PrivateRoute exact path="/profile" component={profile} />
                                 <Route path="/" component={publicHomePage} />
                             </Switch>
