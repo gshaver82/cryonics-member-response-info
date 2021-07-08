@@ -20,6 +20,19 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+    edit: function (req, res) {
+        // console.log("🚀 ~ file: exampleController.js ~ line 24 ~ edit")
+        // console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
+        db.CryonicsModel
+        .findOneAndUpdate(
+            { firebaseAuthID: req.body.firebaseAuthID },
+            req.body,
+            {
+                new: true
+            })
+        .then(dbModelDataResult => res.json(dbModelDataResult))
+        .catch(err => res.status(422).json(err));
+    },
 
     findById: function (req, res) {
         db.CryonicsModel

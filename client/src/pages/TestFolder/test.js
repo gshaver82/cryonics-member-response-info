@@ -23,7 +23,10 @@ function Test() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-
+    
+    //ADD user should ONLY be used at profile create
+    //date is added here. 
+    //if this is used for editing then the profile create date will change as well
     const handleadduserclick = async () => {
         setisLoading(true)
         const newUser = {
@@ -31,10 +34,6 @@ function Test() {
             name: "Default user name",
             WebsiteCheckIn: {
                 dateCreated: Date.now(),
-                loc: {
-                    type: "Point",
-                    coordinates: [-2, 2],
-                }
             },
             dateCreated: Date.now(),
         }
@@ -45,7 +44,19 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     };
-
+    const handleedituserclick = async () => {
+        setisLoading(true)
+        const editedUser = {
+            firebaseAuthID: firebaseUserID,
+            name: "edited Name" + (Math.floor(Math.random() * 20)),
+        }
+        console.log("🚀 ~ file: test.js ~ line 50 ~ handleedituserclick ~ editedUser", editedUser)
+        await API.edituser(editedUser)
+            .catch(err => console.log(err));
+        await API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+    };
     const handleputcheckIn = async () => {
         setisLoading(true)
         const checkInData = {
@@ -82,6 +93,9 @@ function Test() {
             <h1>testing page{isLoading && <span>please wait, loading the data now.</span>}</h1>
             <button onClick={handleadduserclick} className="btn btn-info">
                 {" "}adduser{" "}
+            </button>
+            <button onClick={handleedituserclick} className="btn btn-info">
+                {" "}edit user{" "}
             </button>
             <button onClick={handleputcheckIn} className="btn btn-info">
                 {" "}putcheckIn{" "}

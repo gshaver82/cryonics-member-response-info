@@ -11,4 +11,9 @@ router.route("/")
     .get(exampleController.findById)
     .delete(exampleController.delete);
 
+    
+    router.route("/edit")
+    .put(exampleController.edit)
+
+
 module.exports = router;

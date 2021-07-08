@@ -30,10 +30,13 @@ export default {
     },
 
     adduser: function (newUser) {
-        console.log("🚀 ~ file: API.js ~ line 47 ~ newUser", newUser)
+        console.log("🚀 ~ file: API.js ~ line 33 ~ newUser", newUser)
         return authorize.put("/api/users", newUser);
     },
-
+    edituser: function (editedUser) {
+        console.log("🚀 ~ file: API.js ~ line 37 ~ newUser", editedUser)
+        return authorize.put("/api/users/edit", editedUser);
+    },
     deleteUser: function (_id) {
         console.log("🚀 ~ file: API.js ~ line 52 ~ _id", _id)
         return authorize.delete("/api/users/" + _id);
