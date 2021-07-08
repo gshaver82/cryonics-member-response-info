@@ -25,11 +25,12 @@ function Test() {
     }, []);
 
     const handleadduserclick = () => {
+        setisLoading(true)
         const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "Default user name",
             WebsiteCheckIn: {
-                dateCreated:  Date.now(),
+                dateCreated: Date.now(),
                 loc: {
                     type: "Point",
                     coordinates: [-2, 2],
@@ -39,37 +40,54 @@ function Test() {
         }
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
         API.adduser(newUser)
+            .then(API.getuserList()
+                .then(res => setUsers(res.data))
+                .then(setisLoading(false)))
             .catch(err => console.log(err));
-        //TODO make this list refresh cleanly using react
-        window.location.reload();
+    }; 
+
+    const handleputcheckIn = async () => {
+        setisLoading(true)
+        const checkInData = {
+            firebaseAuthID: firebaseUserID,
+            WebsiteCheckIn: {
+                dateCreated: Date.now(),
+                loc: {
+                    type: "Point",
+                    coordinates: [-2, 2],
+                }
+            },
+        }
+        await API.putcheckIn(checkInData)
+            .catch(err => console.log(err));
+        await API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+
     };
 
-    const handlegetcheckIn = () => {
-        API.getcheckIn()
-            .catch(err => console.log(err));
-    };
-
-    const handleDeleteClick = (event) => {
+    const handleDeleteClick = async (event) => {
+        setisLoading(true)
         console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
         const deletedUser_id = event.target.value;
-        API.deleteUser(deletedUser_id)
+        await API.deleteUser(deletedUser_id)
             .catch(err => console.log(err));
-        //TODO make this list refresh cleanly using react
-        window.location.reload();
+        await API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
     }
 
     return (
         <div>
-            <h1>testing page</h1>
+            {/* if isLoading or userList is false, then the data following && will not be displayed */}
+            <h1>testing page{isLoading && <span>please wait, loading the data now.</span>}</h1>
             <button onClick={handleadduserclick} className="btn btn-info">
                 {" "}adduser{" "}
             </button>
-            <button onClick={handlegetcheckIn} className="btn btn-info">
-                {" "}getcheckIn{" "}
+            <button onClick={handleputcheckIn} className="btn btn-info">
+                {" "}putcheckIn{" "}
             </button>
             <p>mapping through all users here</p>
-            {/* if isLoading or userList is false, then the data following && will not be displayed */}
-            {isLoading && <h1>please wait, loading the data now.</h1>}
             {userList &&
                 <ul className="list-group">
                     {userList.map(user => {
@@ -81,8 +99,8 @@ function Test() {
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
                                 <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
                                 <p>
-                                    Web Check in GPS: {user.WebsiteCheckIn.loc.coordinates[0]}
-                                    {user.WebsiteCheckIn.loc.coordinates[1]}
+                                    Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
+                                    {user.WebsiteCheckIn.loc.coordinates[1]}]
                                 </p>
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile

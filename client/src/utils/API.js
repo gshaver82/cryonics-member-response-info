@@ -38,6 +38,10 @@ export default {
         console.log("🚀 ~ file: API.js ~ line 52 ~ _id", _id)
         return authorize.delete("/api/users/" + _id);
     },
+    putcheckIn: function (checkInData) {
+        console.log("🚀 ~ file: API.js ~ line 42 ~ checkinObject", checkInData)
+        return authorize.put("/api/checkin", checkInData);
+    },
     checkIn: function (checkinObject) {
         console.log("🚀 ~ file: API.js ~ line 42 ~ checkinObject", checkinObject)
         return authorize.put("/api/checkin", checkinObject);
