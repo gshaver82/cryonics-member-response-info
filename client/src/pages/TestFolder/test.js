@@ -24,7 +24,7 @@ function Test() {
             .catch(err => console.log(err));
     }, []);
 
-    const handleadduserclick = () => {
+    const handleadduserclick = async () => {
         setisLoading(true)
         const newUser = {
             firebaseAuthID: firebaseUserID,
@@ -39,12 +39,12 @@ function Test() {
             dateCreated: Date.now(),
         }
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
-        API.adduser(newUser)
-            .then(API.getuserList()
-                .then(res => setUsers(res.data))
-                .then(setisLoading(false)))
+        await API.adduser(newUser)
             .catch(err => console.log(err));
-    }; 
+        await API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+    };
 
     const handleputcheckIn = async () => {
         setisLoading(true)
@@ -63,7 +63,6 @@ function Test() {
         await API.getuserList()
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
-
     };
 
     const handleDeleteClick = async (event) => {
@@ -106,10 +105,8 @@ function Test() {
                                     Delete Profile
                                 </button>
                             </li>
-
                         );
                     })}
-
                 </ul>
             }
         </div>
