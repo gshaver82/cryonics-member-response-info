@@ -57,6 +57,10 @@ function MemberDash() {
                     //this will sort by website checkin date. putting the oldest at the top
                     //to verify this sort works, change to < and you should see newest at top.
                     //this should work because ISO dates can be compared lexicographically
+                    //TODO create a highlighted section of longest checkin 
+                    //(some people may want shorter warning periods that others?)
+                    //TODO create another section for those that opt out of checkins 
+                    //and just want to use the site for information
                     .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
                     .map(user => {
                         return (
