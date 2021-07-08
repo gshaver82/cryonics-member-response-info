@@ -6,24 +6,26 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
-    // update: function (req, res) {
-    //     //this will find one and update. if no record with that firebase auth id exists
-    //     //this will create that record. if it does exist, itll update it. 
-    //     db.CryonicsModel
-    //         .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID }, req.body, {
-    //             upsert: true,
-    //         })
-    //         .then(dbModelDataResult => res.json(dbModelDataResult))
-    //         .catch(err => res.status(422).json(err));
-    // },
+
     create: function (req, res) {
         console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
         db.CryonicsModel
-            //TODO this needs to add a record ONLY if a record with that firebase auth does not exist
-            //AND also handle the time stamp correctly
+        
+        //TODO this works to create the record only if record not already created.
 
-            //Currently handles time correctly, but will add new records with the same firebase auth
-            .insertMany(req.body)
+        //BUG the webcheckin date time displays CURRENT time on a refresh, not any data from DB
+        //possibly as a result from the model having a default date.now?
+        //but that was designed so that the data could be PUT in and date from THAT time would be frozen in
+        //DB has no date created. 
+            .findOneAndUpdate(
+                { firebaseAuthID: req.body.firebaseAuthID },
+                req.body,
+                {
+                    new: true,
+                    upsert: true 
+                }
+            )
+
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
