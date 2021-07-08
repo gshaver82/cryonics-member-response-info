@@ -29,7 +29,7 @@ const cryonicsSchema = new Schema({
         dateCreated: {
             type: Date,
             default: Date.now,
-            required: true,
+            required: false,
         },
         loc: {
             type: { type: String },

@@ -53,7 +53,12 @@ function MemberDashboard() {
             <h3>Showing all users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
             {userList &&
                 <ul className="list-group">
-                    {userList.map(user => {
+                    {userList
+                    //this will sort by website checkin date. putting the oldest at the top
+                    //to verify this sort works, change to < and you should see newest at top.
+                    //this should work because ISO dates can be compared lexicographically
+                    .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
+                    .map(user => {
                         return (
                             <li className="list-group-item dashboard-li" key={user._id}>
                                 <p><strong>NAME: </strong>{user.name}</p>

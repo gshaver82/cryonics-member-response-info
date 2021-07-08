@@ -32,9 +32,9 @@ function Test() {
         const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "Default user name",
-            WebsiteCheckIn: {
-                dateCreated: Date.now(),
-            },
+            // WebsiteCheckIn: {
+            //     dateCreated: Date.now(),
+            // },
             dateCreated: Date.now(),
         }
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
@@ -42,6 +42,7 @@ function Test() {
             .catch(err => console.log(err));
         await API.getuserList()
             .then(res => setUsers(res.data))
+            .then(console.log("------------userList",userList))
             .then(setisLoading(false))
     };
     const handleedituserclick = async () => {
