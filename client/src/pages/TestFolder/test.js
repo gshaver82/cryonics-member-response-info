@@ -27,13 +27,15 @@ function Test() {
     const handleadduserclick = () => {
         const newUser = {
             firebaseAuthID: firebaseUserID,
-            name: "clicked user name",
+            name: "Default user name",
             WebsiteCheckIn: {
+                dateCreated:  Date.now(),
                 loc: {
                     type: "Point",
                     coordinates: [-2, 2],
                 }
-            }
+            },
+            dateCreated: Date.now(),
         }
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
         API.adduser(newUser)
@@ -42,7 +44,7 @@ function Test() {
         window.location.reload();
     };
 
-    const handlegetcheckIn = () => {    
+    const handlegetcheckIn = () => {
         API.getcheckIn()
             .catch(err => console.log(err));
     };
@@ -75,9 +77,13 @@ function Test() {
                             <li className="list-group-item dashboard-li" key={user._id}>
                                 <p><strong>NAME: </strong>{user.name}</p>
                                 <p> _id: {user._id}</p>
+                                <p>Date Profile Created: {user.dateCreated} </p>
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
                                 <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
-                                <p>Web Check in GPS: {user.WebsiteCheckIn.loc.coordinates[0]}  {user.WebsiteCheckIn.loc.coordinates[1]}</p>
+                                <p>
+                                    Web Check in GPS: {user.WebsiteCheckIn.loc.coordinates[0]}
+                                    {user.WebsiteCheckIn.loc.coordinates[1]}
+                                </p>
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button>
