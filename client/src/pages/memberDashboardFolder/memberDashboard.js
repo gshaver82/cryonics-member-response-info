@@ -1,9 +1,28 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import firebaseEnvConfigs from '../../firebase';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
+import API from "../../utils/API";
 
-function memberDashboard() {
+const firebase = firebaseEnvConfigs.firebase_;
 
+function MemberDashboard() {
+    // const firebaseUserID = firebase.auth().currentUser.uid
+    //userList is the array of objects that this webpage will map through and display 
+    //designed for the member dashboard. should only show public/MN cryo member info from profile
+
+    const [userList, setUsers] = useState([]);
+    const [isLoading, setisLoading] = useState(true);
+
+    //use effect that runs once to pull the complete user list.  the  .[] at the end means
+    // empty dependancy so it will only run ONCE after initial rerender
+    //if there was something in there then the use effect runs any time that something runs.
+    useEffect(() => {
+        API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+    }, []);
+    
 
     return (
         <>
@@ -25,20 +44,45 @@ function memberDashboard() {
                         alert state being that the server has not gotten member state for a long time.
 
                         Can click on each members name to see thier full profile.
-                        </p>
+                    </p>
                 </div>
             </div>
 
-            <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
+            <div>
+            {/* if isLoading or userList is false, then the data following && will not be displayed */}
+            <h3>Showing all users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
+            {userList &&
+                <ul className="list-group">
+                    {userList.map(user => {
+                        return (
+                            <li className="list-group-item dashboard-li" key={user._id}>
+                                <p><strong>NAME: </strong>{user.name}</p>
+                                <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
+                                <p>
+                                    Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
+                                    {user.WebsiteCheckIn.loc.coordinates[1]}]
+                                </p>
+                                {/* <button value={user._id} onClick={handleDeleteClick}>
+                                    Delete Profile
+                                </button> */}
+                            </li>
+                        );
+                    })}
+                </ul>
+            }
+        </div>
+
+
+            {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
-    </button>
+            </button>
             <br></br>
             <div>
                 <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
-            </div>
+            </div> */}
 
         </>
     );
 }
 
-export default memberDashboard;
+export default MemberDashboard;
