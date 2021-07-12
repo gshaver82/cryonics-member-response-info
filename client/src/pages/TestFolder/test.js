@@ -23,7 +23,7 @@ function Test() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-    
+
     //ADD user should ONLY be used at profile create
     //date is added here. 
     //if this is used for editing then the profile create date will change as well
@@ -40,6 +40,7 @@ function Test() {
         console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
         await API.adduser(newUser)
             .catch(err => console.log(err));
+        await handleputcheckIn()
         await API.getuserList()
             .then(res => setUsers(res.data))
             // .then(console.log("------------userList",userList))

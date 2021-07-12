@@ -70,7 +70,9 @@ function MemberDash() {
                                         <p><strong>NAME: </strong>{user.name}</p>
                                         <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
                                         <p>Time elapsed since checkin:
-                                            {(Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime()))}
+                                            {
+                                            (Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime()))
+                                            }
                                         </p>
                                         {/* {console.log(Date.now())}
                                         {console.log(timetest.getTime())} */}
