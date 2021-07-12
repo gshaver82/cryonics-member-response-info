@@ -42,7 +42,7 @@ function Test() {
             .catch(err => console.log(err));
         await API.getuserList()
             .then(res => setUsers(res.data))
-            .then(console.log("------------userList",userList))
+            // .then(console.log("------------userList",userList))
             .then(setisLoading(false))
     };
     const handleedituserclick = async () => {

@@ -6,6 +6,8 @@ import API from "../../utils/API";
 const firebase = firebaseEnvConfigs.firebase_;
 
 function MemberDash() {
+
+    let timetest = 1626056594071;
     // const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
@@ -22,7 +24,7 @@ function MemberDash() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-    
+
 
     return (
         <>
@@ -49,37 +51,42 @@ function MemberDash() {
             </div>
 
             <div>
-            {/* if isLoading or userList is false, then the data following && will not be displayed */}
-            <h3>Showing all users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
-            {userList &&
-                <ul className="list-group">
-                    {userList
-                    //this will sort by website checkin date. putting the oldest at the top
-                    //to verify this sort works, change to < and you should see newest at top.
-                    //this should work because ISO dates can be compared lexicographically
-                    //TODO create a highlighted section of longest checkin 
-                    //(some people may want shorter warning periods that others?)
-                    //TODO create another section for those that opt out of checkins 
-                    //and just want to use the site for information
-                    .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
-                    .map(user => {
-                        return (
-                            <li className="list-group-item dashboard-li" key={user._id}>
-                                <p><strong>NAME: </strong>{user.name}</p>
-                                <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
-                                <p>
-                                    Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
-                                    {user.WebsiteCheckIn.loc.coordinates[1]}]
-                                </p>
-                                {/* <button value={user._id} onClick={handleDeleteClick}>
+                {/* if isLoading or userList is false, then the data following && will not be displayed */}
+                <h3>Showing all users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                {userList &&
+                    <ul className="list-group">
+                        {userList
+                            //this will sort by website checkin date. putting the oldest at the top
+                            //to verify this sort works, change to < and you should see newest at top.
+                            //this should work because ISO dates can be compared lexicographically
+                            //TODO create a highlighted section of longest checkin 
+                            //(some people may want shorter warning periods that others?)
+                            //TODO create another section for those that opt out of checkins 
+                            //and just want to use the site for information
+                            .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
+                            .map(user => {
+                                return (
+                                    <li className="list-group-item dashboard-li" key={user._id}>
+                                        <p><strong>NAME: </strong>{user.name}</p>
+                                        <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
+                                        <p>Time elapsed since checkin:
+                                            {(Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime()))}
+                                        </p>
+                                        {/* {console.log(Date.now())}
+                                        {console.log(timetest.getTime())} */}
+                                        <p>
+                                            Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
+                                            {user.WebsiteCheckIn.loc.coordinates[1]}]
+                                        </p>
+                                        {/* <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button> */}
-                            </li>
-                        );
-                    })}
-                </ul>
-            }
-        </div>
+                                    </li>
+                                );
+                            })}
+                    </ul>
+                }
+            </div>
 
 
             {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>

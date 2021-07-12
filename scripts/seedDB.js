@@ -13,8 +13,10 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/cryonics_localt
 let usersSeed = [
     {
         firebaseAuthID: "seeded userID",
-        name: "Seeded user name",
+        dateCreated:1626054981430,
+        name: "Seeded user, Same time checkin",
         WebsiteCheckIn: {
+            dateCreated:1626054981430,
             loc: {
                 type: "Point",
                 coordinates: [-73.97, 40.77],
@@ -23,7 +25,14 @@ let usersSeed = [
     },
     {
         firebaseAuthID: "seeded userID 2",
-        name: "Seeded user name 2",
+        dateCreated:1626054981432,
+        name: "Seeded user old create, default date.now checkin",
+        WebsiteCheckIn: {
+            loc: {
+                type: "Point",
+                coordinates: [-73.97, 40.77],
+            }
+        }
     },
 ];
 
