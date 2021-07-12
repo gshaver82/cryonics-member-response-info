@@ -20,6 +20,7 @@ import CIPage from "./pages/CIFolder/CIPage";
 import test from "./pages/TestFolder/test";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
 import NavTabs from "./components/NavTabs";
+import ProfileDetails from "./components/ProfileDetails";
 
 function App() {
     const [theme, toggleTheme, componentMounted] = useDarkMode();
@@ -45,6 +46,7 @@ function App() {
                                 <Route exact path="/CIPage" component={CIPage} />
                                 <PrivateRoute exact path="/secondPage" component={secondPage} />
                                 <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
+                                <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
                                 <PrivateRoute exact path="/MemberDashboard" component={MemberDash} />
                                 <PrivateRoute exact path="/profile" component={profile} />
                                 <Route path="/" component={publicHomePage} />

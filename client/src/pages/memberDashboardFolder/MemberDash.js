@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import firebaseEnvConfigs from '../../firebase';
+import { Link } from "react-router-dom";
+// import firebaseEnvConfigs from '../../firebase';
 // import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 
@@ -71,16 +72,18 @@ function MemberDash() {
                                 const days = Math.floor(temptime / 1000 / 60 / 60 / 24);
 
                                 return (
+
                                     <li className="list-group-item dashboard-li" key={user._id}>
-                                        <p><strong>NAME: </strong>{user.name}</p>
-                                        {/* <p>Web Check in: {" "}
+                                        <Link to={`MemberDashboard/${user._id}`}>
+                                            <p><strong>NAME: </strong>{user.name}</p>
+                                            {/* <p>Web Check in: {" "}
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                         </p>
                                         <p>
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
                                         </p> */}
-                                        <p>{days} days {hours} hours {minutes} minutes since checkin</p>
-                                        {/*
+                                            <p>{days} days {hours} hours {minutes} minutes since checkin</p>
+                                            {/*
                                         <p>
                                             Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
                                             {user.WebsiteCheckIn.loc.coordinates[1]}]
@@ -88,6 +91,7 @@ function MemberDash() {
                                         {/* <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button> */}
+                                        </Link>
                                     </li>
                                 );
                             })}
