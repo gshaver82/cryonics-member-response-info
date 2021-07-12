@@ -24,6 +24,18 @@ let usersSeed = [
         }
     },
     {
+        firebaseAuthID: "seeded userID",
+        dateCreated:1226054981430,
+        name: "Seeded user, old create old checkin",
+        WebsiteCheckIn: {
+            dateCreated:1526014081430,
+            loc: {
+                type: "Point",
+                coordinates: [-73.97, 40.77],
+            }
+        }
+    },
+    {
         firebaseAuthID: "seeded userID 2",
         dateCreated:1626054981432,
         name: "Seeded user old create, default date.now checkin",

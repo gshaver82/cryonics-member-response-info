@@ -3,11 +3,10 @@ import firebaseEnvConfigs from '../../firebase';
 // import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 
-const firebase = firebaseEnvConfigs.firebase_;
+// const firebase = firebaseEnvConfigs.firebase_;
 
 function MemberDash() {
 
-    let timetest = 1626056594071;
     // const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
@@ -67,22 +66,21 @@ function MemberDash() {
                             .map(user => {
                                 //this gets the milliseconds since checkin
                                 const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
+                                const minutes = Math.floor(temptime / 1000 / 60 % 60);
+                                const hours = Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                const days = Math.floor(temptime / 1000 / 60 / 60 / 24);
 
-                                
                                 return (
                                     <li className="list-group-item dashboard-li" key={user._id}>
                                         <p><strong>NAME: </strong>{user.name}</p>
-                                        {/* <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p> */}
-                                        <p>Web Check in day: {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())}</p>
-                                        <p>Web Check in Time: {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}</p>
-                                        
-                                        <p>Time elapsed since checkin:
-                                            {
-                                            temptime
-                                            }
+                                        <p>Web Check in: {" "}
+                                            {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                         </p>
-                                        {/* {console.log(Date.now())}
-                                        {console.log(timetest.getTime())} */}
+                                        <p>
+                                            {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                        </p>
+                                        <p>{days} days {hours} hours {minutes} minutes since checkin</p>
+                                        {/*
                                         <p>
                                             Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
                                             {user.WebsiteCheckIn.loc.coordinates[1]}]
@@ -96,16 +94,6 @@ function MemberDash() {
                     </ul>
                 }
             </div>
-
-
-            {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
-                Logout
-            </button>
-            <br></br>
-            <div>
-                <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
-            </div> */}
-
         </>
     );
 }
