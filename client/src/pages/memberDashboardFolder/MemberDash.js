@@ -73,12 +73,12 @@ function MemberDash() {
                                 return (
                                     <li className="list-group-item dashboard-li" key={user._id}>
                                         <p><strong>NAME: </strong>{user.name}</p>
-                                        <p>Web Check in: {" "}
+                                        {/* <p>Web Check in: {" "}
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                         </p>
                                         <p>
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
-                                        </p>
+                                        </p> */}
                                         <p>{days} days {hours} hours {minutes} minutes since checkin</p>
                                         {/*
                                         <p>

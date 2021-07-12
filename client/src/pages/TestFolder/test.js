@@ -112,7 +112,12 @@ function Test() {
                                 <p> _id: {user._id}</p>
                                 <p>Date Profile Created: {user.dateCreated} </p>
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
-                                <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
+                                <p>Web Check in: {" "}
+                                            {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+                                        </p>
+                                        <p>
+                                            {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                        </p>
                                 <p>
                                     Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
                                     {user.WebsiteCheckIn.loc.coordinates[1]}]
