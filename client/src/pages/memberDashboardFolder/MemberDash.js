@@ -65,13 +65,20 @@ function MemberDash() {
                             //and just want to use the site for information
                             .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
                             .map(user => {
+                                //this gets the milliseconds since checkin
+                                const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
+
+                                
                                 return (
                                     <li className="list-group-item dashboard-li" key={user._id}>
                                         <p><strong>NAME: </strong>{user.name}</p>
-                                        <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p>
+                                        {/* <p>Web Check in DateTime: {user.WebsiteCheckIn.dateCreated}  </p> */}
+                                        <p>Web Check in day: {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())}</p>
+                                        <p>Web Check in Time: {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}</p>
+                                        
                                         <p>Time elapsed since checkin:
                                             {
-                                            (Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime()))
+                                            temptime
                                             }
                                         </p>
                                         {/* {console.log(Date.now())}
