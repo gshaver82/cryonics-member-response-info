@@ -1,8 +1,23 @@
-import React from "react";
+import React, { useState, useEffect } from 'react';
 import firebaseEnvConfigs from '../../firebase';
 import { Link } from 'react-router-dom';
+import API from "../../utils/API";
 
-function profile() {
+const firebase = firebaseEnvConfigs.firebase_;
+
+function Profile() {
+
+    const firebaseUserID = firebase.auth().currentUser.uid
+
+    const [user, setUser] = useState(false);
+    const [isLoading, setisLoading] = useState(true);
+
+    useEffect(() => {
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+    }, []);
 
 
     return (
@@ -17,19 +32,15 @@ function profile() {
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
-                        the profile is where all your information will live.
-
-                        if you are viewing the page you will be able to edit the information.
-
-                        if someone else is viewing this page (coming in from the member dashboard)
-                        they will be able to view, but not edit information
+                        the profile is where all your profile information will live.
                     </p>
                 </div>
             </div>
-
+            <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
+            <p>username is: {user && <span>{user.name}</span>}</p>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
-    </button>
+            </button>
             <br></br>
             <div>
                 <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
@@ -39,4 +50,4 @@ function profile() {
     );
 }
 
-export default profile;
+export default Profile;

@@ -40,7 +40,13 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
-
+    
+    findByFirebaseId: function (req, res) {
+        db.CryonicsModel
+            .findOne({ firebaseAuthID : req.params.firebaseUserID})
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
     delete: function (req, res) {
         console.log("🚀 ~ file: exampleController.js ~ line 35 ~ req.params._id", req.params._id)
         db.CryonicsModel

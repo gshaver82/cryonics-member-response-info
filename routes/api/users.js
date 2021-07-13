@@ -15,5 +15,7 @@ router.route("/")
     router.route("/edit")
     .put(exampleController.edit)
 
-
+    router.route("/getOneUserByFirebaseID/:firebaseUserID")
+    .get(exampleController.findByFirebaseId)
+    
 module.exports = router;

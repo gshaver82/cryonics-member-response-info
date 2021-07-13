@@ -12,8 +12,6 @@ function ProfileDetails() {
     API.getOneUser(_id)
       .then(res => setUser(res.data))
       .then(setisLoading(false))
-      .then(console.log("user here"))
-      .then(console.log(user))
       .catch(err => console.log(err));
   }, []);
 
