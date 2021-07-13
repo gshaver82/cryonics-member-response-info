@@ -67,22 +67,21 @@ function MemberDash() {
                             .map(user => {
                                 //this gets the milliseconds since checkin
                                 const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
-                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0: Math.floor(temptime / 1000 / 60 % 60);
-                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0:Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                 let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-                                
+
 
                                 return (
-
-                                    <li className="list-group-item dashboard-li" key={user._id}>
-                                        <Link to={`MemberDashboard/${user._id}`}>
+                                    <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
+                                        <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                             <p><strong>NAME: </strong>{user.name}</p>
                                             <p>Web Check in: {" "}
-                                            {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
-                                        </p>
-                                        <p>
-                                            {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
-                                        </p>
+                                                {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+                                            </p>
+                                            <p>
+                                                {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                            </p>
                                             <p>{days} days {hours} hours {minutes} minutes since checkin</p>
                                             {/*
                                         <p>
@@ -92,8 +91,8 @@ function MemberDash() {
                                         {/* <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button> */}
-                                        </Link>
-                                    </li>
+                                        </li>
+                                    </Link>
                                 );
                             })}
                     </ul>

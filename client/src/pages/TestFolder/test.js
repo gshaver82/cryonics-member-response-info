@@ -107,7 +107,7 @@ function Test() {
                 <ul className="list-group">
                     {userList.map(user => {
                         return (
-                            <li className="list-group-item dashboard-li" key={user._id}>
+                            <li className="list-group-item test-li" key={user._id}>
                                 <p><strong>NAME: </strong>{user.name}</p>
                                 <p> _id: {user._id}</p>
                                 <p>Date Profile Created: {user.dateCreated} </p>

@@ -449,11 +449,19 @@ input[type=number]::-webkit-inner-spin-button:focus {
     outline: none !important;
 }
 
-.dashboard-li{
+.test-li{
     background-color: var(--MaxBlackOrWhite);
     border-color: var(--MinBlackOrWhite);
 }
 
-.dashboard-li a{
+.dashboard-li{
+    background-color: var(--MaxBlackOrWhite);
+    border-color: var(--MinBlackOrWhite);  
     text-decoration: none;
+    color: var(--MinBlackOrWhite);
+}
+
+.dashboard-li:hover{
+    color: var(--MaxBlackOrWhite);
+    background-color: var(--MinBlackOrWhite);
 }

@@ -16,23 +16,13 @@ function ProfileDetails() {
       .then(console.log(user))
       .catch(err => console.log(err));
   }, []);
-  // console.log("user" + user);
-
-
-  //TODO {user &&  BEFORE EVERYTHING
-
 
   return (
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-      <p>username is: {user.name}</p>
-
-
-    
-
-      <p>userdate created is: {user.dateCreated}</p>
-      <p>id is: {_id}</p>
-      {/* <p>user.WebsiteCheckIn is: {(user.WebsiteCheckIn.dateCreated)}</p> */}
+      <p>username is: {user && <span>{user.name}</span>}</p>
+      <p>userdate created is: {user && <span>{user.dateCreated}</span>}</p>
+      <p>id is: {_id && <span>{_id}</span>}</p>
       {user &&   <div>
         <p>Web Check in: {" "}
             {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
