@@ -67,9 +67,10 @@ function MemberDash() {
                             .map(user => {
                                 //this gets the milliseconds since checkin
                                 const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
-                                const minutes = Math.floor(temptime / 1000 / 60 % 60);
-                                const hours = Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                const days = Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0: Math.floor(temptime / 1000 / 60 % 60);
+                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0:Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                
 
                                 return (
 
