@@ -40,6 +40,7 @@ let usersSeed = [
         dateCreated:1626054981432,
         name: "Seeded user old create, default date.now checkin",
         WebsiteCheckIn: {
+            dateCreated:Date.now(),
             loc: {
                 type: "Point",
                 coordinates: [-73.97, 40.77],
