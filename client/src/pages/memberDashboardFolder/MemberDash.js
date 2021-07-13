@@ -73,8 +73,8 @@ function MemberDash() {
 
 
                                 return (
-                                    <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
-                                        <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
+                                    <Link className="dashboard-li" to={`MemberDashboard/${user._id}` } key={user._id}>
+                                        <li className="list-group-item list-group-item-action dashboard-li" >
                                             <p><strong>NAME: </strong>{user.name}</p>
                                             <p>Web Check in: {" "}
                                                 {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
