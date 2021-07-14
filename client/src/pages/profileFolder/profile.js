@@ -13,6 +13,10 @@ function Profile() {
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
+
+
+
+
             .then(setisLoading(false))
             .catch(err => console.log(err));
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -31,8 +35,8 @@ function Profile() {
         await API.adduser(newUser)
             .then(API.getOneUserByFirebaseID(firebaseUserID))
             .then(res => setUser(res.data))
-            .then(setisLoading(false))
             .catch(err => console.log(err));
+        setisLoading(false)
     };
     // console.log("auth Info", firebase.auth().currentUser.providerData[0]);
     return (
@@ -52,16 +56,20 @@ function Profile() {
                 </div>
             </div>
             <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-            {/* start of block where if user does not exist this will display */}
-            {!user && <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
-                {" "}here{" "}
-            </button></p>}
-            {
-                //start of block where if user exists this will display
-                user &&
-                <p>username is:  <span>{user.name}</span>
-                </p>
-            }
+
+
+            {/* TODO make this not show the button when the page is still loading. only show button when page is loaded and user does not exist */}
+            <div>
+                {isLoading
+                    ? <p>Loading Profile....</p>
+                    : (!user
+                        ? <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
+                            {" "}here{" "}
+                        </button></p>
+                        : <p>username is:  <span>{user.name}</span></p>
+                    )
+                }
+            </div>
 
             <br></br>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
