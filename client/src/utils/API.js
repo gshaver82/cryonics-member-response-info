@@ -9,6 +9,7 @@ const authorize = axios.create();
 // Observing firebase.auth() to listen signin/signout.
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
+        console.log("🚀 ~ file: API.js ~ line 12 ~ user", user.providerData)
         console.log("[API] User is signed in");
         user.getIdToken().then(function (idToken) {
             // Intercepting any request and appending token to the header.

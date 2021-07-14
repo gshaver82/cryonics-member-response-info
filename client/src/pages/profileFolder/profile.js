@@ -20,6 +20,8 @@ function Profile() {
             // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    console.log("auth variable investigation", firebase.auth().currentUser.providerData[0]);
+
 
     return (
         <>
@@ -39,6 +41,8 @@ function Profile() {
             </div>
             <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
             <p>username is: {user && <span>{user.name}</span>}</p>
+
+            <img src={firebase.auth().currentUser.providerData[0].photoURL} alt = 'default profile pic here'></img>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
             </button>
