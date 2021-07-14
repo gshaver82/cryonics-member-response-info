@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Link } from 'react-router-dom';
 import firebaseEnvConfigs from '../../firebase';
 import AuthCard from "../../quickstartComponents/AuthCard"
@@ -7,7 +7,7 @@ import { AuthContext } from "../../quickstartComponents/Auth";
 function PublicHomePage() {
     const app = firebaseEnvConfigs.firebase_;
     const { currentUser } = useContext(AuthContext);
-    const [display, setDisplay] = useState(false);
+    // const [display, setDisplay] = useState(false);
 
     return (
         <div>
