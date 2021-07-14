@@ -41,7 +41,7 @@ function App() {
                                 <Route exact path="/TOSPage" component={TOSPage} />
                                 <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
                                 <Route exact path="/Login" component={Login} />
-                                <Route exact path="/test" component={test} />
+                                <PrivateRoute exact path="/test" component={test} />
                                 <Route exact path="/AlcorPage" component={AlcorPage} />
                                 <Route exact path="/CIPage" component={CIPage} />
                                 <PrivateRoute exact path="/secondPage" component={secondPage} />
