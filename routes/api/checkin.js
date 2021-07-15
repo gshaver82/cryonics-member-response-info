@@ -3,7 +3,7 @@ const exampleController = require("../../controllers/exampleController");
 
 //matches with /api/checkin route
 router.route("/")
-    .get(exampleController.getcheckin)
+    // .get(exampleController.getcheckin)
     .put(exampleController.putcheckin)
 
 

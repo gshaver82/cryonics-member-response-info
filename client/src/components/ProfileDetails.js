@@ -16,7 +16,9 @@ function ProfileDetails() {
       // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+
   return (
+    
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
       <p>username is: {user && <span>{user.name}</span>}</p>

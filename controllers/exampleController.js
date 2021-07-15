@@ -67,7 +67,4 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
-    getcheckin: function (req, res) {
-        console.log("🚀 ~ file: exampleController.js ~ line 52 ~ getcheckin")
-    },
 };
