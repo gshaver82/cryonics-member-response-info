@@ -70,7 +70,12 @@ function PrivateHomePage() {
         hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
-
+    let GoogleURL = "void";
+    if (lat && lng) {
+        GoogleURL = "https://www.google.com/maps/place/" + [lat] + "+" + [lng]
+        console.log("🚀 ~ file: privateHomePage.js ~ line 76 ~ PrivateHomePage ~ lng", lng)
+        console.log("🚀 ~ file: privateHomePage.js ~ line 76 ~ PrivateHomePage ~ lat", lat)
+    }
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -108,6 +113,9 @@ function PrivateHomePage() {
             {lat && lng &&
                 <p>Latitude: {lat} Longitude: {lng}</p>
             }
+
+            <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+            <br></br>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
             </button>
