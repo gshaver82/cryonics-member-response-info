@@ -6,10 +6,6 @@ import API from "../../utils/API";
 const firebase = firebaseEnvConfigs.firebase_;
 
 function PrivateHomePage() {
-    const [lat, setLat] = useState(null);
-    const [lng, setLng] = useState(null);
-    const [status, setStatus] = useState(null);
-
     const firebaseUserID = firebase.auth().currentUser.uid
     //this loads a dummy user that later gets checked on. no user should ever have this value
     //this is because the use effect immediately tries to pull user date from database.
@@ -19,6 +15,9 @@ function PrivateHomePage() {
     //across the screen as the web page waits for the DB to respond
     const [user, setUser] = useState("starting user condition");
     const [isLoading, setisLoading] = useState(true);
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [status, setStatus] = useState(null);
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
@@ -28,8 +27,9 @@ function PrivateHomePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleputcheckIn = () => {
+    const handleputcheckIn = async () => {
         setisLoading(true)
+
 
         if (!navigator.geolocation) {
             setStatus('Geolocation is not supported by your browser');
@@ -39,28 +39,43 @@ function PrivateHomePage() {
                 setStatus(null);
                 setLat(position.coords.latitude);
                 setLng(position.coords.longitude);
+
             }, () => {
                 setStatus('Unable to retrieve your location');
             });
         }
-
-        const checkInData = {
+        let checkInData = {
             firebaseAuthID: firebaseUserID,
             WebsiteCheckIn: {
                 dateCreated: Date.now(),
                 loc: {
                     type: "Point",
-                    coordinates: [-2, 2],
+                    coordinates: [0, 0],
                 }
             },
         }
+
+        if (lat && lng) {
+            checkInData = {
+                firebaseAuthID: firebaseUserID,
+                WebsiteCheckIn: {
+                    dateCreated: Date.now(),
+                    loc: {
+                        type: "Point",
+                        coordinates: [lat, lng],
+                    }
+                },
+            }
+        }
         API.putcheckIn(checkInData)
             .catch(err => console.log(err));
+
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
     };
+
     let minutes = "Loading..."
     let hours = "Loading..."
     let days = "Loading..."
@@ -73,8 +88,6 @@ function PrivateHomePage() {
     let GoogleURL = "void";
     if (lat && lng) {
         GoogleURL = "https://www.google.com/maps/place/" + [lat] + "+" + [lng]
-        console.log("🚀 ~ file: privateHomePage.js ~ line 76 ~ PrivateHomePage ~ lng", lng)
-        console.log("🚀 ~ file: privateHomePage.js ~ line 76 ~ PrivateHomePage ~ lat", lat)
     }
 
     if (isLoading) {
@@ -114,7 +127,9 @@ function PrivateHomePage() {
                 <p>Latitude: {lat} Longitude: {lng}</p>
             }
 
-            <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+            {GoogleURL !== "void"
+                ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+                : <p>no GPS coordinates found</p>}
             <br></br>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
