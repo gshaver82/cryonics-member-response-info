@@ -13,7 +13,7 @@ export const AuthProvider = ({ children }) => {
         firebase.auth().onAuthStateChanged((user) => {
             setCurrentUser(user);
             if (user) {
-                console.log("current user set", user.uid);
+                // console.log("current user set", user.uid);
             }
 
             setPending(false)
