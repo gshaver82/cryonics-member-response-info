@@ -6,6 +6,10 @@ import API from "../../utils/API";
 const firebase = firebaseEnvConfigs.firebase_;
 
 function PrivateHomePage() {
+    const [lat, setLat] = useState(null);
+    const [lng, setLng] = useState(null);
+    const [status, setStatus] = useState(null);
+
     const firebaseUserID = firebase.auth().currentUser.uid
     //this loads a dummy user that later gets checked on. no user should ever have this value
     //this is because the use effect immediately tries to pull user date from database.
@@ -26,6 +30,20 @@ function PrivateHomePage() {
 
     const handleputcheckIn = () => {
         setisLoading(true)
+
+        if (!navigator.geolocation) {
+            setStatus('Geolocation is not supported by your browser');
+        } else {
+            setStatus('Locating...');
+            navigator.geolocation.getCurrentPosition((position) => {
+                setStatus(null);
+                setLat(position.coords.latitude);
+                setLng(position.coords.longitude);
+            }, () => {
+                setStatus('Unable to retrieve your location');
+            });
+        }
+
         const checkInData = {
             firebaseAuthID: firebaseUserID,
             WebsiteCheckIn: {
@@ -85,6 +103,11 @@ function PrivateHomePage() {
             </button>
             <p>Click this button to check in and update your status. </p>
             <p>Click allow GPS if you want to store your location information</p>
+            <h3>GPS Coordinates</h3>
+            <p>{status}</p>
+            {lat && lng &&
+                <p>Latitude: {lat} Longitude: {lng}</p>
+            }
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
             </button>

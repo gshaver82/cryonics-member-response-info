@@ -6,6 +6,7 @@ import API from "../../utils/API";
 const firebase = firebaseEnvConfigs.firebase_;
 
 function Profile() {
+
     const firebaseUserID = firebase.auth().currentUser.uid
     //this loads a dummy user that later gets checked on. no user should ever have this value
     //this is because the use effect immediately tries to pull user date from database.
@@ -24,7 +25,7 @@ function Profile() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleadduserclick =  () => {
+    const handleadduserclick = () => {
         setisLoading(true)
         const newUser = {
             firebaseAuthID: firebaseUserID,
