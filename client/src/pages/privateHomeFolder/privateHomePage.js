@@ -20,6 +20,7 @@ function PrivateHomePage() {
     const [status, setStatus] = useState(null);
 
     useEffect(() => {
+        geolocator()
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
@@ -27,10 +28,45 @@ function PrivateHomePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleputcheckIn = async () => {
-        setisLoading(true)
+    const handleputcheckIn = () => {
+        setisLoading(true)        
+        if (lat && lng) {
+            let checkInData = {
+                firebaseAuthID: firebaseUserID,
+                WebsiteCheckIn: {
+                    dateCreated: Date.now(),
+                    loc: {
+                        type: "Point",
+                        coordinates: [lat, lng],
+                    }
+                },
+            }
+            API.putcheckIn(checkInData)
+                .then(console.log("putcheckin with lat and long"))
+                .catch(err => console.log(err));
+        } else {
+            let checkInData = {
+                firebaseAuthID: firebaseUserID,
+                WebsiteCheckIn: {
+                    dateCreated: Date.now(),
+                    loc: {
+                        type: "Point",
+                        coordinates: [0, 0],
+                    }
+                },
+            }
+            API.putcheckIn(checkInData)
+                .then(console.log("putcheckin WITHOUT lat and long"))
+                .catch(err => console.log(err));
+        }
 
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+    };
 
+    function geolocator() {
         if (!navigator.geolocation) {
             setStatus('Geolocation is not supported by your browser');
         } else {
@@ -44,37 +80,7 @@ function PrivateHomePage() {
                 setStatus('Unable to retrieve your location');
             });
         }
-        let checkInData = {
-            firebaseAuthID: firebaseUserID,
-            WebsiteCheckIn: {
-                dateCreated: Date.now(),
-                loc: {
-                    type: "Point",
-                    coordinates: [0, 0],
-                }
-            },
-        }
-
-        if (lat && lng) {
-            checkInData = {
-                firebaseAuthID: firebaseUserID,
-                WebsiteCheckIn: {
-                    dateCreated: Date.now(),
-                    loc: {
-                        type: "Point",
-                        coordinates: [lat, lng],
-                    }
-                },
-            }
-        }
-        API.putcheckIn(checkInData)
-            .catch(err => console.log(err));
-
-        API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-    };
+    }
 
     let minutes = "Loading..."
     let hours = "Loading..."
@@ -86,8 +92,10 @@ function PrivateHomePage() {
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
     let GoogleURL = "void";
-    if (lat && lng) {
-        GoogleURL = "https://www.google.com/maps/place/" + [lat] + "+" + [lng]
+    if (isLoading === false && user !== "starting user condition" && user) {
+        if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
+            GoogleURL = "https://www.google.com/maps/place/" + [user.WebsiteCheckIn.loc.coordinates[0]] + "+" + [user.WebsiteCheckIn.loc.coordinates[1]]
+        }
     }
 
     if (isLoading) {
@@ -121,15 +129,20 @@ function PrivateHomePage() {
             </button>
             <p>Click this button to check in and update your status. </p>
             <p>Click allow GPS if you want to store your location information</p>
-            <h3>GPS Coordinates</h3>
+            <h3>GPS Coordinates according to browser</h3>
             <p>{status}</p>
+            {!lat && !lng &&
+                <p>no lat or Longitude</p>
+            }
             {lat && lng &&
                 <p>Latitude: {lat} Longitude: {lng}</p>
             }
-
+            {user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1] &&
+                <p>Database shows Lat: {user.WebsiteCheckIn.loc.coordinates[0]}Long: {user.WebsiteCheckIn.loc.coordinates[1]}</p>
+            }
             {GoogleURL !== "void"
                 ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found</p>}
+                : <p>no GPS coordinates found in database</p>}
             <br></br>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
