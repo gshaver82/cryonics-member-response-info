@@ -54,23 +54,23 @@ function PrivateHomePage() {
     }
 
 
-    return (
-        <>
-            <div className="mb-2">
-                <div>
-                    {isLoading
-                        ? <h3>Loading Profile....</h3>
-                        : (!user
-                            ? <h3>--error loading Profile--</h3>
-                            : <h3>Welcome <span>{user.name}</span></h3>
-                        )
-                    }
-                    <br></br>
-                    <h3>
-                        You are now logged in and viewing your private home page!
-                    </h3>
-                </div>
-            </div>
+    if (isLoading) {
+        return (<h3>Loading Profile....</h3>)
+    }
+    else if (!user) {
+        return (<div>
+            <h3>No profile found, please create a profile to view the private home page. </h3>
+            <p>
+                this is where you will be able to view all of your active devices,
+                and what their status is according to this server
+            </p>
+        </div>)
+    } else if (user !== "starting user condition") {
+        return (<div>
+            <h3>Welcome <span>{user.name}</span></h3>
+            <h3>
+                You are now logged in and viewing your private home page!
+            </h3>
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
@@ -79,17 +79,10 @@ function PrivateHomePage() {
                     </p>
                 </div>
             </div>
-            {isLoading
-                ? <p>Loading Profile....</p>
-                : (!user
-                    ? <p>error loading profile</p>
-                    : <p>{days} days {hours} hours {minutes} minutes since checkin</p>
-                )
-            }
+            <p>{days} days {hours} hours {minutes} minutes since checkin</p>
             <button type="button" onClick={handleputcheckIn}>
                 Website Checkin
             </button>
-
             <p>Click this button to check in and update your status. </p>
             <p>Click allow GPS if you want to store your location information</p>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
@@ -99,9 +92,10 @@ function PrivateHomePage() {
             <div>
                 <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
             </div>
-
-        </>
-    );
+        </div>)
+    } else {
+        return (<h3>Loading Profile....</h3>)
+    }
 }
 
 export default PrivateHomePage;
