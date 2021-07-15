@@ -7,21 +7,24 @@ const firebase = firebaseEnvConfigs.firebase_;
 
 function Profile() {
     const firebaseUserID = firebase.auth().currentUser.uid
-    const [user, setUser] = useState(false);
+    //this loads a dummy user that later gets checked on. no user should ever have this value
+    //this is because the use effect immediately tries to pull user date from database.
+    //if the DB doesnt have the user, itll put NULL into the user
+    //if it does have the user, then user info gets put in.
+    //the reason to have this complex setup is to prevent the create profile button from flashing
+    //across the screen as the web page waits for the DB to respond
+    const [user, setUser] = useState("starting user condition");
     const [isLoading, setisLoading] = useState(true);
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
-
-
-
-
             .then(setisLoading(false))
             .catch(err => console.log(err));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-    const handleadduserclick = async () => {
+
+    const handleadduserclick =  () => {
         setisLoading(true)
         const newUser = {
             firebaseAuthID: firebaseUserID,
@@ -31,8 +34,7 @@ function Profile() {
             },
             dateCreated: Date.now(),
         }
-        console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
-        await API.adduser(newUser)
+        API.adduser(newUser)
             .then(API.getOneUserByFirebaseID(firebaseUserID))
             .then(res => setUser(res.data))
             .catch(err => console.log(err));
@@ -56,9 +58,10 @@ function Profile() {
                 </div>
             </div>
             <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-
-
-            {/* TODO make this not show the button when the page is still loading. only show button when page is loaded and user does not exist */}
+            {/* this will say LOADING if loading, and after loading is complete. if the set user has not yet completed then 
+            user will equal "starting user condition" therefore it technically exists so it will not display the create a profile button
+            when the API finally returns its value of NULL, then the create profile button will come up. if the profile exists, 
+            then the user.name field etc will be populated.  */}
             <div>
                 {isLoading
                     ? <p>Loading Profile....</p>
