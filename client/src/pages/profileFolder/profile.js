@@ -16,6 +16,9 @@ function Profile() {
     //across the screen as the web page waits for the DB to respond
     const [user, setUser] = useState("starting user condition");
     const [isLoading, setisLoading] = useState(true);
+    const [name, setname] = useState('');
+    const [description, setdescription] = useState('');
+    const [cryonicsProvider, setcryonicsProvider] = useState('none');
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
@@ -42,6 +45,10 @@ function Profile() {
         setisLoading(false)
     };
     // console.log("auth Info", firebase.auth().currentUser.providerData[0]);
+
+    
+
+
     return (
         <>
             <div className="mb-2">
@@ -74,6 +81,38 @@ function Profile() {
                     )
                 }
             </div>
+
+
+
+            <form>
+                <label>name:</label>
+                <input
+                    type="text"
+                    required
+                    value={name}
+                    onChange={(e) => setname(e.target.value)}
+                />
+                <br></br>
+                <label>description:</label>
+                <textarea
+                    required
+                    value={description}
+                    onChange={(e) => setdescription(e.target.value)}
+                ></textarea>
+                <br></br>
+                <label>cryonicsProvider:</label>
+                <select
+                    value={cryonicsProvider}
+                    onChange={(e) => setcryonicsProvider(e.target.value)}
+                >
+                    <option value="Alcor">Alcor</option>
+                    <option value="Cryonics Institute">Cryonics Institute</option>
+                </select>
+                <button>Save Profile</button>
+            </form>
+
+
+
 
             <br></br>
             <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
