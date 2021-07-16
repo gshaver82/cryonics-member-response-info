@@ -13,7 +13,6 @@ function ProfileDetails() {
       .then(res => setUser(res.data))
       .then(setisLoading(false))
       .catch(err => console.log(err));
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -24,15 +23,17 @@ function ProfileDetails() {
     }
   }
 
-
   return (
 
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-      <p>username is: {user && <span>{user.name}</span>}</p>
+
+      <p>username is: {user && <span>{user.name} </span>}{user.photoURL && <img src={user.photoURL} alt = 'default profile pic here'></img>}</p>
       <p>userdate created is: {user && <span>{user.dateCreated}</span>}</p>
-      <p>id is: {_id && <span>{_id}</span>}</p>
+      {/* <p>id is: {_id && <span>{_id}</span>}</p> */}
       {user && <div>
+        <p>description: {user.description}</p>
+        <p>cryonicsProvider: {user.cryonicsProvider}</p>
         <p>Web Check in: {" "}
           {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
         </p>
@@ -40,8 +41,8 @@ function ProfileDetails() {
           {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
         </p>
         {GoogleURL !== "void"
-                ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found</p>}
+          ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+          : <p>no GPS coordinates found</p>}
       </div>}
 
     </div>

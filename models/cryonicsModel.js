@@ -34,6 +34,10 @@ const cryonicsSchema = new Schema({
         enum: ['Alcor', 'Cryonics Institute', 'None'],
         required: false,
     },
+    photoURL:{
+        type: String,
+        required: false,
+    },
     WebsiteCheckIn: {
         dateCreated: {
             type: Date,

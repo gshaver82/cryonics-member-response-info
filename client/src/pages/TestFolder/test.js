@@ -93,7 +93,7 @@ function Test() {
         <div>
             {/* if isLoading or userList is false, then the data following && will not be displayed */}
             <h1>testing page{isLoading && <span>please wait, loading the data now.</span>}</h1>
-            <button onClick={handleadduserclick} className="btn btn-info">
+            {/* <button onClick={handleadduserclick} className="btn btn-info">
                 {" "}adduser{" "}
             </button>
             <button onClick={handleedituserclick} className="btn btn-info">
@@ -101,7 +101,7 @@ function Test() {
             </button>
             <button onClick={handleputcheckIn} className="btn btn-info">
                 {" "}putcheckIn{" "}
-            </button>
+            </button> */}
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">
@@ -112,6 +112,8 @@ function Test() {
                                 <p> _id: {user._id}</p>
                                 <p>Date Profile Created: {user.dateCreated} </p>
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
+                                <p>description: {user.description}</p>
+                                <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>Web Check in: {" "}
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                         </p>

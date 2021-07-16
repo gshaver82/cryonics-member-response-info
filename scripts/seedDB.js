@@ -29,7 +29,7 @@ let usersSeed = [
         firebaseAuthID: "seeded userID1",
         dateCreated:1226054981430,
         name: "Thor",
-        description:"this user created their profile in 2008 and checked in in 2011",
+        description:"this user created their profile in 2008 and checked in in 2018",
         cryonicsProvider:"Alcor",
         WebsiteCheckIn: {
             dateCreated:1526014081430,
