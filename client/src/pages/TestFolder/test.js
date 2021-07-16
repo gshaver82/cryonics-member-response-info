@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
 // import { ListItem, } from "../../components/List/index";
-import firebaseEnvConfigs from '../../firebase';
+// import firebaseEnvConfigs from '../../firebase';
 
-const firebase = firebaseEnvConfigs.firebase_;
+// const firebase = firebaseEnvConfigs.firebase_;
 
 function Test() {
 
-    const firebaseUserID = firebase.auth().currentUser.uid
+    // const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
     //designed for the member dashboard. should only show public/MN cryo member info from profile
 
@@ -27,56 +27,56 @@ function Test() {
     //ADD user should ONLY be used at profile create
     //date is added here. 
     //if this is used for editing then the profile create date will change as well
-    const handleadduserclick = async () => {
-        setisLoading(true)
-        const newUser = {
-            firebaseAuthID: firebaseUserID,
-            name: "Default user name",
-            // WebsiteCheckIn: {
-            //     dateCreated: Date.now(),
-            // },
-            dateCreated: Date.now(),
-        }
-        console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
-        await API.adduser(newUser)
-            .catch(err => console.log(err));
-        await handleputcheckIn()
-        await API.getuserList()
-            .then(res => setUsers(res.data))
-            // .then(console.log("------------userList",userList))
-            .then(setisLoading(false))
-    };
-    const handleedituserclick = async () => {
-        setisLoading(true)
-        const editedUser = {
-            firebaseAuthID: firebaseUserID,
-            name: "edited Name" + (Math.floor(Math.random() * 20)),
-        }
-        console.log("🚀 ~ file: test.js ~ line 50 ~ handleedituserclick ~ editedUser", editedUser)
-        await API.edituser(editedUser)
-            .catch(err => console.log(err));
-        await API.getuserList()
-            .then(res => setUsers(res.data))
-            .then(setisLoading(false))
-    };
-    const handleputcheckIn = async () => {
-        setisLoading(true)
-        const checkInData = {
-            firebaseAuthID: firebaseUserID,
-            WebsiteCheckIn: {
-                dateCreated: Date.now(),
-                loc: {
-                    type: "Point",
-                    coordinates: [-2, 2],
-                }
-            },
-        }
-        await API.putcheckIn(checkInData)
-            .catch(err => console.log(err));
-        await API.getuserList()
-            .then(res => setUsers(res.data))
-            .then(setisLoading(false))
-    };
+    // const handleadduserclick = async () => {
+    //     setisLoading(true)
+    //     const newUser = {
+    //         firebaseAuthID: firebaseUserID,
+    //         name: "Default user name",
+    //         // WebsiteCheckIn: {
+    //         //     dateCreated: Date.now(),
+    //         // },
+    //         dateCreated: Date.now(),
+    //     }
+    //     console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
+    //     await API.adduser(newUser)
+    //         .catch(err => console.log(err));
+    //     await handleputcheckIn()
+    //     await API.getuserList()
+    //         .then(res => setUsers(res.data))
+    //         // .then(console.log("------------userList",userList))
+    //         .then(setisLoading(false))
+    // };
+    // const handleedituserclick = async () => {
+    //     setisLoading(true)
+    //     const editedUser = {
+    //         firebaseAuthID: firebaseUserID,
+    //         name: "edited Name" + (Math.floor(Math.random() * 20)),
+    //     }
+    //     console.log("🚀 ~ file: test.js ~ line 50 ~ handleedituserclick ~ editedUser", editedUser)
+    //     await API.edituser(editedUser)
+    //         .catch(err => console.log(err));
+    //     await API.getuserList()
+    //         .then(res => setUsers(res.data))
+    //         .then(setisLoading(false))
+    // };
+    // const handleputcheckIn = async () => {
+    //     setisLoading(true)
+    //     const checkInData = {
+    //         firebaseAuthID: firebaseUserID,
+    //         WebsiteCheckIn: {
+    //             dateCreated: Date.now(),
+    //             loc: {
+    //                 type: "Point",
+    //                 coordinates: [-2, 2],
+    //             }
+    //         },
+    //     }
+    //     await API.putcheckIn(checkInData)
+    //         .catch(err => console.log(err));
+    //     await API.getuserList()
+    //         .then(res => setUsers(res.data))
+    //         .then(setisLoading(false))
+    // };
 
     const handleDeleteClick = async (event) => {
         setisLoading(true)
