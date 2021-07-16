@@ -80,7 +80,7 @@ function Test() {
 
     const handleDeleteClick = async (event) => {
         setisLoading(true)
-        console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
+        // console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
         const deletedUser_id = event.target.value;
         await API.deleteUser(deletedUser_id)
             .catch(err => console.log(err));

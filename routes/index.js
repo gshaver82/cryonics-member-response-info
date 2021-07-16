@@ -30,12 +30,12 @@ try {
 }
 
 function checkAuth(req, res, next) {
-    console.log("================================================")
-    console.log("[SERVER] Beginning Authentication");
+    // console.log("================================================")
+    // console.log("[SERVER] Beginning Authentication");
     if (req.headers.authorization) {
         admin.auth().verifyIdToken(req.headers.authorization)
             .then(() => {
-                console.log("[SERVER] Authorization successful");
+                // console.log("[SERVER] Authorization successful");
                 next()
             }).catch(() => {
                 console.log("[SERVER] Found unauthorized token");
@@ -49,7 +49,7 @@ function checkAuth(req, res, next) {
 
 // API Routes
 router.use("/api", checkAuth);
-console.log("[SERVER-ROUTES] API Routes hit");
+// console.log("[SERVER-ROUTES] API Routes hit");
 router.use("/api", apiRoutes);
 
 module.exports = router;

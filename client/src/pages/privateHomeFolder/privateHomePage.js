@@ -42,7 +42,7 @@ function PrivateHomePage() {
                 },
             }
             API.putcheckIn(checkInData)
-                .then(console.log("putcheckin with lat and long"))
+                // .then(console.log("putcheckin with lat and long"))
                 .catch(err => console.log(err));
         } else {
             let checkInData = {
