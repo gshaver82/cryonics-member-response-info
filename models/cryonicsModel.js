@@ -25,6 +25,15 @@ const cryonicsSchema = new Schema({
         required: false,
         lowercase: false,
     },
+    description:{
+        type: String,
+        required: false,
+    },
+    cryonicsProvider:{
+        type: String, 
+        enum: ['Alcor', 'Cryonics Institute', 'None'],
+        required: false,
+    },
     WebsiteCheckIn: {
         dateCreated: {
             type: Date,
