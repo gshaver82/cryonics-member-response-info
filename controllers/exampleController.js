@@ -48,7 +48,7 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     delete: function (req, res) {
-        console.log("🚀 ~ file: exampleController.js ~ line 35 ~ req.params._id", req.params._id)
+        // console.log("🚀 ~ file: exampleController.js ~ line 35 ~ req.params._id", req.params._id)
         db.CryonicsModel
             .findById({ _id: req.params._id })
             .then(dbModelDataResult => dbModelDataResult.remove())
@@ -56,7 +56,7 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     putcheckin: function (req, res) {
-        console.log("🚀 ~ file: exampleController.js ~ line 46 ~ req.body.firebaseAuthID", req.body.firebaseAuthID)
+        // console.log("🚀 ~ file: exampleController.js ~ line 46 ~ req.body.firebaseAuthID", req.body.firebaseAuthID)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,

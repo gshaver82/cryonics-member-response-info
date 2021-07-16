@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import firebaseEnvConfigs from '../../firebase';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 
 const firebase = firebaseEnvConfigs.firebase_;
@@ -29,7 +29,7 @@ function PrivateHomePage() {
     }, []);
 
     const handleputcheckIn = () => {
-        setisLoading(true)        
+        setisLoading(true)
         if (lat && lng) {
             let checkInData = {
                 firebaseAuthID: firebaseUserID,
@@ -91,12 +91,12 @@ function PrivateHomePage() {
         hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
-    let GoogleURL = "void";
-    if (isLoading === false && user !== "starting user condition" && user) {
-        if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
-            GoogleURL = "https://www.google.com/maps/place/" + [user.WebsiteCheckIn.loc.coordinates[0]] + "+" + [user.WebsiteCheckIn.loc.coordinates[1]]
-        }
-    }
+    // let GoogleURL = "void";
+    // if (isLoading === false && user !== "starting user condition" && user) {
+    //     if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
+    //         GoogleURL = "https://www.google.com/maps/place/" + [user.WebsiteCheckIn.loc.coordinates[0]] + "+" + [user.WebsiteCheckIn.loc.coordinates[1]]
+    //     }
+    // }
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -137,20 +137,22 @@ function PrivateHomePage() {
             {lat && lng &&
                 <p>Latitude: {lat} Longitude: {lng}</p>
             }
+
+            <p>Database shows:</p>
             {user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1] &&
-                <p>Database shows Lat: {user.WebsiteCheckIn.loc.coordinates[0]}Long: {user.WebsiteCheckIn.loc.coordinates[1]}</p>
+                <p>Lat: {user.WebsiteCheckIn.loc.coordinates[0]}Long: {user.WebsiteCheckIn.loc.coordinates[1]}</p>
             }
-            {GoogleURL !== "void"
+            {/* {GoogleURL !== "void"
                 ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found in database</p>}
+                : <p>no GPS coordinates found in database</p>} */}
             <br></br>
-            <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
+            {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
                 Logout
             </button>
             <br></br>
             <div>
                 <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
-            </div>
+            </div> */}
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)

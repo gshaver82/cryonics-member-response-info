@@ -19,7 +19,7 @@ function Profile() {
     const [name, setname] = useState('');
     const [description, setdescription] = useState('');
     const [cryonicsProvider, setcryonicsProvider] = useState('None');
-    const [PhotoURL, setPhotoURL] = useState('');
+    const [photoURL, setPhotoURL] = useState('');
     const [isEditing, setisEditing] = useState(false);
 
     useEffect(() => {
@@ -55,11 +55,33 @@ function Profile() {
         setisEditing(false)
     };
 
-    const handleSaveProfile = () => {
-        console.log("🚀 ~ file: profile.js ~ line 61 ~ handleSaveProfile ~ name", name)
-        console.log("🚀 ~ file: profile.js ~ line 63 ~ handleSaveProfile ~ description", description)
-        console.log("🚀 ~ file: profile.js ~ line 65 ~ handleSaveProfile ~ cryonicsProvider", cryonicsProvider)
-        console.log("🚀 ~ file: profile.js ~ line 67 ~ handleSaveProfile ~ PhotoURL", PhotoURL)
+    const handleSaveProfile = (e) => {
+        e.preventDefault();
+        // console.log("🚀 ~ file: profile.js ~ line 61 ~ handleSaveProfile ~ name", name)
+        // console.log("🚀 ~ file: profile.js ~ line 63 ~ handleSaveProfile ~ description", description)
+        // console.log("🚀 ~ file: profile.js ~ line 65 ~ handleSaveProfile ~ cryonicsProvider", cryonicsProvider)
+        // console.log("🚀 ~ file: profile.js ~ line 67 ~ handleSaveProfile ~ photoURL", photoURL)
+        setisLoading(true)
+        const editedUser = {
+            firebaseAuthID: firebaseUserID,
+            name: name,
+            description: description,
+            cryonicsProvider: cryonicsProvider,
+            photoURL: photoURL,
+        }
+        // console.log("🚀 ~ file: profile.js ~ line 71 ~ handleSaveProfile ~ editedUser", editedUser)
+        API.edituser(editedUser)
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+        // API.getOneUserByFirebaseID(firebaseUserID)
+        //     .then(res => setUser(res.data))
+        //     .then(setisLoading(false))
+        //     .catch(err => console.log(err));
+        setisEditing(false)
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
     };
 
     const handleLoadGoogleProviderInfo = () => {
@@ -131,12 +153,12 @@ function Profile() {
                                     <br></br>
                                     <label>PhotoURL:</label>
                                     <input
-                                        value={PhotoURL}
+                                        value={photoURL}
                                         onChange={(e) => setPhotoURL(e.target.value)}
                                     >
                                     </input>
                                     <br></br>
-                                    <img src={PhotoURL} alt="PhotoURL" width="100" height="100"></img>
+                                    <img src={photoURL} alt="photoURL" width="100" height="100"></img>
 
                                     <br></br>
                                     <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
@@ -150,7 +172,7 @@ function Profile() {
                                 <p>username is:  <span>{user.name}</span></p>
                                 <p>description: {user.description}</p>
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
-                                <p>Picture:  <span>{user.photoURL}</span></p>
+                                <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
                             </div>
 
                         )

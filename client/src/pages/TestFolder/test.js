@@ -114,6 +114,7 @@ function Test() {
                                 <p>firebaseAuthID: {user.firebaseAuthID}</p>
                                 <p>description: {user.description}</p>
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
+                                <p>photoURL: {user.photoURL}</p>
                                 <p>Web Check in: {" "}
                                             {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                         </p>
