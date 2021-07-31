@@ -41,9 +41,26 @@ app.listen(PORT, function () {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
 
-let count = 0
+let hourcount = 0
+console.log("first hourcount is  " + hourcount); 
+
+let Fifteenmincount = 0
+console.log("first Fifteenmincount is  " + Fifteenmincount); 
+
+let firstloop = 0
+if (firstloop < 10){
+    setInterval(function(){ 
+        firstloop ++;
+        console.log("firstloop " + firstloop ); 
+    }, 30000);
+}
+setInterval(function(){ 
+    Fifteenmincount ++;
+    console.log("Hello, it has been " + Fifteenmincount + "Fifteenmincount since server start"); 
+}, 600000);
+
 
 setInterval(function(){ 
     count ++;
-    console.log("Hello, it has been " + count + "hours since server start"); 
+    console.log("Hello, it has been " + hourcount + "hours since server start"); 
 }, 3600000);
