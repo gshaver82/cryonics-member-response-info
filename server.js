@@ -40,3 +40,10 @@ app.get('*', function (req, res) {
 app.listen(PORT, function () {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
+
+let count = 0
+
+setInterval(function(){ 
+    count ++;
+    console.log("Hello, it has been " + count + "hours since server start"); 
+}, 3600000);
