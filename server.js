@@ -41,7 +41,7 @@ app.listen(PORT, function () {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
 
-let firstloop = 0
+// let firstloop = 0
 
 let hourcount = 0
 console.log("first hourcount is  " + hourcount);
@@ -49,37 +49,39 @@ console.log("first hourcount is  " + hourcount);
 let Fifteenmincount = 0
 console.log("first Fifteenmincount is  " + Fifteenmincount);
 
-function nestedTimer(){
-    let nestedTimerCount =0
-    nestedTimerVar = setInterval(function () {  
-        nestedTimerCount++;
-        console.log("nestedTimerCount " + nestedTimerCount); 
-        if (nestedTimerCount >2){
-            console.log("nestedTimerCount is greater than 2 and clearing interval now")
-            clearInterval(nestedTimerVar);
-        }
-    }, 1000
+// function nestedTimer() {
+//     let nestedTimerCount = 0
+//     nestedTimerVar = setInterval(function () {
+//         nestedTimerCount++;
+//         console.log("nestedTimerCount " + nestedTimerCount);
+//         if (nestedTimerCount > 2) {
+//             console.log("nestedTimerCount is greater than 2 and clearing interval now")
+//             clearInterval(nestedTimerVar);
+//         }
+//     }, 1000
+//     )
+// }
 
-    )
-}
-
-firstlooptimer = setInterval(function () {  
-    firstloop++;
-    console.log("firstloop " + firstloop); 
-    nestedTimer()
-    if (firstloop >3){
-        console.log("firstloop is greater than 3 and clearing interval now")
-        clearInterval(firstlooptimer);
-    }
-}, 6000);
+// firstlooptimer = setInterval(function () {
+//     firstloop++;
+//     console.log("firstloop " + firstloop);
+//     nestedTimer()
+//     if (firstloop > 3) {
+//         console.log("firstloop is greater than 3 and clearing interval now")
+//         clearInterval(firstlooptimer);
+//     }
+// }, 6000);
 
 fifteenmincounttimer = setInterval(function () {
     Fifteenmincount++;
-    console.log("it has been " + Fifteenmincount + "Fifteenmincount since server start");
-}, 600000);
+    let remainder = (Fifteenmincount % 4) * 15;
+    remainder ===0 ?  hourcount ++:remainder;
+    console.log("it has been " + hourcount + 
+    " hours, and "+ remainder + " minutes since server start");
+}, 900000);
 
 
-hourcounttimer = setInterval(function () {
-    hourcount++;
-    console.log("it has been " + hourcount + "hours since server start");
-}, 3600000);
+// hourcounttimer = setInterval(function () {
+//     hourcount++;
+//     console.log("it has been " + hourcount + "hours since server start");
+// }, 3600000);
