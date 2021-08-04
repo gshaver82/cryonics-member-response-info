@@ -6,5 +6,4 @@ router.route("/")
     // .get(exampleController.getcheckin)
     .put(exampleController.putcheckin)
 
-
 module.exports = router;

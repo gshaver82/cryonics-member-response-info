@@ -6,7 +6,6 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
-
     create: function (req, res) {
         console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
         db.CryonicsModel
@@ -21,8 +20,6 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     edit: function (req, res) {
-        // console.log("🚀 ~ file: exampleController.js ~ line 24 ~ edit")
-        // console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
         db.CryonicsModel
         .findOneAndUpdate(
             { firebaseAuthID: req.body.firebaseAuthID },
@@ -33,14 +30,12 @@ module.exports = {
         .then(dbModelDataResult => res.json(dbModelDataResult))
         .catch(err => res.status(422).json(err));
     },
-
     findById: function (req, res) {
         db.CryonicsModel
             .findById(req.params._id)
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
-    },
-    
+    },    
     findByFirebaseId: function (req, res) {
         db.CryonicsModel
             .findOne({ firebaseAuthID : req.params.firebaseUserID})
@@ -48,7 +43,6 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     delete: function (req, res) {
-        // console.log("🚀 ~ file: exampleController.js ~ line 35 ~ req.params._id", req.params._id)
         db.CryonicsModel
             .findById({ _id: req.params._id })
             .then(dbModelDataResult => dbModelDataResult.remove())
@@ -56,7 +50,6 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
     putcheckin: function (req, res) {
-        // console.log("🚀 ~ file: exampleController.js ~ line 46 ~ req.body.firebaseAuthID", req.body.firebaseAuthID)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,
