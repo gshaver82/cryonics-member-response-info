@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
+import "firebase/auth";
+import * as firebase from 'firebase/app';
 
 function Test() {
 
@@ -18,7 +20,6 @@ function Test() {
             .catch(err => console.log(err));
     }, []);
 
-
     const handleDeleteClick = async (event) => {
         setisLoading(true)
         // console.log("🚀 ~ file: test.js ~ line 42 ~ handleDeleteClick ~ event", event.target.value)
@@ -29,8 +30,9 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     }
+
     let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
-    let fitbitURLclientid = "&client_id=23B56Z"
+    let fitbitURLclientid = "&client_id="+ process.env.REACT_APP_CLIENT_ID
     //this should be test or privateHomePage
     let fitbitURLredirect_uriNavPage = "test";
     let fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F" + fitbitURLredirect_uriNavPage;
@@ -38,19 +40,8 @@ function Test() {
     let fitbitURLexpires_in = "expires_in=604800"
     let fitbitFULLURL = basefitbitURL + fitbitURLclientid + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in;
     // console.log("fitbitFULLURL", fitbitFULLURL)
-    let path = window.location.pathname
-    console.log("path", path)
-
-    const handlepathClick = () => {
-        console.log('window.location.search.substring(0, 6)')
-        console.log('window.location.search.substring(6)')
-        console.log(window.location.search.substring(0, 6))
-        console.log(window.location.search.substring(6))
-        if (window.location.search.substring(0, 6) === "?code=") {
-            console.log('inside IF')
-        }
-    }
-
+    // let path = window.location.pathname
+    // console.log("path", path)
 
     return (
         <div>
@@ -64,9 +55,6 @@ function Test() {
                 <p>the code is: {window.location.search.substring(6)}</p> :
                 <p>no code found in the URL</p>}
 
-            <button value="path" onClick={handlepathClick}>
-                path?
-            </button>
             <p>-------------------------</p>
             <p>mapping through all users here</p>
             {userList &&
