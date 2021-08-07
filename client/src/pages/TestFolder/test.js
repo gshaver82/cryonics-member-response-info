@@ -1,18 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
-// import { ListItem, } from "../../components/List/index";
-// import firebaseEnvConfigs from '../../firebase';
-
-// const firebase = firebaseEnvConfigs.firebase_;
 
 function Test() {
 
-    // const firebaseUserID = firebase.auth().currentUser.uid
-    //userList is the array of objects that this webpage will map through and display 
-    //designed for the member dashboard. should only show public/MN cryo member info from profile
 
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
+    const [fitbitObject, setfitbitObject] = useState(false);
 
     //use effect that runs once to pull the complete user list.  the  .[] at the end means
     // empty dependancy so it will only run ONCE after initial rerender
@@ -24,59 +18,6 @@ function Test() {
             .catch(err => console.log(err));
     }, []);
 
-    //ADD user should ONLY be used at profile create
-    //date is added here. 
-    //if this is used for editing then the profile create date will change as well
-    // const handleadduserclick = async () => {
-    //     setisLoading(true)
-    //     const newUser = {
-    //         firebaseAuthID: firebaseUserID,
-    //         name: "Default user name",
-    //         // WebsiteCheckIn: {
-    //         //     dateCreated: Date.now(),
-    //         // },
-    //         dateCreated: Date.now(),
-    //     }
-    //     console.log("🚀 ~ file: test.js ~ line 40 ~ handleadduserclick ~ newUser", newUser)
-    //     await API.adduser(newUser)
-    //         .catch(err => console.log(err));
-    //     await handleputcheckIn()
-    //     await API.getuserList()
-    //         .then(res => setUsers(res.data))
-    //         // .then(console.log("------------userList",userList))
-    //         .then(setisLoading(false))
-    // };
-    // const handleedituserclick = async () => {
-    //     setisLoading(true)
-    //     const editedUser = {
-    //         firebaseAuthID: firebaseUserID,
-    //         name: "edited Name" + (Math.floor(Math.random() * 20)),
-    //     }
-    //     console.log("🚀 ~ file: test.js ~ line 50 ~ handleedituserclick ~ editedUser", editedUser)
-    //     await API.edituser(editedUser)
-    //         .catch(err => console.log(err));
-    //     await API.getuserList()
-    //         .then(res => setUsers(res.data))
-    //         .then(setisLoading(false))
-    // };
-    // const handleputcheckIn = async () => {
-    //     setisLoading(true)
-    //     const checkInData = {
-    //         firebaseAuthID: firebaseUserID,
-    //         WebsiteCheckIn: {
-    //             dateCreated: Date.now(),
-    //             loc: {
-    //                 type: "Point",
-    //                 coordinates: [-2, 2],
-    //             }
-    //         },
-    //     }
-    //     await API.putcheckIn(checkInData)
-    //         .catch(err => console.log(err));
-    //     await API.getuserList()
-    //         .then(res => setUsers(res.data))
-    //         .then(setisLoading(false))
-    // };
 
     const handleDeleteClick = async (event) => {
         setisLoading(true)
@@ -88,20 +29,45 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     }
+    let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
+    let fitbitURLclientid = "&client_id=23B56Z"
+    //this should be test or privateHomePage
+    let fitbitURLredirect_uriNavPage = "test";
+    let fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F" + fitbitURLredirect_uriNavPage;
+    let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
+    let fitbitURLexpires_in = "expires_in=604800"
+    let fitbitFULLURL = basefitbitURL + fitbitURLclientid + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in;
+    // console.log("fitbitFULLURL", fitbitFULLURL)
+    let path = window.location.pathname
+    console.log("path", path)
+
+    const handlepathClick = () => {
+        console.log('window.location.search.substring(0, 6)')
+        console.log('window.location.search.substring(6)')
+        console.log(window.location.search.substring(0, 6))
+        console.log(window.location.search.substring(6))
+        if (window.location.search.substring(0, 6) === "?code=") {
+            console.log('inside IF')
+        }
+    }
+
 
     return (
         <div>
-            {/* if isLoading or userList is false, then the data following && will not be displayed */}
-            <h1>testing page{isLoading && <span>please wait, loading the data now.</span>}</h1>
-            {/* <button onClick={handleadduserclick} className="btn btn-info">
-                {" "}adduser{" "}
+            <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
+            <h3>Fitbit testing area here: </h3>
+            {fitbitObject ? <p>Fitbit data loaded.</p> : <p>Fitbit data loading....</p>}
+
+            <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>
+
+            {window.location.search.substring(0, 6) === "?code=" ?
+                <p>the code is: {window.location.search.substring(6)}</p> :
+                <p>no code found in the URL</p>}
+
+            <button value="path" onClick={handlepathClick}>
+                path?
             </button>
-            <button onClick={handleedituserclick} className="btn btn-info">
-                {" "}edit user{" "}
-            </button>
-            <button onClick={handleputcheckIn} className="btn btn-info">
-                {" "}putcheckIn{" "}
-            </button> */}
+            <p>-------------------------</p>
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">
@@ -116,11 +82,11 @@ function Test() {
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>photoURL: {user.photoURL}</p>
                                 <p>Web Check in: {" "}
-                                            {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
-                                        </p>
-                                        <p>
-                                            {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
-                                        </p>
+                                    {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+                                </p>
+                                <p>
+                                    {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                </p>
                                 <p>
                                     Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
                                     {user.WebsiteCheckIn.loc.coordinates[1]}]
@@ -136,11 +102,5 @@ function Test() {
         </div>
     );
 }
-//TODO put google name on for the add user click
-//TODO add a profile page to edit info
 
-//TODO add a Check in button that
-//TODO make check in button ask for GPS and then create a route to save that GPS data to DB
-//TODO find a way to extrapolate generic info from a GPS... like a city name. 
-//TODO create a link to google maps to the gps info. 
 export default Test;
