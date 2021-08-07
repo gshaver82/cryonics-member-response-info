@@ -35,7 +35,12 @@ function Test() {
     let fitbitURLclientid = "&client_id="+ process.env.REACT_APP_CLIENT_ID
     //this should be test or privateHomePage
     let fitbitURLredirect_uriNavPage = "test";
-    let fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2Flocalhost%3A3000%2F" + fitbitURLredirect_uriNavPage;
+    let fitbitURLredirect_uri=""
+    
+    window.location.hostname ==="localhost" 
+    ? fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2F" + window.location.hostname + "%3A3000%2F" + fitbitURLredirect_uriNavPage
+    : fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2F" + window.location.hostname + "%2F" + fitbitURLredirect_uriNavPage
+
     let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
     let fitbitURLexpires_in = "expires_in=604800"
     let fitbitFULLURL = basefitbitURL + fitbitURLclientid + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in;
@@ -43,6 +48,7 @@ function Test() {
     // let path = window.location.pathname
     // console.log("path", path)
 
+    console.log("window.location.hostname", window.location.hostname)
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
