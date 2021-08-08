@@ -28,19 +28,10 @@ mongoose.connect(
 
 app.use(routes);
 
-// const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
-
-// app.use(expressCspHeader({
-//     directives: {
-//         'default-src': [SELF]
-//     }
-// }));
-
-app.get("*", (req, res) => {
-    let url = path.join(__dirname, '../client/build', 'index.html');
-    if (!url.startsWith('/app/')) // since we're on local windows
-        url = url.substring(1);
-    res.sendFile(url);
+app.get('*', function (req, res) {
+    const URL = path.join(__dirname, 'build', 'index.html');
+    console.log("🚀 ~ file: server.js ~ line 41 ~ URL", URL)    
+    res.sendFile(URL);
 });
 
 app.listen(PORT, function () {
