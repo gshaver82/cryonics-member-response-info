@@ -36,9 +36,11 @@ app.use(routes);
 //     }
 // }));
 
-app.get('/*', function (req, res) {
-    const index = path.join(__dirname, 'build', 'index.html');
-    res.sendFile(index);
+app.get("*", (req, res) => {
+    let url = path.join(__dirname, '../client/build', 'index.html');
+    if (!url.startsWith('/app/')) // since we're on local windows
+        url = url.substring(1);
+    res.sendFile(url);
 });
 
 app.listen(PORT, function () {
@@ -54,7 +56,7 @@ console.log("first Fifteenmincount is  " + Fifteenmincount);
 fifteenmincounttimer = setInterval(function () {
     Fifteenmincount++;
     let remainder = (Fifteenmincount % 4) * 15;
-    remainder ===0 ?  hourcount ++:remainder;
-    console.log("it has been " + hourcount + 
-    " hours, and "+ remainder + " minutes since server start");
+    remainder === 0 ? hourcount++ : remainder;
+    console.log("it has been " + hourcount +
+        " hours, and " + remainder + " minutes since server start");
 }, 900000);
