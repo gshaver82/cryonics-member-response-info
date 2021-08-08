@@ -28,9 +28,13 @@ mongoose.connect(
 
 app.use(routes);
 
-// app.get("*", function (req, res) {
-//     res.sendFile(path.join(__dirname, "./client/build/index.html"));
-// });
+const { expressCspHeader, INLINE, NONE, SELF } = require('express-csp-header');
+
+app.use(expressCspHeader({
+    directives: {
+        'default-src': [SELF]
+    }
+}));
 
 app.get('*', function (req, res) {
     const index = path.join(__dirname, 'build', 'index.html');
