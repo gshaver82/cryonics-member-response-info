@@ -28,11 +28,28 @@ mongoose.connect(
 
 app.use(routes);
 
-app.get('*', function (req, res) {
-    const URL = path.join(__dirname, 'build', 'index.html');
-    console.log("🚀 ~ file: server.js ~ line 41 ~ URL", URL)    
-    res.sendFile(URL);
-});
+// List of all the files that should be served as-is
+// let protected = ['favicon.ico', 'logo192.png']
+
+// app.get("*", (req, res) => {
+
+//     let path = req.params['0'].substring(1)
+
+//     if (protected.includes(path)) {
+//         // Return the actual file
+//         res.sendFile(`${__dirname}/build/${path}`);
+//     } else {
+//         // Otherwise, redirect to /build/index.html
+//         res.sendFile(`${__dirname}/build/index.html`);
+//     }
+// });
+
+
+// app.get('*', function (req, res) {
+//     const URL = path.join(__dirname, 'build', 'index.html');
+//     console.log("🚀 ~ file: server.js ~ line 41 ~ URL", URL)    
+//     res.sendFile(URL);
+// });
 
 app.listen(PORT, function () {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
