@@ -1,5 +1,13 @@
 const db = require("../models");
 module.exports = {
+    PostForAuthToken: function (req, res) {
+        db.CryonicsModel
+        .find()
+        .then(dbModelDataResult => res.json(dbModelDataResult))
+        .catch(err => res.status(422).json(err));
+    },
+
+
     findAll: function (req, res) {
         db.CryonicsModel
             .find()

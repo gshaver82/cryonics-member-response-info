@@ -24,6 +24,9 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 export default {
+    fitbitGetAuthToken: function (fitbitAuthTokenNeededData) {
+        return authorize.get("/api/fitbit");
+    },
     getuserList: function () {
         return authorize.get("/api/users");
     },

@@ -12,7 +12,7 @@ function Test() {
     const [fitbitObject, setfitbitObject] = useState(false);
     // const history = useHistory();
     const [fitbitCode, setfitbitCode] = useState(0);
-    const [fitbitFULLURL, setfitbitFULLURL] = useState(false);  
+    const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
     // let fitbitFULLURL = '';
     // let fitbitCode = 0;
 
@@ -30,36 +30,45 @@ function Test() {
     useEffect(() => {
         startupcode();
     }, []);
-if(fitbitFULLURL){console.log("fitbitFULLURL set", fitbitFULLURL)}
+    // if (fitbitFULLURL) { console.log("fitbitFULLURL set", fitbitFULLURL) }
     function startupcode() {
-        console.log("startupcode")
-        console.log("window.location", window.location)
+        // console.log("startupcode")
+        // console.log("window.location", window.location)
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
         let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
         //this should be test or privateHomePage
         let fitbitURLredirect_uriNavPage = "test";
         let fitbitURLredirect_uri = ""
-    
+
         window.location.hostname === "localhost"
-            ? fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2F" + window.location.hostname + "%3A3000%2F" + fitbitURLredirect_uriNavPage
-            : fitbitURLredirect_uri = "&redirect_uri=https%3A%2F%2F" + window.location.hostname + "%2F" + fitbitURLredirect_uriNavPage
-    
+            ? fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%3A3000%2F" + fitbitURLredirect_uriNavPage
+            : fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%2F" + fitbitURLredirect_uriNavPage
+
         let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
         let fitbitURLexpires_in = "expires_in=604800"
-        setfitbitFULLURL(basefitbitURL + fitbitURLclientid + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in);        
+        setfitbitFULLURL(basefitbitURL + fitbitURLclientid + "&redirect_uri=" + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in);
 
         if (window.location.search.substring(0, 6) === "?code=") {
             setfitbitCode(window.location.search.substring(6))
-            console.log("🚀 ~ file: test.js ~ line 52 ~ startupcode ~ fitbitCode", fitbitCode)
+            // console.log("🚀 ~ file: test.js ~ line 52 ~ startupcode ~ fitbitCode", fitbitCode)
             // this does not work, the state is set, and then window reloaded which deletes the state
             // history.push('/test')
-            fitbitGetAuthToken()
+            fitbitGetAuthToken(fitbitURLredirect_uri)
         }
     };
-    function fitbitGetAuthToken() {
+    function fitbitGetAuthToken(fitbitURLredirect_uri) {
         console.log('inside get auth token');
-        // API.putcheckIn(checkInData)
-        //     .catch(err => console.log(err));
+        console.log('process.env.REACT_APP_ENCODEDBASE' + process.env.REACT_APP_ENCODEDBASE);
+        const fitbitAuthTokenNeededData = {
+            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
+            clientId : process.env.REACT_APP_CLIENT_ID,
+            grant_type: 'authorization_code',
+            redirect_uri:   fitbitURLredirect_uri,
+            code: fitbitCode,
+        }
+        console.log("🚀fitbitGetAuthToken ~ fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+        API.fitbitGetAuthToken(fitbitAuthTokenNeededData)
+            .catch(err => console.log(err));
     }
 
     const handleDeleteClick = async (event) => {
