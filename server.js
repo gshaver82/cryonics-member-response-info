@@ -28,6 +28,8 @@ mongoose.connect(
 
 app.use(routes);
 
+
+//this will prevent page refreshes that go directly to /examplepage from failing. 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "./client/build/index.html"));
 });
