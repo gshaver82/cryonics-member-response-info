@@ -29,34 +29,37 @@ function App() {
         return <div />
     };
     return (
-        <ThemeProvider theme={themeMode}>
-            <>
-                <GlobalStyles />
-                <Toggle theme={theme} toggleTheme={toggleTheme} />
-                <AuthProvider>
-                    <Router>
-                        <div>
-                            <NavTabs />
-                            <Switch>
-                                <Route path="/test" component={test} />
-                                <Route exact path="/publicHomePage" component={publicHomePage} />
-                                <Route exact path="/TOSPage" component={TOSPage} />
-                                <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
-                                <Route exact path="/Login" component={Login} />
-                                <Route exact path="/AlcorPage" component={AlcorPage} />
-                                <Route exact path="/CIPage" component={CIPage} />
-                                <PrivateRoute exact path="/secondPage" component={secondPage} />
-                                <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
-                                <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
-                                <PrivateRoute exact path="/MemberDashboard" component={MemberDash} />
-                                <PrivateRoute exact path="/profile" component={profile} />
-                                <Route path="/" component={publicHomePage} />
-                            </Switch>
-                        </div>
-                    </Router>
-                </AuthProvider>
-            </>
-        </ThemeProvider>
+        <Router>
+            <div>
+                <ThemeProvider theme={themeMode}>
+                    <>
+                        <GlobalStyles />
+                        <Toggle theme={theme} toggleTheme={toggleTheme} />
+                        <AuthProvider>
+
+                            <div>
+                                <NavTabs />
+                                <Switch>
+                                    <Route path="/test" component={test} />
+                                    <Route exact path="/publicHomePage" component={publicHomePage} />
+                                    <Route exact path="/TOSPage" component={TOSPage} />
+                                    <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
+                                    <Route exact path="/Login" component={Login} />
+                                    <Route exact path="/AlcorPage" component={AlcorPage} />
+                                    <Route exact path="/CIPage" component={CIPage} />
+                                    <PrivateRoute exact path="/secondPage" component={secondPage} />
+                                    <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
+                                    <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
+                                    <PrivateRoute exact path="/MemberDashboard" component={MemberDash} />
+                                    <PrivateRoute exact path="/profile" component={profile} />
+                                    <Route path="/" component={publicHomePage} />
+                                </Switch>
+                            </div>
+                        </AuthProvider>
+                    </>
+                </ThemeProvider>
+            </div>
+        </Router>
     );
 }
 export default App;
