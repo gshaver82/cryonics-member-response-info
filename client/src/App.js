@@ -40,7 +40,7 @@ function App() {
                             <div>
                                 <NavTabs />
                                 <Switch>
-                                    <Route path="/test" component={test} />
+                                    <PrivateRoute path="/test" component={test} />
                                     <Route exact path="/publicHomePage" component={publicHomePage} />
                                     <Route exact path="/TOSPage" component={TOSPage} />
                                     <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
