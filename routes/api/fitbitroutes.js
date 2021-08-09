@@ -3,7 +3,7 @@ const exampleController = require("../../controllers/exampleController");
 
 //matches with /api/fitbitRoutes route
 router.route("/")
-    .put(exampleController.PostForAuthToken)
+    .put(exampleController.postForAuthToken)
 
     
 module.exports = router;

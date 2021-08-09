@@ -1,6 +1,6 @@
 const db = require("../models");
 module.exports = {
-    PostForAuthToken: function (req, res) {
+    postForAuthToken: function (req, res) {
         db.CryonicsModel
         .find()
         .then(dbModelDataResult => res.json(dbModelDataResult))

@@ -61,13 +61,15 @@ function Test() {
         console.log('process.env.REACT_APP_ENCODEDBASE' + process.env.REACT_APP_ENCODEDBASE);
         const fitbitAuthTokenNeededData = {
             Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
-            clientId : process.env.REACT_APP_CLIENT_ID,
+            clientId: process.env.REACT_APP_CLIENT_ID,
             grant_type: 'authorization_code',
-            redirect_uri:   fitbitURLredirect_uri,
+            redirect_uri: fitbitURLredirect_uri,
             code: fitbitCode,
         }
         console.log("🚀fitbitGetAuthToken ~ fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+        console.log("this is just going to respond with an array of users to show that the routing works.")
         API.fitbitGetAuthToken(fitbitAuthTokenNeededData)
+            .then(res => console.log("fitbitGetAuthToken" , res.data))
             .catch(err => console.log(err));
     }
 
