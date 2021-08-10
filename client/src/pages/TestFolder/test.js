@@ -3,6 +3,7 @@ import API from "../../utils/API";
 import "firebase/auth";
 import * as firebase from 'firebase/app';
 // import { useHistory } from "react-router-dom";
+var qs = require('querystring')
 
 function Test() {
 
@@ -56,22 +57,90 @@ function Test() {
             fitbitGetAuthToken(fitbitURLredirect_uri)
         }
     };
-    function fitbitGetAuthToken(fitbitURLredirect_uri) {
-        console.log('inside get auth token');
-        console.log('process.env.REACT_APP_ENCODEDBASE' + process.env.REACT_APP_ENCODEDBASE);
+    async function fitbitGetAuthToken(fitbitURLredirect_uri) {
+        // console.log('inside get auth token');
+        // console.log('process.env.REACT_APP_ENCODEDBASE' + process.env.REACT_APP_ENCODEDBASE);
         const fitbitAuthTokenNeededData = {
             Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
             clientId: process.env.REACT_APP_CLIENT_ID,
             grant_type: 'authorization_code',
             redirect_uri: fitbitURLredirect_uri,
-            code: fitbitCode,
+            code: window.location.search.substring(6),
         }
-        console.log("🚀fitbitGetAuthToken ~ fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
-        console.log("this is just going to respond with an array of users to show that the routing works.")
-        API.fitbitGetAuthToken(fitbitAuthTokenNeededData)
-            .then(res => console.log("fitbitGetAuthToken" , res.data))
-            .catch(err => console.log(err));
+        // console.log("🚀fitbitGetAuthToken ~ fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+        // console.log("this is just going to respond with an array of users to show that the routing works.")
+        // await API.fitbitGetAuthToken(fitbitAuthTokenNeededData)
+        //     .then(res => console.log("fitbitGetAuthToken" , res.data))
+        //     .catch(err => console.log(err));
+        let temp = await postData(fitbitAuthTokenNeededData)
+        if (temp) { console.log("temp exists", temp) }
     }
+
+    // async function postData(fitbitAuthTokenNeededData) {
+    //     console.log("inside example controller fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+    //     let url = "https://api.fitbit.com/oauth2/token" + "?clientId=" + fitbitAuthTokenNeededData.clientId
+    //         + "&grant_type=" + fitbitAuthTokenNeededData.grant_type + "&redirect_uri=" + fitbitAuthTokenNeededData.redirect_uri
+    //         + "&code=" + fitbitAuthTokenNeededData.code;
+    //     console.log("🚀--------------------------url", url)
+    //     const response = await fetch(url, {
+
+    //         method: 'POST', // *GET, POST, PUT, DELETE, etc.
+    //         // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    //         // credentials: 'same-origin', // include, *same-origin, omit
+
+    //         headers: {
+    //             'Content-Type': 'application/x-www-form-urlencoded',
+    //             'Authorization': fitbitAuthTokenNeededData.Authorization
+    //             // 'Content-Type': 'application/x-www-form-urlencoded',
+    //         },
+    //         referrerPolicy: 'no-referrer',
+    //         // redirect: 'follow', // manual, *follow, error
+    //         // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+    //         // body: JSON.stringify(data) // body data type must match "Content-Type" header                
+    //     });
+    //     console.log(JSON.stringify(response.body));
+    //     console.log("🚀 ~ postData ~ response", response)
+    //     console.log("🚀 ~ postData ~ response.body", response.body)
+    //     return response.body; // parses JSON response into native JavaScript objects
+
+    function postData(fitbitAuthTokenNeededData) {
+        console.log("inside example controller fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+        let url = "https://api.fitbit.com/oauth2/token" + "?clientId=" + fitbitAuthTokenNeededData.clientId
+            + "&grant_type=" + fitbitAuthTokenNeededData.grant_type + "&redirect_uri=" + fitbitAuthTokenNeededData.redirect_uri
+            + "&code=" + fitbitAuthTokenNeededData.code;
+        console.log("🚀--------------------------url", url)
+        fetch(url, {
+
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+            // cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            // credentials: 'same-origin', // include, *same-origin, omit
+
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': fitbitAuthTokenNeededData.Authorization
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            referrerPolicy: 'no-referrer',
+            // redirect: 'follow', // manual, *follow, error
+            // referrerPolicy: 'no-referrer', // no-referrer, *no-referrer-when-downgrade, origin, origin-when-cross-origin, same-origin, strict-origin, strict-origin-when-cross-origin, unsafe-url
+            // body: JSON.stringify(data) // body data type must match "Content-Type" header                
+        }).then(response => response.json())
+            .then(result => {
+                console.log('Success:', result);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
+        // console.log(JSON.stringify(response.body));
+        // console.log("🚀 ~ postData ~ response", response)
+        // console.log("🚀 ~ postData ~ response.body", response.body)
+        // return response.body; // parses JSON response into native JavaScript objects
+
+    }
+
+
+
 
     const handleDeleteClick = async (event) => {
         setisLoading(true)
