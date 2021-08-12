@@ -28,7 +28,6 @@ mongoose.connect(
 
 app.use(routes);
 
-
 //this will prevent page refreshes that go directly to /examplepage from failing. 
 app.get("*", function (req, res) {
     res.sendFile(path.join(__dirname, "./client/build/index.html"));
@@ -51,3 +50,23 @@ fifteenmincounttimer = setInterval(function () {
     console.log("it has been " + hourcount +
         " hours, and " + remainder + " minutes since server start");
 }, 900000);
+
+
+// res.json is not a function. res by itself returns undefined
+//if this works and gets deployed will probably need to reroute to build for heroku
+// const db = require("./models");
+
+// oneMinuteTimer = setInterval(function () {
+//     console.log("oneMinuteTimer");
+//     test()
+//     function test(req, res) {
+//         db.CryonicsModel
+//             .find()
+//             .then(console.log("inside api call, res" , res))
+//             .then(res => console.log(res.json(res)))
+//             .catch(err => console.log("error" , err));
+//     }
+// }, 60000);
+
+
+
