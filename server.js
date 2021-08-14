@@ -50,20 +50,21 @@ fifteenmincounttimer = setInterval(function () {
         " hours, and " + remainder + " minutes since server start");
 }, 900000);
 
-const db = require("./models");
-db.CryonicsModel
-    .find()
-    .then(console.log("--------------first run"))
-    .then(dbModelDataResult => console.log((dbModelDataResult)))
-    .catch(err => res.status(422).json(err));
+//this works, just commented out to save on the DB calls
+// const db = require("./models");
+// db.CryonicsModel
+//     .find()
+//     .then(console.log("--------------first run"))
+//     .then(dbModelDataResult => console.log((dbModelDataResult)))
+//     .catch(err => res.status(422).json(err));
 
 
-thirtySecondsTimer = setInterval(function () {
-    console.log("thirtySecondsTimer");
-    const db = require("./models");
-    db.CryonicsModel
-        .find()
-        .then(console.log("--------------interval run"))
-        .then(dbModelDataResult => console.log((dbModelDataResult)))
-        .catch(err => res.status(422).json(err));
-}, 120000);
+// thirtySecondsTimer = setInterval(function () {
+//     console.log("thirtySecondsTimer");
+//     const db = require("./models");
+//     db.CryonicsModel
+//         .find()
+//         .then(console.log("--------------interval run"))
+//         .then(dbModelDataResult => console.log((dbModelDataResult)))
+//         .catch(err => res.status(422).json(err));
+// }, 120000);
