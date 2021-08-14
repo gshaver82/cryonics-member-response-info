@@ -25,16 +25,53 @@ const cryonicsSchema = new Schema({
         required: false,
         lowercase: false,
     },
-    description:{
+    signedUpForAlerts: {
+        type: Boolean,
+        required: true,
+        default: false,
+    },
+    checkinDevices:{
+        fitbit: {
+            fitbitDeviceRegistered: {
+                type: Boolean,
+                required: true,
+                default: false,
+            },
+            authToken: {
+                type: String,
+                required: false,
+            },
+            refreshToken: {
+                type: String,
+                required: false,
+            }
+        },
+        exampleDevice: {
+            exampleDeviceRegistered: {
+                type: Boolean,
+                required: true,
+                default: false,
+            },
+            authToken: {
+                type: String,
+                required: false,
+            },
+            refreshToken: {
+                type: String,
+                required: false,
+            }
+        },
+    },
+    description: {
         type: String,
         required: false,
     },
-    cryonicsProvider:{
-        type: String, 
+    cryonicsProvider: {
+        type: String,
         enum: ['Alcor', 'Cryonics Institute', 'None'],
         required: false,
     },
-    photoURL:{
+    photoURL: {
         type: String,
         required: false,
     },
