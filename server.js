@@ -90,5 +90,5 @@ fifteenmincounttimer = setInterval(function () {
 //   use finalized auth key to run api to check for heartrate. 
 //   check heartrate for time since last reading
 //   https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json
-//   curl -X GET "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json" -H  "accept: application/json" -H  "authorization: Bearer eyJhbGciOiJI......2bHXHI"
+//   curl -X GET "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d.json" -H  "accept: application/json" -H  "authorization: Bea... eyJhbGciOiJI......2bHXHI"
 
