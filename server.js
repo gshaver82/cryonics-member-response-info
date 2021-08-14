@@ -25,7 +25,6 @@ mongoose.connect(
         useFindAndModify: false
     }
 );
-
 app.use(routes);
 
 //this will prevent page refreshes that go directly to /examplepage from failing. 
@@ -38,10 +37,10 @@ app.listen(PORT, function () {
 });
 
 let hourcount = 0
-console.log("first hourcount is  " + hourcount);
+// console.log("first hourcount is  " + hourcount);
 
 let Fifteenmincount = 0
-console.log("first Fifteenmincount is  " + Fifteenmincount);
+// console.log("first Fifteenmincount is  " + Fifteenmincount);
 
 fifteenmincounttimer = setInterval(function () {
     Fifteenmincount++;
@@ -51,22 +50,20 @@ fifteenmincounttimer = setInterval(function () {
         " hours, and " + remainder + " minutes since server start");
 }, 900000);
 
-
-// res.json is not a function. res by itself returns undefined
-//if this works and gets deployed will probably need to reroute to build for heroku
-// const db = require("./models");
-
-// oneMinuteTimer = setInterval(function () {
-//     console.log("oneMinuteTimer");
-//     test()
-//     function test(req, res) {
-//         db.CryonicsModel
-//             .find()
-//             .then(console.log("inside api call, res" , res))
-//             .then(res => console.log(res.json(res)))
-//             .catch(err => console.log("error" , err));
-//     }
-// }, 60000);
+const db = require("./models");
+db.CryonicsModel
+    .find()
+    .then(console.log("--------------first run"))
+    .then(dbModelDataResult => console.log((dbModelDataResult)))
+    .catch(err => res.status(422).json(err));
 
 
-
+thirtySecondsTimer = setInterval(function () {
+    console.log("thirtySecondsTimer");
+    const db = require("./models");
+    db.CryonicsModel
+        .find()
+        .then(console.log("--------------interval run"))
+        .then(dbModelDataResult => console.log((dbModelDataResult)))
+        .catch(err => res.status(422).json(err));
+}, 120000);
