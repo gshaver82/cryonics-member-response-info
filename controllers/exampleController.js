@@ -1,9 +1,22 @@
 const db = require("../models");
 
 module.exports = {
-    postForAuthToken: function (req, res) {
+    // postForAuthToken: function (req, res) {
+    //     db.CryonicsModel
+    //         .find()
+    //         .then(dbModelDataResult => res.json(dbModelDataResult))
+    //         .catch(err => res.status(422).json(err));
+    // },
+    putFitBitTokens: function (req, res) {
+        console.log('controller req.body.firebaseAuthID' + req.body.firebaseAuthID)
+        console.log('controller req.body.access_token' + req.body.access_token)
         db.CryonicsModel
-            .find()
+            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
+                req.body,
+                {
+                    new: true
+                }
+            )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },

@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
 // import "firebase/auth";
+import firebaseEnvConfigs from '../../firebase';
+const firebase = firebaseEnvConfigs.firebase_;
+
 
 function Test() {
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
     const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
+
+    const firebaseAuthID = firebase.auth().currentUser.uid
 
     //use effect that runs once to pull the complete user list.  the  .[] at the end means
     // empty dependancy so it will only run ONCE after initial rerender
@@ -17,7 +22,6 @@ function Test() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-
     useEffect(() => {
         startupcode();
     }, []);
@@ -48,7 +52,7 @@ function Test() {
             redirect_uri: fitbitURLredirect_uri,
             code: window.location.search.substring(6),
         }
-        console.log("fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
+        // console.log("fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
         let url = "https://api.fitbit.com/oauth2/token" + "?clientId=" + fitbitAuthTokenNeededData.clientId
             + "&grant_type=" + fitbitAuthTokenNeededData.grant_type + "&redirect_uri=" + fitbitAuthTokenNeededData.redirect_uri
             + "&code=" + fitbitAuthTokenNeededData.code;
@@ -58,12 +62,29 @@ function Test() {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 'Authorization': fitbitAuthTokenNeededData.Authorization
             },
-            referrerPolicy: 'no-referrer',           
-        }).then(response => response.json())
-            .then(result => {
+            referrerPolicy: 'no-referrer',
+        })
+            .then(response => response.json())
+            .then(fitbitData => {
                 //access token is in here
-                console.log('result:', result);
-                setfitbitObject(result)
+                console.log('result.access_token: ', fitbitData.access_token);
+                console.log('result.refresh_token: ', fitbitData.refresh_token);
+                setfitbitObject(fitbitData)
+                const fitbitObjectForDB = {
+                    firebaseAuthID : firebaseAuthID,
+                    checkinDevices: {
+                        fitbit: {
+                            fitbitDeviceRegistered: true,
+                            authToken: fitbitData.access_token,
+                            refreshToken: fitbitData.refresh_token
+                        },
+                    }
+                }
+
+                console.log('fitbitObjectForDB', fitbitObjectForDB);
+                API.putFitBitTokens(fitbitObjectForDB)
+                    .then(console.log("tokens sent to DB"))
+                    .catch(err => console.log(err));
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -84,9 +105,9 @@ function Test() {
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
             <h3>Fitbit testing area here: </h3>
-            
+
             <p>Fitbit object is {fitbitObject && <span> valid and user id is: {fitbitObject.user_id}</span>}
-            {!fitbitObject && <span> not valid</span>}</p>
+                {!fitbitObject && <span> not valid</span>}</p>
 
             {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
 
