@@ -1,15 +1,18 @@
 const db = require("../models");
 
 module.exports = {
-    // postForAuthToken: function (req, res) {
-    //     db.CryonicsModel
-    //         .find()
-    //         .then(dbModelDataResult => res.json(dbModelDataResult))
-    //         .catch(err => res.status(422).json(err));
-    // },
+    fitbitGetAuthToken: function (req, res) {
+        console.log("inside fitbitGetAuthToken")
+        console.log("🚀 ~ req.params", req.params)
+        console.log("🚀 ~ req.params.firebaseAuthID", req.params.firebaseAuthID)
+        db.CryonicsModel
+            .findOne({ firebaseAuthID: req.params.firebaseAuthID })
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
     putFitBitTokens: function (req, res) {
         console.log('controller req.body.firebaseAuthID' + req.body.firebaseAuthID)
-        console.log('controller req.body.access_token' + req.body.access_token)
+        console.log('controller req.body.checkinDevices.fitbit.authToken' + req.body.checkinDevices.fitbit.authToken)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,

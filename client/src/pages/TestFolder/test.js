@@ -67,11 +67,11 @@ function Test() {
             .then(response => response.json())
             .then(fitbitData => {
                 //access token is in here
-                console.log('result.access_token: ', fitbitData.access_token);
-                console.log('result.refresh_token: ', fitbitData.refresh_token);
+                // console.log('result.access_token: ', fitbitData.access_token);
+                // console.log('result.refresh_token: ', fitbitData.refresh_token);
                 setfitbitObject(fitbitData)
                 const fitbitObjectForDB = {
-                    firebaseAuthID : firebaseAuthID,
+                    firebaseAuthID: firebaseAuthID,
                     checkinDevices: {
                         fitbit: {
                             fitbitDeviceRegistered: true,
@@ -81,7 +81,7 @@ function Test() {
                     }
                 }
 
-                console.log('fitbitObjectForDB', fitbitObjectForDB);
+                // console.log('fitbitObjectForDB', fitbitObjectForDB);
                 API.putFitBitTokens(fitbitObjectForDB)
                     .then(console.log("tokens sent to DB"))
                     .catch(err => console.log(err));
@@ -101,6 +101,15 @@ function Test() {
             .then(setisLoading(false))
     }
 
+    const handleGetHeartrate = async () => {
+        console.log("🚀 ~ handleGetHeartrate ~ firebaseAuthID", firebaseAuthID)
+
+        await API.fitbitGetAuthToken(firebaseAuthID)
+            .then(console.log("response here for fitbitGetAuthToken"))
+            .then(res => console.log(res.data))
+            .catch(err => console.log(err));
+    }
+
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
@@ -110,6 +119,10 @@ function Test() {
                 {!fitbitObject && <span> not valid</span>}</p>
 
             {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
+
+            <button onClick={handleGetHeartrate}>
+                Get Heartrate Time Series info
+            </button>
 
             <p>-------------------------</p>
             <p>mapping through all users here</p>

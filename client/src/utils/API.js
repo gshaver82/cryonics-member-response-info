@@ -24,9 +24,11 @@ firebase.auth().onAuthStateChanged(function (user) {
 });
 
 export default {
-    // fitbitGetAuthToken: function (fitbitAuthTokenNeededData) {
-    //     return authorize.put("/api/fitbit", fitbitAuthTokenNeededData);
-    // },
+    fitbitGetAuthToken: function (firebaseAuthID) {
+        console.log("🚀 ~ firebaseAuthID"+ firebaseAuthID)
+
+        return authorize.get("/api/fitbit/"+ firebaseAuthID);
+    },
     putFitBitTokens: function (fitbitObjectForDB) {
         return authorize.put("/api/fitbit", fitbitObjectForDB);
     },
