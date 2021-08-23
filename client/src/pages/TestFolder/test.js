@@ -10,18 +10,15 @@ function Test() {
     const [isLoading, setisLoading] = useState(true);
     const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
-
     const firebaseAuthID = firebase.auth().currentUser.uid
 
-    //use effect that runs once to pull the complete user list.  the  .[] at the end means
-    // empty dependancy so it will only run ONCE after initial rerender
-    //if there was something in there then the use effect runs any time that something runs.
     useEffect(() => {
         API.getuserList()
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
+    
     useEffect(() => {
         startupcode();
     }, []);

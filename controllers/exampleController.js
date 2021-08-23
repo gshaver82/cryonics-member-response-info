@@ -2,17 +2,15 @@ const db = require("../models");
 
 module.exports = {
     fitbitGetAuthToken: function (req, res) {
-        console.log("inside fitbitGetAuthToken")
-        console.log("🚀 ~ req.params", req.params)
-        console.log("🚀 ~ req.params.firebaseAuthID", req.params.firebaseAuthID)
+        // console.log("🚀 ~ req.params", req.params)
         db.CryonicsModel
             .findOne({ firebaseAuthID: req.params.firebaseAuthID })
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     putFitBitTokens: function (req, res) {
-        console.log('controller req.body.firebaseAuthID' + req.body.firebaseAuthID)
-        console.log('controller req.body.checkinDevices.fitbit.authToken' + req.body.checkinDevices.fitbit.authToken)
+        console.log('controller req.body' + req.body)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,
@@ -30,8 +28,9 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     create: function (req, res) {
-        console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
+        // console.log("🚀 ~ file: exampleController.js ~ line 20 ~ req.body", req.body)
         db.CryonicsModel
             .findOneAndUpdate(
                 { firebaseAuthID: req.body.firebaseAuthID },
@@ -43,6 +42,7 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     edit: function (req, res) {
         db.CryonicsModel
             .findOneAndUpdate(
@@ -54,12 +54,14 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     findById: function (req, res) {
         db.CryonicsModel
             .findById(req.params._id)
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     findByFirebaseId: function (req, res) {
         db.CryonicsModel
             .findOne({ firebaseAuthID: req.params.firebaseUserID })
@@ -73,6 +75,7 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
     putcheckin: function (req, res) {
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
