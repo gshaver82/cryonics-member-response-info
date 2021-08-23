@@ -10,6 +10,8 @@ function Test() {
     const [isLoading, setisLoading] = useState(true);
     const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
+    const [fitbitTokens, setfitbitTokens] = useState(false);
+
     const firebaseAuthID = firebase.auth().currentUser.uid
 
     useEffect(() => {
@@ -18,7 +20,7 @@ function Test() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-    
+
     useEffect(() => {
         startupcode();
     }, []);
@@ -99,13 +101,36 @@ function Test() {
     }
 
     const handleGetHeartrate = async () => {
-        console.log("🚀 ~ handleGetHeartrate ~ firebaseAuthID", firebaseAuthID)
-
-        await API.fitbitGetAuthToken(firebaseAuthID)
-            .then(console.log("response here for fitbitGetAuthToken"))
-            .then(res => console.log(res.data))
-            .catch(err => console.log(err));
+        let authTokens = ''
+        authTokens = await API.fitbitGetAuthToken(firebaseAuthID)
+            .then(res => res.data)
+            .catch(err => console.log(err))
+        // console.log("authTokens", authTokens)
+        let fitBitData = await getFitBitData(authTokens)
+        console.log ("fitBitData",  fitBitData)
+    
     }
+
+    async function getFitBitData(authTokens) {
+        let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
+        const response = await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + authTokens.authToken
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer'
+        });
+        console.log("🚀 ~ getFitBitData ~ response", response)
+        return response.json(); // parses JSON response into native JavaScript objects
+    }
+
+    
+
 
     return (
         <div>

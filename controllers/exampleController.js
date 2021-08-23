@@ -5,7 +5,7 @@ module.exports = {
         // console.log("🚀 ~ req.params", req.params)
         db.CryonicsModel
             .findOne({ firebaseAuthID: req.params.firebaseAuthID })
-            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .then(dbModelDataResult => res.json(dbModelDataResult.checkinDevices.fitbit))
             .catch(err => res.status(422).json(err));
     },
 
