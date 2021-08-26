@@ -2,15 +2,17 @@ import React, { useState, useEffect } from 'react';
 import API from "../../utils/API";
 // import "firebase/auth";
 import firebaseEnvConfigs from '../../firebase';
+import { useHistory } from "react-router-dom";
 const firebase = firebaseEnvConfigs.firebase_;
 
 
 function Test() {
+    let history = useHistory();
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
     const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
-    const [fitbitTokens, setfitbitTokens] = useState(false);
+    const [fitbitUserDataResponse, setfitbitUserDataResponse] = useState(false);
 
     const firebaseAuthID = firebase.auth().currentUser.uid
 
@@ -65,12 +67,8 @@ function Test() {
         })
             .then(response => response.json())
             .then(fitbitData => {
-                //access token is in here
-                // console.log('result.access_token: ', fitbitData.access_token);
-                // console.log('result.refresh_token: ', fitbitData.refresh_token);
                 setfitbitObject(fitbitData)
                 const fitbitObjectForDB = {
-
                     firebaseAuthID: firebaseAuthID,
                     checkinDevices: {
                         fitbit: {
@@ -80,10 +78,10 @@ function Test() {
                         },
                     }
                 }
-
-                // console.log('fitbitObjectForDB', fitbitObjectForDB);
+                console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB", fitbitObjectForDB)
                 API.putFitBitTokens(fitbitObjectForDB)
-                    .then(console.log("tokens sent to DB"))
+                    .then(console.log("tokens sent to DB", fitbitObjectForDB))
+                    .then(history.push("/test"))
                     .catch(err => console.log(err));
             })
             .catch(error => {
@@ -106,8 +104,42 @@ function Test() {
         authTokens = await API.fitbitGetAuthToken(firebaseAuthID)
             .then(res => res.data)
             .catch(err => console.log(err))
-        let fitBitData = await getFitBitData(authTokens)
-        console.log("fitBitData", fitBitData)
+        let fitBitDataJSON = await getFitBitData(authTokens)
+        console.log("fitBitDataJSON", fitBitDataJSON)
+        // fitBitDataJSON = fitBitDataJSON.toString().replace('-', '');
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
+        // console.log(JSON.parse(fitBitDataJSON));
+        // console.log("fitBitDataJSON with - taken out", fitBitDataJSON)
+        // const fitBitDataOBJ = JSON.parse(fitBitDataJSON);
+        // console.log("fitBitDataOBJ", fitBitDataOBJ)
+
+        // const str = JSON.stringify(
+        //     fitBitDataJSON,
+        //     (key, val) => {
+        //         if (key === 'activities-heart') {
+        //             return key.replace('-', '');
+        //         }
+        //         return key;
+        //     }
+        // );
+        // console.log("🚀 ~ handleGetHeartrate ~ str", str)
+        // let endingResult = await JSON.parse(str)
+        // console.log(endingResult);
+
+        fitBitDataJSON = JSON.stringify(fitBitDataJSON);
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
+        fitBitDataJSON = fitBitDataJSON.replace('-', '');
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
+        fitBitDataJSON = JSON.parse(fitBitDataJSON);
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart", fitBitDataJSON.activitiesheart)
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0]", fitBitDataJSON.activitiesheart[0])
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0].value", fitBitDataJSON.activitiesheart[0].value)
+        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0].value.restingHeartRate", fitBitDataJSON.activitiesheart[0].value.restingHeartRate)
+
+
+        const heartRate = fitBitDataJSON.activitiesheart[0].value.restingHeartRate;
+        setfitbitUserDataResponse(heartRate)
     }
 
     async function getFitBitData(authTokens) {
@@ -127,9 +159,6 @@ function Test() {
         return response.json(); // parses JSON response into native JavaScript objects
     }
 
-
-
-
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
@@ -139,11 +168,15 @@ function Test() {
                 {!fitbitObject && <span> not valid</span>}</p>
 
             {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
-
+            <br></br>
             <button onClick={handleGetHeartrate}>
                 Get Heartrate Time Series info
             </button>
-
+            <p>Data from fitbit
+                {fitbitUserDataResponse &&
+                    <span> is loaded and your resting heart rate is:
+                        {fitbitUserDataResponse}</span>}
+                {!fitbitUserDataResponse && <span> has not yet loaded</span>}</p>
             <p>-------------------------</p>
             <p>mapping through all users here</p>
             {userList &&
