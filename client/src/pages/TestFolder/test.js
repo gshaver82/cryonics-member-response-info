@@ -70,6 +70,7 @@ function Test() {
                 // console.log('result.refresh_token: ', fitbitData.refresh_token);
                 setfitbitObject(fitbitData)
                 const fitbitObjectForDB = {
+
                     firebaseAuthID: firebaseAuthID,
                     checkinDevices: {
                         fitbit: {
@@ -105,10 +106,8 @@ function Test() {
         authTokens = await API.fitbitGetAuthToken(firebaseAuthID)
             .then(res => res.data)
             .catch(err => console.log(err))
-        // console.log("authTokens", authTokens)
         let fitBitData = await getFitBitData(authTokens)
-        console.log ("fitBitData",  fitBitData)
-    
+        console.log("fitBitData", fitBitData)
     }
 
     async function getFitBitData(authTokens) {
@@ -125,11 +124,10 @@ function Test() {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer'
         });
-        console.log("🚀 ~ getFitBitData ~ response", response)
         return response.json(); // parses JSON response into native JavaScript objects
     }
 
-    
+
 
 
     return (
