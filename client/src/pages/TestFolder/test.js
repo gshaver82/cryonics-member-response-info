@@ -27,6 +27,8 @@ function Test() {
         startupcode();
     }, []);
     function startupcode() {
+        //----------
+        //this block creates the fitbit URL for the login link
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
         let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
         //this should be test or privateHomePage
@@ -40,12 +42,12 @@ function Test() {
         let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
         let fitbitURLexpires_in = "expires_in=604800"
         setfitbitFULLURL(basefitbitURL + fitbitURLclientid + "&redirect_uri=" + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in);
-
+        //----------
         if (window.location.search.substring(0, 6) === "?code=") {
             fitbitGetAuthToken(fitbitURLredirect_uri)
         }
     };
-    function fitbitGetAuthToken(fitbitURLredirect_uri) {
+    async function fitbitGetAuthToken(fitbitURLredirect_uri) {
         const fitbitAuthTokenNeededData = {
             Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
             clientId: process.env.REACT_APP_CLIENT_ID,
@@ -53,11 +55,10 @@ function Test() {
             redirect_uri: fitbitURLredirect_uri,
             code: window.location.search.substring(6),
         }
-        // console.log("fitbitAuthTokenNeededData", fitbitAuthTokenNeededData)
         let url = "https://api.fitbit.com/oauth2/token" + "?clientId=" + fitbitAuthTokenNeededData.clientId
             + "&grant_type=" + fitbitAuthTokenNeededData.grant_type + "&redirect_uri=" + fitbitAuthTokenNeededData.redirect_uri
             + "&code=" + fitbitAuthTokenNeededData.code;
-        fetch(url, {
+        let fitbitData = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -66,27 +67,26 @@ function Test() {
             referrerPolicy: 'no-referrer',
         })
             .then(response => response.json())
-            .then(fitbitData => {
-                setfitbitObject(fitbitData)
-                const fitbitObjectForDB = {
-                    firebaseAuthID: firebaseAuthID,
-                    checkinDevices: {
-                        fitbit: {
-                            fitbitDeviceRegistered: true,
-                            authToken: fitbitData.access_token,
-                            refreshToken: fitbitData.refresh_token
-                        },
-                    }
-                }
-                console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB", fitbitObjectForDB)
-                API.putFitBitTokens(fitbitObjectForDB)
-                    .then(console.log("tokens sent to DB", fitbitObjectForDB))
-                    .then(history.push("/test"))
-                    .catch(err => console.log(err));
-            })
             .catch(error => {
                 console.error('Error:', error);
             });
+        //fitbitdata is stored fitbitobject for display on webpage
+        setfitbitObject(fitbitData)
+        const fitbitObjectForDB = {
+            firebaseAuthID: firebaseAuthID,
+            checkinDevices: {
+                fitbit: {
+                    fitbitDeviceRegistered: true,
+                    authToken: fitbitData.access_token,
+                    refreshToken: fitbitData.refresh_token
+                },
+            }
+        }
+        console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB", fitbitObjectForDB)
+        API.putFitBitTokens(fitbitObjectForDB)
+            .then(console.log("tokens sent to DB", fitbitObjectForDB))
+            .then(history.push("/test"))
+            .catch(err => console.log(err));
     }
 
     const handleDeleteClick = async (event) => {

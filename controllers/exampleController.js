@@ -2,7 +2,6 @@ const db = require("../models");
 
 module.exports = {
     fitbitGetAuthToken: function (req, res) {
-        // console.log("🚀 ~ req.params", req.params)
         db.CryonicsModel
             .findOne({ firebaseAuthID: req.params.firebaseAuthID })
             .then(dbModelDataResult => res.json(dbModelDataResult.checkinDevices.fitbit))
@@ -10,7 +9,6 @@ module.exports = {
     },
 
     putFitBitTokens: function (req, res) {
-        console.log('controller req.body' + req.body)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,
