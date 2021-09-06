@@ -50,7 +50,7 @@ export default {
     deleteUser: function (_id) {
         return authorize.delete("/api/users/" + _id);
     },
-    putcheckIn: function (checkInData) {
+    putWebcheckIn: function (checkInData) {
         return authorize.put("/api/checkin", checkInData);
     },
     getcheckIn: function () {

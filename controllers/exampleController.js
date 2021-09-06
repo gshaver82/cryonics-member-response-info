@@ -74,7 +74,7 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
 
-    putcheckin: function (req, res) {
+    putWebcheckIn: function (req, res) {
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 req.body,

@@ -31,6 +31,17 @@ const cryonicsSchema = new Schema({
         default: false,
     },
     checkinDevices:{
+        WebsiteCheckIn: {
+            dateCreated: {
+                type: Date,
+                default: Date.now,
+                required: false,
+            },
+            loc: {
+                type: { type: String },
+                coordinates: [Number],
+            },
+        },
         fitbit: {
             fitbitDeviceRegistered: {
                 type: Boolean,
@@ -74,17 +85,6 @@ const cryonicsSchema = new Schema({
     photoURL: {
         type: String,
         required: false,
-    },
-    WebsiteCheckIn: {
-        dateCreated: {
-            type: Date,
-            default: Date.now,
-            required: false,
-        },
-        loc: {
-            type: { type: String },
-            coordinates: [Number],
-        },
     }
 }
 );

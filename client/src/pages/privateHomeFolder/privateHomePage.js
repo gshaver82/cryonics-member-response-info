@@ -28,40 +28,47 @@ function PrivateHomePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleputcheckIn = () => {
+    const handleputWebcheckIn = async () => {
         setisLoading(true)
         if (lat && lng) {
             let checkInData = {
                 firebaseAuthID: firebaseUserID,
-                WebsiteCheckIn: {
-                    dateCreated: Date.now(),
-                    loc: {
-                        type: "Point",
-                        coordinates: [lat, lng],
-                    }
-                },
+                checkinDevices: {
+                    WebsiteCheckIn: {
+                        dateCreated: Date.now(),
+                        loc: {
+                            type: "Point",
+                            coordinates: [lat, lng],
+                        }
+                    },
+                }
+
             }
-            API.putcheckIn(checkInData)
+            await API.putWebcheckIn(checkInData)
                 // .then(console.log("putcheckin with lat and long"))
                 .catch(err => console.log(err));
         } else {
             let checkInData = {
                 firebaseAuthID: firebaseUserID,
-                WebsiteCheckIn: {
-                    dateCreated: Date.now(),
-                    loc: {
-                        type: "Point",
-                        coordinates: [0, 0],
+                checkinDevices: {
+                    WebsiteCheckIn: {
+                        dateCreated: Date.now(),
+                        loc: {
+                            type: "Point",
+                            coordinates: [0, 0],
+                        }
                     }
-                },
+                }
             }
-            API.putcheckIn(checkInData)
-                .then(console.log("putcheckin WITHOUT lat and long"))
+
+            await API.putWebcheckIn(checkInData)
+                // .then(console.log("putcheckin WITHOUT lat and long"))
                 .catch(err => console.log(err));
         }
 
-        API.getOneUserByFirebaseID(firebaseUserID)
+        await API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
+            .then(console.log(user))
             .then(setisLoading(false))
             .catch(err => console.log(err));
     };
@@ -86,7 +93,7 @@ function PrivateHomePage() {
     let hours = "Loading..."
     let days = "Loading..."
     if (isLoading === false && user !== "starting user condition" && user) {
-        const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
+        const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).getTime());
         minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
         hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
@@ -115,6 +122,8 @@ function PrivateHomePage() {
             <h3>
                 You are now logged in and viewing your private home page!
             </h3>
+            {!isLoading && <p>This page is not loading</p>}
+            {isLoading && <p>This page is loading</p>}
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
@@ -123,12 +132,11 @@ function PrivateHomePage() {
                     </p>
                 </div>
             </div>
-            <p>{days} days {hours} hours {minutes} minutes since checkin</p>
-            <button type="button" onClick={handleputcheckIn}>
+            <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
+            <button type="button" onClick={handleputWebcheckIn}>
                 Website Checkin
             </button>
-            <p>Click this button to check in and update your status. </p>
-            <p>Click allow GPS if you want to store your location information</p>
+            <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
             <h3>GPS Coordinates according to browser</h3>
             <p>{status}</p>
             {!lat && !lng &&
@@ -139,8 +147,8 @@ function PrivateHomePage() {
             }
 
             <p>Database shows:</p>
-            {user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1] &&
-                <p>Lat: {user.WebsiteCheckIn.loc.coordinates[0]}Long: {user.WebsiteCheckIn.loc.coordinates[1]}</p>
+            {!isLoading && user.checkinDevices.WebsiteCheckIn.loc.coordinates[0] && user.checkinDevices.WebsiteCheckIn.loc.coordinates[1] &&
+                <p>Lat: {user.checkinDevices.WebsiteCheckIn.loc.coordinates[0]}Long: {user.checkinDevices.WebsiteCheckIn.loc.coordinates[1]}</p>
             }
             {/* {GoogleURL !== "void"
                 ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>

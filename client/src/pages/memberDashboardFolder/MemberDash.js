@@ -63,10 +63,10 @@ function MemberDash() {
                             //(some people may want shorter warning periods that others?)
                             //TODO create another section for those that opt out of checkins 
                             //and just want to use the site for information
-                            .sort((a, b) => (a.WebsiteCheckIn.dateCreated > b.WebsiteCheckIn.dateCreated) ? 1 : -1)
+                            .sort((a, b) => (a.checkinDevices.WebsiteCheckIn.dateCreated > b.checkinDevices.WebsiteCheckIn.dateCreated) ? 1 : -1)
                             .map(user => {
                                 //this gets the milliseconds since checkin
-                                const temptime = Date.now() - (new Date(user.WebsiteCheckIn.dateCreated).getTime());
+                                const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).getTime());
                                 let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
                                 let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                 let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
@@ -77,10 +77,10 @@ function MemberDash() {
                                         <li className="list-group-item list-group-item-action dashboard-li" >
                                             <p><strong>NAME: </strong>{user.name}</p>
                                             <p>Web Check in: {" "}
-                                                {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                             </p>
                                             <p>
-                                                {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).toTimeString())}
                                             </p>
                                             <p>{days} days {hours} hours {minutes} minutes since checkin</p>
                                             {/*

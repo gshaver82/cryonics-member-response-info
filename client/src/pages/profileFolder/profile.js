@@ -35,8 +35,10 @@ function Profile() {
         const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "Initialized user name",
-            WebsiteCheckIn: {
-                dateCreated: Date.now(),
+            checkinDevices: {
+                WebsiteCheckIn: {
+                    dateCreated: Date.now(),
+                },
             },
             dateCreated: Date.now(),
         }

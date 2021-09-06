@@ -4,6 +4,6 @@ const exampleController = require("../../controllers/exampleController");
 //matches with /api/checkin route
 router.route("/")
     // .get(exampleController.getcheckin)
-    .put(exampleController.putcheckin)
+    .put(exampleController.putWebcheckIn)
 
 module.exports = router;

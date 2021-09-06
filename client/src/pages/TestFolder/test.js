@@ -192,14 +192,14 @@ function Test() {
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>photoURL: {user.photoURL}</p>
                                 <p>Web Check in: {" "}
-                                    {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+                                    {(new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).toDateString())} {" "}
                                 </p>
                                 <p>
-                                    {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+                                    {(new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).toTimeString())}
                                 </p>
                                 <p>
-                                    Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
-                                    {user.WebsiteCheckIn.loc.coordinates[1]}]
+                                    Web Check in GPS: [{user.checkinDevices.WebsiteCheckIn.loc.coordinates[0]}]  [
+                                    {user.checkinDevices.WebsiteCheckIn.loc.coordinates[1]}]
                                 </p>
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
