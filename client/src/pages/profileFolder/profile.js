@@ -35,13 +35,9 @@ function Profile() {
         const newUser = {
             firebaseAuthID: firebaseUserID,
             name: "Initialized user name",
-            checkinDevices: {
-                WebsiteCheckIn: {
-                    dateCreated: Date.now(),
-                },
-            },
             dateCreated: Date.now(),
         }
+        console.log("🚀 ~ handleadduserclick ~ newUser", newUser)
         API.adduser(newUser)
             .then(API.getOneUserByFirebaseID(firebaseUserID))
             .then(res => setUser(res.data))
@@ -58,11 +54,7 @@ function Profile() {
     };
 
     const handleSaveProfile = (e) => {
-        e.preventDefault();
-        // console.log("🚀 ~ file: profile.js ~ line 61 ~ handleSaveProfile ~ name", name)
-        // console.log("🚀 ~ file: profile.js ~ line 63 ~ handleSaveProfile ~ description", description)
-        // console.log("🚀 ~ file: profile.js ~ line 65 ~ handleSaveProfile ~ cryonicsProvider", cryonicsProvider)
-        // console.log("🚀 ~ file: profile.js ~ line 67 ~ handleSaveProfile ~ photoURL", photoURL)
+        e.preventDefault(); 
         setisLoading(true)
         const editedUser = {
             firebaseAuthID: firebaseUserID,
@@ -70,15 +62,23 @@ function Profile() {
             description: description,
             cryonicsProvider: cryonicsProvider,
             photoURL: photoURL,
+            checkinDevices: {
+                WebsiteCheckIn: {
+                    checkinArray: [
+                        {
+                            dateCreated: Date.now(),
+                            loc: {
+                                type: "Point",
+                                coordinates: [0, 0],
+                            }
+                        }
+                    ]
+                },
+            },
         }
-        // console.log("🚀 ~ file: profile.js ~ line 71 ~ handleSaveProfile ~ editedUser", editedUser)
         API.edituser(editedUser)
             .then(setisLoading(false))
             .catch(err => console.log(err));
-        // API.getOneUserByFirebaseID(firebaseUserID)
-        //     .then(res => setUser(res.data))
-        //     .then(setisLoading(false))
-        //     .catch(err => console.log(err));
         setisEditing(false)
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))

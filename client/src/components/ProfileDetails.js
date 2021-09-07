@@ -18,8 +18,10 @@ function ProfileDetails() {
 
   let GoogleURL = "void";
   if (isLoading === false && user) {
-    if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
-      GoogleURL = "https://www.google.com/maps/place/" + [user.WebsiteCheckIn.loc.coordinates[0]] + "+" + [user.WebsiteCheckIn.loc.coordinates[1]]
+    if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
+      user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]) {
+      GoogleURL = "https://www.google.com/maps/place/" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] +
+        "+" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
     }
   }
 
@@ -28,17 +30,17 @@ function ProfileDetails() {
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
 
-      <p>username is: {user && <span>{user.name} </span>}{user.photoURL && <img src={user.photoURL} alt = 'default profile pic here'></img>}</p>
+      <p>username is: {user && <span>{user.name} </span>}{user.photoURL && <img src={user.photoURL} alt='default profile pic here'></img>}</p>
       <p>userdate created is: {user && <span>{user.dateCreated}</span>}</p>
       {/* <p>id is: {_id && <span>{_id}</span>}</p> */}
       {user && <div>
         <p>description: {user.description}</p>
         <p>cryonicsProvider: {user.cryonicsProvider}</p>
         <p>Web Check in: {" "}
-          {(new Date(user.WebsiteCheckIn.dateCreated).toDateString())} {" "}
+          {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
         </p>
         <p>
-          {(new Date(user.WebsiteCheckIn.dateCreated).toTimeString())}
+          {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
         </p>
         {GoogleURL !== "void"
           ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>

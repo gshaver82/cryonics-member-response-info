@@ -30,17 +30,26 @@ const cryonicsSchema = new Schema({
         required: true,
         default: false,
     },
-    checkinDevices:{
+    checkinDevices: {
         WebsiteCheckIn: {
-            dateCreated: {
-                type: Date,
-                default: Date.now,
-                required: false,
+            WebsiteCheckinRegistered: {
+                type: Boolean,
+                required: true,
+                default: false,
             },
-            loc: {
-                type: { type: String },
-                coordinates: [Number],
-            },
+            checkinArray: [
+                {
+                    dateCreated: {
+                        type: Date,
+                        default: Date.now,
+                        required: false,
+                    },
+                    loc: {
+                        type: { type: String },
+                        coordinates: [Number],
+                    },
+                }
+            ]
         },
         fitbit: {
             fitbitDeviceRegistered: {
@@ -55,7 +64,16 @@ const cryonicsSchema = new Schema({
             refreshToken: {
                 type: String,
                 required: false,
-            }
+            },
+            checkinArray: [
+                {
+                    dateCreated: {
+                        type: Date,
+                        default: Date.now,
+                        required: false,
+                    },
+                }
+            ]
         },
         exampleDevice: {
             exampleDeviceRegistered: {
@@ -70,7 +88,16 @@ const cryonicsSchema = new Schema({
             refreshToken: {
                 type: String,
                 required: false,
-            }
+            },
+            exampleCheckinArray: [
+                {
+                    dateCreated: {
+                        type: Date,
+                        default: Date.now,
+                        required: false,
+                    },
+                }
+            ]
         },
     },
     description: {

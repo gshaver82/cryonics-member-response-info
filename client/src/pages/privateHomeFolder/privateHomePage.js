@@ -28,47 +28,42 @@ function PrivateHomePage() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    //defaults to 0 if lat and long are not detected
+    async function newCheckinDataFunction(lat = 0, lng = 0) {
+        // console.log("🚀 ~ newCheckinDataFunction ~ lat", lat)
+        let newCheckinData = {
+            dateCreated: Date.now(),
+            loc: {
+                type: "Point",
+                coordinates: [lat, lng],
+            }
+        }
+        return newCheckinData
+    }
+
     const handleputWebcheckIn = async () => {
         setisLoading(true)
-        if (lat && lng) {
-            let checkInData = {
-                firebaseAuthID: firebaseUserID,
-                checkinDevices: {
-                    WebsiteCheckIn: {
-                        dateCreated: Date.now(),
-                        loc: {
-                            type: "Point",
-                            coordinates: [lat, lng],
-                        }
-                    },
-                }
-
+        //sends lat and lng to create a new object for the array. function will default to 0 
+        let newCheckinData = await newCheckinDataFunction(lat, lng);
+        let newCheckinArray = user.checkinDevices.WebsiteCheckIn.checkinArray
+        //this will add the array object to the front
+        newCheckinArray.splice(0, 0, newCheckinData)
+        //after {first num} it will delete up to {second num}
+        newCheckinArray.splice(30, 542);
+        let checkInData = {
+            firebaseAuthID: firebaseUserID,
+            checkinDevices: {
+                WebsiteCheckIn: {
+                    checkinArray: newCheckinArray
+                },
             }
-            await API.putWebcheckIn(checkInData)
-                // .then(console.log("putcheckin with lat and long"))
-                .catch(err => console.log(err));
-        } else {
-            let checkInData = {
-                firebaseAuthID: firebaseUserID,
-                checkinDevices: {
-                    WebsiteCheckIn: {
-                        dateCreated: Date.now(),
-                        loc: {
-                            type: "Point",
-                            coordinates: [0, 0],
-                        }
-                    }
-                }
-            }
-
-            await API.putWebcheckIn(checkInData)
-                // .then(console.log("putcheckin WITHOUT lat and long"))
-                .catch(err => console.log(err));
         }
+        // console.log("******* ~ handleputWebcheckIn ~ checkInData", checkInData)
+        await API.putWebcheckIn(checkInData)
+            .catch(err => console.log(err));
 
         await API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
-            .then(console.log(user))
             .then(setisLoading(false))
             .catch(err => console.log(err));
     };
@@ -92,12 +87,19 @@ function PrivateHomePage() {
     let minutes = "Loading..."
     let hours = "Loading..."
     let days = "Loading..."
+    // if (isLoading === false && user !== "starting user condition" && user) {
+    //     console.log("--------------user.checkinDevices.WebsiteCheckIn")
+    //     console.log(user.checkinDevices.WebsiteCheckIn)
+    // }
+
     if (isLoading === false && user !== "starting user condition" && user) {
-        const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.dateCreated).getTime());
+        const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
         minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
         hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
+
+
     // let GoogleURL = "void";
     // if (isLoading === false && user !== "starting user condition" && user) {
     //     if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
@@ -122,7 +124,7 @@ function PrivateHomePage() {
             <h3>
                 You are now logged in and viewing your private home page!
             </h3>
-            {!isLoading && <p>This page is not loading</p>}
+            {!isLoading && <p>This page has loaded</p>}
             {isLoading && <p>This page is loading</p>}
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
@@ -147,9 +149,16 @@ function PrivateHomePage() {
             }
 
             <p>Database shows:</p>
-            {!isLoading && user.checkinDevices.WebsiteCheckIn.loc.coordinates[0] && user.checkinDevices.WebsiteCheckIn.loc.coordinates[1] &&
-                <p>Lat: {user.checkinDevices.WebsiteCheckIn.loc.coordinates[0]}Long: {user.checkinDevices.WebsiteCheckIn.loc.coordinates[1]}</p>
+            {!isLoading &&
+                user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
+                user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
+                <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}
+                    Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}</p>
             }
+
+
+
+
             {/* {GoogleURL !== "void"
                 ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
                 : <p>no GPS coordinates found in database</p>} */}

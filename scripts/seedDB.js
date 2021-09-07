@@ -19,12 +19,17 @@ let usersSeed = [
         cryonicsProvider: "Alcor",
         checkinDevices: {
             WebsiteCheckIn: {
-                dateCreated: 1626054981430,
-                loc: {
-                    type: "Point",
-                    coordinates: [40.7128, -74.0060],
-                }
-            }
+                WebsiteCheckinRegistered: true,
+                checkinArray: [
+                    {
+                        dateCreated: 1626054981430,
+                        loc: {
+                            type: "Point",
+                            coordinates: [40.7128, -74.0060],
+                        }
+                    }
+                ]
+            },
         },
     },
     {
@@ -35,11 +40,16 @@ let usersSeed = [
         cryonicsProvider: "Alcor",
         checkinDevices: {
             WebsiteCheckIn: {
-                dateCreated: 1526014081430,
-                loc: {
-                    type: "Point",
-                    coordinates: [60.3930, 5.3242],
-                }
+                WebsiteCheckinRegistered: true,
+                checkinArray: [
+                    {
+                        dateCreated: 1526014081430,
+                        loc: {
+                            type: "Point",
+                            coordinates: [60.3930, 5.3242],
+                        }
+                    }
+                ]
             },
         },
     },
@@ -51,11 +61,16 @@ let usersSeed = [
         cryonicsProvider: "Cryonics Institute",
         checkinDevices: {
             WebsiteCheckIn: {
-                dateCreated: Date.now(),
-                loc: {
-                    type: "Point",
-                    coordinates: [51.5074, .1278],
-                }
+                WebsiteCheckinRegistered: true,
+                checkinArray: [
+                    {
+                        dateCreated: Date.now(),
+                        loc: {
+                            type: "Point",
+                            coordinates: [51.5074, .1278],
+                        }
+                    }
+                ]
             }
         },
     },
