@@ -11,10 +11,7 @@ module.exports = {
     putFitBitTokens: function (req, res) {
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
-                req.body,
-                {
-                    new: true
-                }
+                {$set:{"checkinDevices.fitbit": req.body.checkinDevices.fitbit}}
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));

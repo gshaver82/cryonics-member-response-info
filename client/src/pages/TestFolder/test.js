@@ -12,7 +12,9 @@ function Test() {
     const [isLoading, setisLoading] = useState(true);
     const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
-    const [fitbitUserDataResponse, setfitbitUserDataResponse] = useState(false);
+    const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
+    const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
+
 
     const firebaseAuthID = firebase.auth().currentUser.uid
 
@@ -106,41 +108,30 @@ function Test() {
             .catch(err => console.log(err))
         let fitBitDataJSON = await getFitBitData(authTokens)
         console.log("fitBitDataJSON", fitBitDataJSON)
-        // fitBitDataJSON = fitBitDataJSON.toString().replace('-', '');
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
-        // console.log(JSON.parse(fitBitDataJSON));
-        // console.log("fitBitDataJSON with - taken out", fitBitDataJSON)
-        // const fitBitDataOBJ = JSON.parse(fitBitDataJSON);
-        // console.log("fitBitDataOBJ", fitBitDataOBJ)
-
-        // const str = JSON.stringify(
-        //     fitBitDataJSON,
-        //     (key, val) => {
-        //         if (key === 'activities-heart') {
-        //             return key.replace('-', '');
-        //         }
-        //         return key;
-        //     }
-        // );
-        // console.log("🚀 ~ handleGetHeartrate ~ str", str)
-        // let endingResult = await JSON.parse(str)
-        // console.log(endingResult);
 
         fitBitDataJSON = JSON.stringify(fitBitDataJSON);
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
-        fitBitDataJSON = fitBitDataJSON.replace('-', '');
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
+        fitBitDataJSON = fitBitDataJSON.replaceAll('-', '');
         fitBitDataJSON = JSON.parse(fitBitDataJSON);
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON", fitBitDataJSON)
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart", fitBitDataJSON.activitiesheart)
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0]", fitBitDataJSON.activitiesheart[0])
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0].value", fitBitDataJSON.activitiesheart[0].value)
-        // console.log("🚀 ~ handleGetHeartrate ~ fitBitDataJSON.activitiesheart[0].value.restingHeartRate", fitBitDataJSON.activitiesheart[0].value.restingHeartRate)
-
-
         const heartRate = fitBitDataJSON.activitiesheart[0].value.restingHeartRate;
-        setfitbitUserDataResponse(heartRate)
+        setfitbitUserHRDataResponse(heartRate)
+
+        //getting the most recent time from the fitbitdatajson
+
+        let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
+        YoungestFitbitHR = YoungestFitbitHR.time;
+        console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
+        YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
+        YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
+        console.log("🚀 after slice ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
+        setfitbitNewestTime(YoungestFitbitHR)
+
+        //this gets the milliseconds since checkin
+        // const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
+        // let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+        // let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+        // let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
+
 
     async function getFitBitData(authTokens) {
         let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
@@ -159,6 +150,8 @@ function Test() {
         return response.json(); // parses JSON response into native JavaScript objects
     }
 
+
+
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
@@ -172,12 +165,20 @@ function Test() {
             <button onClick={handleGetHeartrate}>
                 Get Heartrate Time Series info
             </button>
-            <p>Data from fitbit
-                {fitbitUserDataResponse &&
+            <p>generic Data from fitbit
+                {fitbitUserHRDataResponse &&
                     <span> is loaded and your resting heart rate is:
-                        {fitbitUserDataResponse}</span>}
-                {!fitbitUserDataResponse && <span> has not yet loaded</span>}</p>
+                        {fitbitUserHRDataResponse}</span>}
+                {!fitbitUserHRDataResponse && <span> has not yet loaded</span>}</p>
             <p>-------------------------</p>
+
+            <p>Fitbit Intra day data
+                {fitbitNewestTime &&
+                    <span> is loaded and your most recent time according to the fitbit server is:
+                        {fitbitNewestTime}</span>}
+                {!fitbitNewestTime && <span> has not yet loaded</span>}</p>
+            <p>-------------------------</p>
+            
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">
