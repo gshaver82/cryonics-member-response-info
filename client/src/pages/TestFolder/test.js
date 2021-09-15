@@ -149,9 +149,9 @@ function Test() {
             console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
             //then putfitbit checkin
             const newArrayEntry =
-                {
-                    dateCreated: FBcheckinDateCode
-                }
+            {
+                dateCreated: FBcheckinDateCode
+            }
 
             let oldArray = user.checkinDevices.fitbit.checkinArray || []
             console.log("🚀 ~ handleGetHeartrate ~ oldArray", oldArray)
@@ -235,7 +235,7 @@ function Test() {
                                 <p>description: {user.description}</p>
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>photoURL: {user.photoURL}</p>
-                                <p>Web Check in: {" "}
+                                <p>Web Check in(most recent): {" "}
                                     {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
                                 </p>
                                 <p>
@@ -245,6 +245,22 @@ function Test() {
                                     Web Check in GPS: [{user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}]  [
                                     {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}]
                                 </p>
+                                <p>
+                                    fitbit logs here:
+                                </p>
+                                {user.checkinDevices.fitbit.checkinArray &&
+                                    <div>
+                                        {user.checkinDevices.fitbit.checkinArray.map(array => {
+                                            return (
+                                                <div key={array._id}>
+                                                    <p>{new Date(array.dateCreated).toDateString()}
+                                                    {"----"} {new Date(array.dateCreated).toTimeString()}</p>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                }
+
                                 <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button>
