@@ -7,6 +7,7 @@ const firebase = firebaseEnvConfigs.firebase_;
 
 
 function Test() {
+    const firebaseUserID = firebase.auth().currentUser.uid
     let history = useHistory();
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
@@ -14,9 +15,18 @@ function Test() {
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
     const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
     const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
-
+    const [user, setUser] = useState("starting user condition");
 
     const firebaseAuthID = firebase.auth().currentUser.uid
+
+    useEffect(() => {
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
 
     useEffect(() => {
         API.getuserList()
@@ -116,20 +126,53 @@ function Test() {
         setfitbitUserHRDataResponse(heartRate)
 
         //getting the most recent time from the fitbitdatajson
+        //if the current days entry does not exist then skip
+        if (fitBitDataJSON.activitiesheartintraday.dataset) {
+            let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
+            YoungestFitbitHR = YoungestFitbitHR.time;
+            console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
+            YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
+            YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
+            setfitbitNewestTime(YoungestFitbitHR)
 
-        let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-        YoungestFitbitHR = YoungestFitbitHR.time;
-        console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
-        YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
-        YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
-        console.log("🚀 after slice ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
-        setfitbitNewestTime(YoungestFitbitHR)
+            //convert to current date code
+            //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
+            let FBcheckinDateCode = new Date();
+            console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+            let hours = YoungestFitbitHR.slice(0, 2)
+            console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
+            let minutes = YoungestFitbitHR.slice(2, 4)
+            console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
+            FBcheckinDateCode = FBcheckinDateCode.setHours(hours, minutes, '00');
+            console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+            //then putfitbit checkin
+            const newArrayEntry = [
+                {
+                    dateCreated: { FBcheckinDateCode
+                    },
+                }
+            ]
 
-        //this gets the milliseconds since checkin
-        // const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-        // let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-        // let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-        // let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+            let oldArray = user.checkinDevices.fitbit.checkinArray || []
+            console.log("🚀 ~ handleGetHeartrate ~ oldArray", oldArray)
+            //this will add the array object to the front
+            oldArray.splice(0, 0, newArrayEntry)
+            //after {first num} it will delete up to {second num}
+            oldArray.splice(30, 542);
+            let fitbitCheckinObjectForDB = {
+                firebaseAuthID: firebaseUserID,
+                checkinDevices: {
+                    fitbit: {
+                        checkinArray: oldArray
+                    },
+                }
+            }
+            console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
+
+            API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
+                .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
+                .catch(err => console.log(err));
+        }
     }
 
 
@@ -178,7 +221,7 @@ function Test() {
                         {fitbitNewestTime}</span>}
                 {!fitbitNewestTime && <span> has not yet loaded</span>}</p>
             <p>-------------------------</p>
-            
+
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">

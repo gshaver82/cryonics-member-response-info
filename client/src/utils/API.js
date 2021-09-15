@@ -25,12 +25,13 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 export default {
     fitbitGetAuthToken: function (firebaseAuthID) {
-        console.log("🚀 ~ firebaseAuthID"+ firebaseAuthID)
-
         return authorize.get("/api/fitbit/"+ firebaseAuthID);
     },
     putFitBitTokens: function (fitbitObjectForDB) {
         return authorize.put("/api/fitbit", fitbitObjectForDB);
+    },
+    putFitBitManualCheckin: function (FBcheckinDateCode) {
+        return authorize.put("/api/fitbit/fitbitCheckin", FBcheckinDateCode);
     },
     getuserList: function () {
         return authorize.get("/api/users");

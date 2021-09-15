@@ -17,6 +17,16 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
 
+    putFitBitManualCheckin: function (req, res) {
+        console.log(req.body.checkinDevices.fitbit.checkinArray)
+        db.CryonicsModel
+            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
+                {$set:{"checkinDevices.fitbit.checkinArray": req.body.checkinDevices.fitbit.checkinArray}}
+            )
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
+
     findAll: function (req, res) {
         db.CryonicsModel
             .find()
