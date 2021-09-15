@@ -69,7 +69,6 @@ const cryonicsSchema = new Schema({
                 {
                     dateCreated: {
                         type: Date,
-                        default: Date.now,
                         required: false,
                     },
                 }

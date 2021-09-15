@@ -20,6 +20,8 @@ function Test() {
     const firebaseAuthID = firebase.auth().currentUser.uid
 
     useEffect(() => {
+        const CurrentDate = new Date();
+        console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
@@ -137,21 +139,19 @@ function Test() {
 
             //convert to current date code
             //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
-            let FBcheckinDateCode = new Date();
-            console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+            const CurrentDate = new Date();
+            console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
             let hours = YoungestFitbitHR.slice(0, 2)
             console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
             let minutes = YoungestFitbitHR.slice(2, 4)
             console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
-            FBcheckinDateCode = FBcheckinDateCode.setHours(hours, minutes, '00');
+            const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
             console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
             //then putfitbit checkin
-            const newArrayEntry = [
+            const newArrayEntry =
                 {
-                    dateCreated: { FBcheckinDateCode
-                    },
+                    dateCreated: FBcheckinDateCode
                 }
-            ]
 
             let oldArray = user.checkinDevices.fitbit.checkinArray || []
             console.log("🚀 ~ handleGetHeartrate ~ oldArray", oldArray)

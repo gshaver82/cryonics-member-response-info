@@ -18,6 +18,7 @@ module.exports = {
     },
 
     putFitBitManualCheckin: function (req, res) {
+        console.log('req.body.checkinDevices.fitbit.checkinArray')
         console.log(req.body.checkinDevices.fitbit.checkinArray)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
