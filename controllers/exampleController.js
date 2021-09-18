@@ -18,12 +18,19 @@ module.exports = {
     },
 
     putFitBitManualCheckin: function (req, res) {
-        console.log('req.body.checkinDevices.fitbit.checkinArray')
-        console.log(req.body.checkinDevices.fitbit.checkinArray)
         db.CryonicsModel
             .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                 {$set:{"checkinDevices.fitbit.checkinArray": req.body.checkinDevices.fitbit.checkinArray}}
             )
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
+
+    putWebcheckIn: function (req, res) {
+        db.CryonicsModel
+            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
+                {$set:{"checkinDevices.WebsiteCheckIn.checkinArray": req.body.checkinDevices.WebsiteCheckIn.checkinArray}}
+                )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
@@ -82,15 +89,5 @@ module.exports = {
             .catch(err => res.status(422).json(err));
     },
 
-    putWebcheckIn: function (req, res) {
-        db.CryonicsModel
-            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
-                req.body,
-                {
-                    new: true
-                }
-            )
-            .then(dbModelDataResult => res.json(dbModelDataResult))
-            .catch(err => res.status(422).json(err));
-    },
+
 };

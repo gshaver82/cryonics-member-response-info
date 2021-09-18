@@ -58,7 +58,6 @@ function PrivateHomePage() {
                 },
             }
         }
-        // console.log("******* ~ handleputWebcheckIn ~ checkInData", checkInData)
         await API.putWebcheckIn(checkInData)
             .catch(err => console.log(err));
 
