@@ -7,8 +7,8 @@ function NavTabs() {
   return (
     <ul className="nav nav-tabs">
       <li className="nav-item display-4">
-        <Link to="/publicHomePage" className={(location.pathname === "/" ||location.pathname === "/publicHomePage" ) ? "nav-link active" : "nav-link"}>
-        publicHome
+        <Link to="/publicHomePage" className={(location.pathname === "/" || location.pathname === "/publicHomePage") ? "nav-link active" : "nav-link"}>
+          publicHome
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -76,6 +76,9 @@ function NavTabs() {
         </Link>
       </li>
     </ul>
+    //     <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
+    //     Logout
+    // </button>
   );
 }
 export default NavTabs;

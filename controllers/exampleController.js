@@ -9,18 +9,34 @@ module.exports = {
     },
 
     putFitBitTokens: function (req, res) {
+    console.log("🚀 ~ putFitBitTokens")
         db.CryonicsModel
-            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
-                {$set:{"checkinDevices.fitbit": req.body.checkinDevices.fitbit}}
+            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+                {
+                    $set: {
+                        "checkinDevices.fitbit.fitbitDeviceRegistered": req.body.checkinDevices.fitbit.fitbitDeviceRegistered,
+                        "checkinDevices.fitbit.authToken": req.body.checkinDevices.fitbit.authToken,
+                        "checkinDevices.fitbit.refreshToken": req.body.checkinDevices.fitbit.refreshToken,
+                    }
+                }
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
 
     putFitBitManualCheckin: function (req, res) {
+    console.log("🚀 ~ putFitBitManualCheckin")
         db.CryonicsModel
-            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
-                {$set:{"checkinDevices.fitbit.checkinArray": req.body.checkinDevices.fitbit.checkinArray}}
+            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+                {
+                    $push: {
+                        "checkinDevices.fitbit.checkinArray": {
+                            $each: [req.body.newArrayEntry],
+                            $position: 0,
+                            $slice: 5
+                        }
+                    }
+                }
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
@@ -28,12 +44,21 @@ module.exports = {
 
     putWebcheckIn: function (req, res) {
         db.CryonicsModel
-            .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
-                {$set:{"checkinDevices.WebsiteCheckIn.checkinArray": req.body.checkinDevices.WebsiteCheckIn.checkinArray}}
-                )
+            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+                {
+                    $push: {
+                        "checkinDevices.WebsiteCheckIn.checkinArray": {
+                            $each: [req.body.newCheckinData],
+                            $position: 0,
+                            $slice: 5
+                        }
+                    }
+                }
+            )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
+
 
     findAll: function (req, res) {
         db.CryonicsModel

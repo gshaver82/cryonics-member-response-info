@@ -45,27 +45,18 @@ function PrivateHomePage() {
         setisLoading(true)
         //sends lat and lng to create a new object for the array. function will default to 0 
         let newCheckinData = await newCheckinDataFunction(lat, lng);
-        let newCheckinArray = user.checkinDevices.WebsiteCheckIn.checkinArray
-        //this will add the array object to the front
-        newCheckinArray.splice(0, 0, newCheckinData)
-        //after {first num} it will delete up to {second num}
-        newCheckinArray.splice(30, 542);
         let checkInData = {
             firebaseAuthID: firebaseUserID,
-            checkinDevices: {
-                WebsiteCheckIn: {
-                    checkinArray: newCheckinArray
-                },
-            }
+            newCheckinData
         }
         await API.putWebcheckIn(checkInData)
             .catch(err => console.log(err));
-
         await API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
     };
+
 
     function geolocator() {
         if (!navigator.geolocation) {
@@ -76,7 +67,6 @@ function PrivateHomePage() {
                 setStatus(null);
                 setLat(position.coords.latitude);
                 setLng(position.coords.longitude);
-
             }, () => {
                 setStatus('Unable to retrieve your location');
             });
@@ -86,10 +76,6 @@ function PrivateHomePage() {
     let minutes = "Loading..."
     let hours = "Loading..."
     let days = "Loading..."
-    // if (isLoading === false && user !== "starting user condition" && user) {
-    //     console.log("--------------user.checkinDevices.WebsiteCheckIn")
-    //     console.log(user.checkinDevices.WebsiteCheckIn)
-    // }
 
     if (isLoading === false && user !== "starting user condition" && user) {
         const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
@@ -98,13 +84,15 @@ function PrivateHomePage() {
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
     }
 
-
-    // let GoogleURL = "void";
-    // if (isLoading === false && user !== "starting user condition" && user) {
-    //     if (user.WebsiteCheckIn.loc.coordinates[0] && user.WebsiteCheckIn.loc.coordinates[1]) {
-    //         GoogleURL = "https://www.google.com/maps/place/" + [user.WebsiteCheckIn.loc.coordinates[0]] + "+" + [user.WebsiteCheckIn.loc.coordinates[1]]
-    //     }
-    // }
+    let GoogleURL = "void";
+    if (isLoading === false && user !== "starting user condition" && user) {
+        if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] 
+            && user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] ) {
+            GoogleURL = "https://www.google.com/maps/place/" + 
+            [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] + "+" + 
+            [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
+        }
+    }
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -154,21 +142,9 @@ function PrivateHomePage() {
                 <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}
                     Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}</p>
             }
-
-
-
-
-            {/* {GoogleURL !== "void"
+            {GoogleURL !== "void"
                 ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found in database</p>} */}
-            <br></br>
-            {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
-                Logout
-            </button>
-            <br></br>
-            <div>
-                <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
-            </div> */}
+                : <p>no GPS coordinates found in database</p>}    
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)

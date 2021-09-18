@@ -5,7 +5,7 @@ const exampleController = require("../../controllers/exampleController");
 router.route("/")
     .put(exampleController.putFitBitTokens)
 router.route("/fitbitCheckin/")
-    .put(exampleController.putFitBitTokens)
+    .put(exampleController.putFitBitManualCheckin)
 router.route("/:firebaseAuthID")
     .get(exampleController.fitbitGetAuthToken)
 

@@ -20,8 +20,6 @@ function Test() {
     const firebaseAuthID = firebase.auth().currentUser.uid
 
     useEffect(() => {
-        const CurrentDate = new Date();
-        console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
@@ -103,23 +101,29 @@ function Test() {
             .catch(err => console.log(err));
     }
 
-    const handleDeleteClick = async (event) => {
-        setisLoading(true)
-        const deletedUser_id = event.target.value;
-        await API.deleteUser(deletedUser_id)
-            .catch(err => console.log(err));
-        await API.getuserList()
-            .then(res => setUsers(res.data))
-            .then(setisLoading(false))
-    }
-
     const handleGetHeartrate = async () => {
-        let authTokens = ''
-        authTokens = await API.fitbitGetAuthToken(firebaseAuthID)
+        let fitBitDataJSON = 'starting value'
+        let authTokens = 'starting value'
+        authTokens = await API.fitbitGetDBAuthToken(firebaseAuthID)
             .then(res => res.data)
             .catch(err => console.log(err))
-        let fitBitDataJSON = await getFitBitData(authTokens)
-        console.log("fitBitDataJSON", fitBitDataJSON)
+        if (!authTokens) {
+            console.log("!authtokens")
+            return
+        } else {
+            console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
+            fitBitDataJSON = await getFitBitData(authTokens)
+        }
+
+        if (!fitBitDataJSON) {
+            console.log("!fitBitDataJSON")
+            return
+        } else if (fitBitDataJSON.success === false) {
+            console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
+            return
+        } else {
+            console.log("no errors")
+        }
 
         fitBitDataJSON = JSON.stringify(fitBitDataJSON);
         fitBitDataJSON = fitBitDataJSON.replaceAll('-', '');
@@ -130,6 +134,7 @@ function Test() {
         //getting the most recent time from the fitbitdatajson
         //if the current days entry does not exist then skip
         if (fitBitDataJSON.activitiesheartintraday.dataset) {
+            setisLoading(true)
             let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
             YoungestFitbitHR = YoungestFitbitHR.time;
             console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
@@ -152,48 +157,52 @@ function Test() {
             {
                 dateCreated: FBcheckinDateCode
             }
-
-            let oldArray = user.checkinDevices.fitbit.checkinArray || []
-            console.log("🚀 ~ handleGetHeartrate ~ oldArray", oldArray)
-            //this will add the array object to the front
-            oldArray.splice(0, 0, newArrayEntry)
-            //after {first num} it will delete up to {second num}
-            oldArray.splice(30, 542);
             let fitbitCheckinObjectForDB = {
                 firebaseAuthID: firebaseUserID,
-                checkinDevices: {
-                    fitbit: {
-                        checkinArray: oldArray
-                    },
-                }
+                newArrayEntry
             }
             console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
 
             API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                 .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                 .catch(err => console.log(err));
+            API.getuserList()
+                .then(res => setUsers(res.data))
+                .then(setisLoading(false))
+                .catch(err => console.log(err));
         }
     }
 
-
     async function getFitBitData(authTokens) {
-        let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
-        const response = await fetch(url, {
-            method: 'GET', // *GET, POST, PUT, DELETE, etc.
-            mode: 'cors', // no-cors, *cors, same-origin
-            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-            credentials: 'same-origin', // include, *same-origin, omit
-            headers: {
-                'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + authTokens.authToken
-            },
-            redirect: 'follow', // manual, *follow, error
-            referrerPolicy: 'no-referrer'
-        });
-        return response.json(); // parses JSON response into native JavaScript objects
+        if (authTokens) {
+            let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
+            const response = await fetch(url, {
+                method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + authTokens.authToken
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer'
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        } else {
+            console.log("no auth tokens")
+        }
     }
 
-
+    const handleDeleteClick = async (event) => {
+        setisLoading(true)
+        const deletedUser_id = event.target.value;
+        await API.deleteUser(deletedUser_id)
+            .catch(err => console.log(err));
+        await API.getuserList()
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+    }
 
     return (
         <div>
@@ -254,7 +263,7 @@ function Test() {
                                             return (
                                                 <div key={array._id}>
                                                     <p>{new Date(array.dateCreated).toDateString()}
-                                                    {"----"} {new Date(array.dateCreated).toTimeString()}</p>
+                                                        {"----"} {new Date(array.dateCreated).toTimeString()}</p>
                                                 </div>
                                             );
                                         })}
