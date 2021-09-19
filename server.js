@@ -44,7 +44,9 @@ serverCode.fifteenMin();
 DBcalls();
 
 async function DBcalls() {
-    const findall = await serverCode.DBFindallTest();
-    console.log("inside DBcalls, getting find all", findall)
+    // const findall = await serverCode.DBFindallTest();
+    // console.log("inside DBcalls, getting find all", findall)
+    const FitbitUsers = await serverCode.DBFindFitbitUsers();
+    console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
 }
 

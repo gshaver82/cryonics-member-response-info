@@ -1,14 +1,11 @@
+const db = require("./models");
 module.exports = {
     startup: function (req, res) {
         console.log("server startup")
     },
     fifteenMin: function (req, res) {
         let hourcount = 0
-        // console.log("first hourcount is  " + hourcount);
-
         let Fifteenmincount = 0
-        // console.log("first Fifteenmincount is  " + Fifteenmincount);
-
         fifteenmincounttimer = setInterval(function () {
             Fifteenmincount++;
             let remainder = (Fifteenmincount % 4) * 15;
@@ -19,22 +16,17 @@ module.exports = {
     },
     DBFindallTest: function (req, res) {
         console.log("DBFindallTest")
-        const db = require("./models");
         return db.CryonicsModel
             .find()
             .catch(err => console.log(err));
     },
+    DBFindFitbitUsers: function (req, res) {
+        console.log("DBFindFitbitUsers")
+        return db.CryonicsModel
+            .find({"checkinDevices.fitbit.fitbitDeviceRegistered":"true"})
+            .catch(err => console.log(err));
+    },
 };
-
-
-
-//this works, just commented out to save on the DB calls
-// const db = require("./models");
-// db.CryonicsModel
-//     .find()
-//     .then(console.log("--------------first run"))
-//     .then(dbModelDataResult => console.log((dbModelDataResult)))
-//     .catch(err => res.status(422).json(err));
 
 
 // thirtySecondsTimer = setInterval(function () {
