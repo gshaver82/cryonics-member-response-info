@@ -48,5 +48,36 @@ async function DBcalls() {
     // console.log("inside DBcalls, getting find all", findall)
     const FitbitUsers = await serverCode.DBFindFitbitUsers();
     console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
+    //take the FitbitUsers array (currently only has one [me]), 
+    //and within interval map through it to do:  auth token, refresh token (if needed)
+    //then do handleGetHeartrate code, but modified for server.
 }
+
+// thirtySecondsTimer = setInterval(function () {
+//     console.log("thirtySecondsTimer");
+//     const db = require("./models");
+//     db.CryonicsModel
+//         .find()
+//         .then(console.log("--------------interval run"))
+//         .then(dbModelDataResult => console.log((dbModelDataResult)))
+//         .catch(err => res.status(422).json(err));
+// }, 120000);
+
+
+
+// pseudo code 
+// for those in DB who have signed up for server alerts
+// check DB for auth key
+
+// run api to get heartrate, if expired expired_token..
+// {
+//     "errors": [
+//       {
+//         "errorType": "expired_token",
+//         "message": "Access token expired: eyJhbGciOi.....EpUlpc"
+//       }
+//     ]
+//   }
+//   if error type is expired_token, run the refresh api and get the new auth key
+//   store that auth key in the DB
 
