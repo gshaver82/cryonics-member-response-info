@@ -14,16 +14,32 @@ module.exports = {
                 " hours, and " + remainder + " minutes since server start");
         }, 900000);
     },
-    DBFindallTest: function (req, res) {
-        console.log("DBFindallTest")
-        return db.CryonicsModel
-            .find()
-            .catch(err => console.log(err));
-    },
     DBFindFitbitUsers: function (req, res) {
-        console.log("DBFindFitbitUsers")
+        // console.log("DBFindFitbitUsers")
         return db.CryonicsModel
-            .find({"checkinDevices.fitbit.fitbitDeviceRegistered":"true"})
+            .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
             .catch(err => console.log(err));
     },
+    testfunc: function (req, res) {
+        // console.log("DBFindFitbitUsers")
+        return db.CryonicsModel
+            .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
+            .catch(err => console.log(err));
+    },
+    putFitBitManualCheckin: function (fitbitCheckinObjectForDB) {
+        console.log("🚀 ~ putFitBitManualCheckin")
+            return db.CryonicsModel
+                .updateOne({ firebaseAuthID: fitbitCheckinObjectForDB.firebaseAuthID },
+                    {
+                        $push: {
+                            "checkinDevices.fitbit.checkinArray": {
+                                $each: [fitbitCheckinObjectForDB.newArrayEntry],
+                                $position: 0,
+                                $slice: 5
+                            }
+                        }
+                    }
+                )
+                .catch(err => console.log(err));
+        },
 };
