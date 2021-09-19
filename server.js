@@ -64,8 +64,11 @@ async function DBcalls() {
             
             //-------------------------------------------------
         });
-        //2 minutes
-    }, 600000);
+        //30 seconds 30000
+        //2 minutes 120000
+        //10 minutes 600000
+        //15 minutes 900000
+    }, 120000);
 
 }
 
@@ -110,9 +113,24 @@ const handleGetHeartrate = async (user) => {
         // console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
         let minutes = YoungestFitbitHR.slice(2, 4)
         // console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
-        const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
+        // const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
         // console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+
+        let FBcheckinDateCode = new Date();
+        //hardcoding timezone offset for central standard time
+        const timezoneOffset = -5;
+        console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
+        //central time zone offset hardcode. please change this later
+        FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
+
+        console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
+
+        FBcheckinDateCode.setUTCHours(hours, minutes, '00');
+        console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
+
+        FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
         //then putfitbit checkin
+
         const newArrayEntry =
         {
             dateCreated: FBcheckinDateCode
