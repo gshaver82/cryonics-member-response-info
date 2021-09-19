@@ -9,7 +9,7 @@ module.exports = {
     },
 
     putFitBitTokens: function (req, res) {
-    console.log("🚀 ~ putFitBitTokens")
+    // console.log("🚀 ~ putFitBitTokens")
         db.CryonicsModel
             .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
                 {
@@ -25,7 +25,7 @@ module.exports = {
     },
 
     putFitBitManualCheckin: function (req, res) {
-    console.log("🚀 ~ putFitBitManualCheckin")
+    // console.log("🚀 ~ putFitBitManualCheckin")
         db.CryonicsModel
             .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
                 {
