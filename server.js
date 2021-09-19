@@ -68,7 +68,7 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 120000);
+    }, 900000);
 
 }
 
