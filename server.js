@@ -64,7 +64,7 @@ const handleGetHeartrate = async (user) => {
     let authToken = 'starting value'
     authToken = user.checkinDevices.fitbit.authToken
     if (!authToken || authToken === 'starting value') {
-        console.log("!authtokens")
+        console.log("!authToken")
         return
     } else {
         // console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
@@ -91,7 +91,7 @@ const handleGetHeartrate = async (user) => {
             serverCode.putFitBitTokens(fitbitObjectForDB)
                 .catch(err => console.log(err));
 
-            fitBitDataJSON = await getFitBitData(authTokens)
+            fitBitDataJSON = await getFitBitData(authToken)
             if (fitBitDataJSON.success === false) {
                 console.log("failed to get refreshed token")
                 console.log("fitBitDataJSON", fitBitDataJSON)
