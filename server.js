@@ -41,7 +41,9 @@ const serverCode = require("./serverCode");
 serverCode.startup();
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
-DBcalls();
+console.log('process.env.REACT_APP_ENCODEDBASE')
+console.log(process.env.REACT_APP_ENCODEDBASE)
+// DBcalls();
 
 async function DBcalls() {
     mainInterval = setInterval(async function () {
@@ -56,7 +58,7 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 30000);
+    }, 900000);
 }
 
 const handleGetHeartrate = async (user) => {
@@ -74,8 +76,8 @@ const handleGetHeartrate = async (user) => {
     if (fitBitDataJSON.success === false) {
         console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
         if (fitBitDataJSON.errors[0].errorType === "expired_token") {
-            console.log("expired_token")
-            return
+            console.log("!!!!!!!!!!expired_token!!!!!!!!!!!!!!")
+            getFitBitRefreshTokens(user.checkinDevices.fitbit.refreshToken)
         }
     } else {
         console.log("no errors")
@@ -152,5 +154,33 @@ async function getFitBitData(authTokens) {
         return response.json(); // parses JSON response into native JavaScript objects
     } else {
         console.log("no auth tokens")
+    }
+}
+
+async function getFitBitRefreshTokens(RefreshToken) {
+    if (RefreshToken) {
+        const fitbitAuthTokenNeededData = {
+            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
+            grant_type: 'refresh_token',
+            refresh_token: RefreshToken,
+        }
+        let url = "https://api.fitbit.com/oauth2/token"
+            + "?grant_type=" + fitbitAuthTokenNeededData.grant_type
+            + "&refresh_token=" + fitbitAuthTokenNeededData.refresh_token;
+        let fitbitData = await fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': fitbitAuthTokenNeededData.Authorization
+            },
+            referrerPolicy: 'no-referrer',
+        })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        return response.json(); // parses JSON response into native JavaScript objects
+    } else {
+        console.log("no RefreshToken")
     }
 }
