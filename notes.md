@@ -1,3 +1,11 @@
+
+add this line to take out seed script
+"start:prod": "node server.js",
+add this line to add back seed script
+"start:prod": "node scripts/seedDB.js && node server.js",
+
+--------------
+quickstart notes
 heroku config vars
 NODE_ENV
 production

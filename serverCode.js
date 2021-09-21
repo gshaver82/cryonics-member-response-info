@@ -20,12 +20,6 @@ module.exports = {
             .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
             .catch(err => console.log(err));
     },
-    testfunc: function (req, res) {
-        // console.log("DBFindFitbitUsers")
-        return db.CryonicsModel
-            .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
-            .catch(err => console.log(err));
-    },
     putFitBitManualCheckin: function (fitbitCheckinObjectForDB) {
         console.log("🚀 ~ putFitBitManualCheckin")
             return db.CryonicsModel

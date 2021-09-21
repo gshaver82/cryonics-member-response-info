@@ -37,7 +37,6 @@ app.listen(PORT, function () {
     console.log(`🌎 ==> API server now on port ${PORT}!`);
 });
 
-
 const serverCode = require("./serverCode");
 serverCode.startup();
 serverCode.fifteenMin();
@@ -45,39 +44,26 @@ const fetch = require("node-fetch");
 DBcalls();
 
 async function DBcalls() {
-
-    //take the FitbitUsers array (currently only has one [me]), 
-    //and within interval map through it to do:  auth token, refresh token (if needed)
-    //then do handleGetHeartrate code, but modified for server.
-
-
-
     mainInterval = setInterval(async function () {
         console.log("inside interval");
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
-            console.log('running interval code for ', user.name)
-            // test = await serverCode.testfunc()
-            // console.log("🚀 ----------------------------------------", test)
+            // console.log('running interval code for ', user.name)
             handleGetHeartrate(user)
-            
-            //-------------------------------------------------
         });
         //30 seconds 30000
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 900000);
-
+    }, 30000);
 }
-
 
 const handleGetHeartrate = async (user) => {
     let fitBitDataJSON = 'starting value'
     let authTokens = 'starting value'
     authTokens = user.checkinDevices.fitbit
-    if (!authTokens) {
+    if (!authTokens || authTokens === 'starting value') {
         console.log("!authtokens")
         return
     } else {
@@ -85,12 +71,12 @@ const handleGetHeartrate = async (user) => {
         fitBitDataJSON = await getFitBitData(authTokens)
     }
 
-    if (!fitBitDataJSON) {
-        console.log("!fitBitDataJSON")
-        return
-    } else if (fitBitDataJSON.success === false) {
+    if (fitBitDataJSON.success === false) {
         console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
-        return
+        if (fitBitDataJSON.errors[0].errorType === "expired_token") {
+            console.log("expired_token")
+            return
+        }
     } else {
         console.log("no errors")
     }
@@ -129,24 +115,23 @@ const handleGetHeartrate = async (user) => {
         console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
 
         FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
-        //then putfitbit checkin
 
         const newArrayEntry =
         {
             dateCreated: FBcheckinDateCode
         }
-        // console.log("user", user)
         let fitbitCheckinObjectForDB = {
             firebaseAuthID: user.firebaseAuthID,
             newArrayEntry
         }
         // console.log("fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
-
         serverCode.putFitBitManualCheckin(fitbitCheckinObjectForDB)
             .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
             .catch(err => console.log(err));
+    } else {
+        console.log("fitBitDataJSON.activitiesheartintraday.dataset does not exist")
     }
-    console.log("---------------------------end of interval code completed !------------------------")
+    console.log("-----------------end of interval code completed !---------------")
 }
 
 async function getFitBitData(authTokens) {
@@ -169,21 +154,3 @@ async function getFitBitData(authTokens) {
         console.log("no auth tokens")
     }
 }
-
-
-// pseudo code 
-// for those in DB who have signed up for server alerts
-// check DB for auth key
-
-// run api to get heartrate, if expired expired_token..
-// {
-//     "errors": [
-//       {
-//         "errorType": "expired_token",
-//         "message": "Access token expired: eyJhbGciOi.....EpUlpc"
-//       }
-//     ]
-//   }
-//   if error type is expired_token, run the refresh api and get the new auth key
-//   store that auth key in the DB
-
