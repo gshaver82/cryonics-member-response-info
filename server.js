@@ -105,14 +105,14 @@ const handleGetHeartrate = async (user) => {
         let FBcheckinDateCode = new Date();
         //hardcoding timezone offset for central standard time
         const timezoneOffset = -5;
-        console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
+        // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
         //central time zone offset hardcode. please change this later
         FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
 
-        console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
+        // console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
 
         FBcheckinDateCode.setUTCHours(hours, minutes, '00');
-        console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
+        // console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
 
         FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
 
@@ -126,7 +126,7 @@ const handleGetHeartrate = async (user) => {
         }
         // console.log("fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
         serverCode.putFitBitManualCheckin(fitbitCheckinObjectForDB)
-            .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
+            // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
             .catch(err => console.log(err));
     } else {
         console.log("fitBitDataJSON.activitiesheartintraday.dataset does not exist")
