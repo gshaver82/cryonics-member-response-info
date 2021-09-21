@@ -21,19 +21,33 @@ module.exports = {
             .catch(err => console.log(err));
     },
     putFitBitManualCheckin: function (fitbitCheckinObjectForDB) {
-        console.log("🚀 ~ putFitBitManualCheckin")
-            return db.CryonicsModel
-                .updateOne({ firebaseAuthID: fitbitCheckinObjectForDB.firebaseAuthID },
-                    {
-                        $push: {
-                            "checkinDevices.fitbit.checkinArray": {
-                                $each: [fitbitCheckinObjectForDB.newArrayEntry],
-                                $position: 0,
-                                $slice: 5
-                            }
+        // console.log("🚀 ~ putFitBitManualCheckin")
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: fitbitCheckinObjectForDB.firebaseAuthID },
+                {
+                    $push: {
+                        "checkinDevices.fitbit.checkinArray": {
+                            $each: [fitbitCheckinObjectForDB.newArrayEntry],
+                            $position: 0,
+                            $slice: 5
                         }
                     }
-                )
-                .catch(err => console.log(err));
-        },
+                }
+            )
+            .catch(err => console.log(err));
+    },
+    putFitBitTokens: function (req, res) {
+        console.log("serverside putFitBitTokens req.body",  req.body)
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+                {
+                    $set: {
+                        "checkinDevices.fitbit.fitbitDeviceRegistered": req.body.checkinDevices.fitbit.fitbitDeviceRegistered,
+                        "checkinDevices.fitbit.authToken": req.body.checkinDevices.fitbit.authToken,
+                        "checkinDevices.fitbit.refreshToken": req.body.checkinDevices.fitbit.refreshToken,
+                    }
+                }
+            )
+            .catch(err => console.log(err));
+    },
 };

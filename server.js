@@ -41,9 +41,7 @@ const serverCode = require("./serverCode");
 serverCode.startup();
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
-console.log('process.env.REACT_APP_ENCODEDBASE')
-console.log(process.env.REACT_APP_ENCODEDBASE)
-// DBcalls();
+DBcalls();
 
 async function DBcalls() {
     mainInterval = setInterval(async function () {
@@ -51,7 +49,7 @@ async function DBcalls() {
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
-            // console.log('running interval code for ', user.name)
+            console.log('running interval code for ', user.name)
             handleGetHeartrate(user)
         });
         //30 seconds 30000
@@ -63,21 +61,42 @@ async function DBcalls() {
 
 const handleGetHeartrate = async (user) => {
     let fitBitDataJSON = 'starting value'
-    let authTokens = 'starting value'
-    authTokens = user.checkinDevices.fitbit
-    if (!authTokens || authTokens === 'starting value') {
+    let authToken = 'starting value'
+    authToken = user.checkinDevices.fitbit.authToken
+    if (!authToken || authToken === 'starting value') {
         console.log("!authtokens")
         return
     } else {
-        console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
-        fitBitDataJSON = await getFitBitData(authTokens)
+        // console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
+        fitBitDataJSON = await getFitBitData(authToken)
     }
 
     if (fitBitDataJSON.success === false) {
         console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
         if (fitBitDataJSON.errors[0].errorType === "expired_token") {
             console.log("!!!!!!!!!!expired_token!!!!!!!!!!!!!!")
-            getFitBitRefreshTokens(user.checkinDevices.fitbit.refreshToken)
+            const fitbitRefreshTokenResponse = await getFitBitRefreshTokens(user.checkinDevices.fitbit.refreshToken)
+            console.log("fitbitRefreshTokenResponse", fitbitRefreshTokenResponse)
+            const fitbitObjectForDB = {
+                firebaseAuthID: user.firebaseAuthID,
+                checkinDevices: {
+                    fitbit: {
+                        fitbitDeviceRegistered: true,
+                        authToken: fitbitRefreshTokenResponse.access_token,
+                        refreshToken: fitbitRefreshTokenResponse.refresh_token
+                    },
+                }
+            }
+            console.log("serverside putting in new refreshed tokens fitbitObjectForDB", fitbitObjectForDB)
+            serverCode.putFitBitTokens(fitbitObjectForDB)
+                .catch(err => console.log(err));
+
+            fitBitDataJSON = await getFitBitData(authTokens)
+            if (fitBitDataJSON.success === false) {
+                console.log("failed to get refreshed token")
+                console.log("fitBitDataJSON", fitBitDataJSON)
+                return
+            }
         }
     } else {
         console.log("no errors")
@@ -136,9 +155,9 @@ const handleGetHeartrate = async (user) => {
     console.log("-----------------end of interval code completed !---------------")
 }
 
-async function getFitBitData(authTokens) {
-    if (authTokens) {
-        let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
+async function getFitBitData(authToken) {
+    if (authToken) {
+        const url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
         const response = await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
@@ -146,7 +165,7 @@ async function getFitBitData(authTokens) {
             credentials: 'same-origin', // include, *same-origin, omit
             headers: {
                 'Content-Type': 'application/json',
-                'authorization': 'Bearer ' + authTokens.authToken
+                'authorization': 'Bearer ' + authToken
             },
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer'
@@ -161,13 +180,13 @@ async function getFitBitRefreshTokens(RefreshToken) {
     if (RefreshToken) {
         const fitbitAuthTokenNeededData = {
             Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
-            grant_type: 'refresh_token',
             refresh_token: RefreshToken,
         }
-        let url = "https://api.fitbit.com/oauth2/token"
-            + "?grant_type=" + fitbitAuthTokenNeededData.grant_type
+        const url = "https://api.fitbit.com/oauth2/token"
+            + "?grant_type=refresh_token"
             + "&refresh_token=" + fitbitAuthTokenNeededData.refresh_token;
-        let fitbitData = await fetch(url, {
+        console.log("refresh token URL", url)
+        const response = await fetch(url, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
@@ -175,10 +194,6 @@ async function getFitBitRefreshTokens(RefreshToken) {
             },
             referrerPolicy: 'no-referrer',
         })
-            .then(response => response.json())
-            .catch(error => {
-                console.error('Error:', error);
-            });
         return response.json(); // parses JSON response into native JavaScript objects
     } else {
         console.log("no RefreshToken")
