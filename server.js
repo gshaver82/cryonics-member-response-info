@@ -87,7 +87,7 @@ const handleGetHeartrate = async (user) => {
                     },
                 }
             }
-            console.log("serverside putting in new refreshed tokens fitbitObjectForDB", fitbitObjectForDB)
+            console.log("serverjs putting in new refreshed tokens fitbitObjectForDB", fitbitObjectForDB)
             serverCode.putFitBitTokens(fitbitObjectForDB)
                 .catch(err => console.log(err));
 

@@ -1,9 +1,9 @@
 const db = require("./models");
 module.exports = {
-    startup: function (req, res) {
+    startup: function () {
         console.log("server startup")
     },
-    fifteenMin: function (req, res) {
+    fifteenMin: function () {
         let hourcount = 0
         let Fifteenmincount = 0
         fifteenmincounttimer = setInterval(function () {
@@ -14,7 +14,7 @@ module.exports = {
                 " hours, and " + remainder + " minutes since server start");
         }, 900000);
     },
-    DBFindFitbitUsers: function (req, res) {
+    DBFindFitbitUsers: function () {
         // console.log("DBFindFitbitUsers")
         return db.CryonicsModel
             .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
@@ -36,15 +36,15 @@ module.exports = {
             )
             .catch(err => console.log(err));
     },
-    putFitBitTokens: function (req, res) {
-        console.log("serverside putFitBitTokens req.body",  req.body)
+    putFitBitTokens: function (fitbitObjectForDB) {
+        console.log("serverCode putFitBitTokens req.body",  fitbitObjectForDB)
         return db.CryonicsModel
-            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+            .updateOne({ firebaseAuthID: fitbitObjectForDB.firebaseAuthID },
                 {
                     $set: {
-                        "checkinDevices.fitbit.fitbitDeviceRegistered": req.body.checkinDevices.fitbit.fitbitDeviceRegistered,
-                        "checkinDevices.fitbit.authToken": req.body.checkinDevices.fitbit.authToken,
-                        "checkinDevices.fitbit.refreshToken": req.body.checkinDevices.fitbit.refreshToken,
+                        "checkinDevices.fitbit.fitbitDeviceRegistered": fitbitObjectForDB.checkinDevices.fitbit.fitbitDeviceRegistered,
+                        "checkinDevices.fitbit.authToken": fitbitObjectForDB.checkinDevices.fitbit.authToken,
+                        "checkinDevices.fitbit.refreshToken": fitbitObjectForDB.checkinDevices.fitbit.refreshToken,
                     }
                 }
             )
