@@ -63,6 +63,7 @@ function MemberDash() {
                             //(some people may want shorter warning periods that others?)
                             //TODO create another section for those that opt out of checkins 
                             //and just want to use the site for information
+                            .filter(user => user.name !== 'Initialized user name')
                             .sort((a, b) => (a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated > b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated) ? 1 : -1)
                             .map(user => {
                                 //this gets the milliseconds since checkin
