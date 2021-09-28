@@ -66,23 +66,33 @@ function MemberDash() {
                             .sort((a, b) => (a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated > b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated) ? 1 : -1)
                             .map(user => {
                                 //this gets the milliseconds since checkin
-                                const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                let minutes = 0
+                                let hours = 0
+                                let days = 0
+
+                                if (user.name !== 'Initialized user name') {
+                                    const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
+                                    minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                    hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                    days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                }
+
 
 
                                 return (
-                                    <Link className="dashboard-li" to={`MemberDashboard/${user._id}`} key={user._id}>
-                                        <li className="list-group-item list-group-item-action dashboard-li" >
-                                            <p><strong>NAME: </strong>{user.name}</p>
-                                            <p>{days} d {hours} h {minutes} min since checkin</p>
-                                            <p>Web Check in: {" "}
-                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
-                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
-                                            </p>
+                                    <div>
+                                        {
+                                            user.name !== 'Initialized user name' &&
+                                            <Link className="dashboard-li" to={`MemberDashboard/${user._id}`} key={user._id}>
+                                                <li className="list-group-item list-group-item-action dashboard-li" >
+                                                    <p><strong>NAME: </strong>{user.name}</p>
+                                                    <p>{days} d {hours} h {minutes} min since checkin</p>
+                                                    <p>Web Check in: {" "}
+                                                        {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                        {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
+                                                    </p>
 
-                                            {/*
+                                                    {/*
                                         <p>
                                             Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
                                             {user.WebsiteCheckIn.loc.coordinates[1]}]
@@ -90,8 +100,10 @@ function MemberDash() {
                                         {/* <button value={user._id} onClick={handleDeleteClick}>
                                     Delete Profile
                                 </button> */}
-                                        </li>
-                                    </Link>
+                                                </li>
+                                            </Link>
+                                        }
+                                    </div>
                                 );
                             })}
                     </ul>
