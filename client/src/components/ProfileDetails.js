@@ -17,7 +17,7 @@ function ProfileDetails() {
   }, []);
 
   let GoogleURL = "void";
-  if (isLoading === false && user) {
+  if (isLoading === false && user && user.name !== 'Initialized user name') {
     if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
       user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]) {
       GoogleURL = "https://www.google.com/maps/place/" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] +
