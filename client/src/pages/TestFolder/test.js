@@ -234,53 +234,51 @@ function Test() {
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">
-                    {userList.map(user => {
-                        return (
-                            <div>
-                                {user.name !== 'Initialized user name' &&
-                                    <li className="list-group-item test-li" key={user._id}>
-                                        <p><strong>NAME: </strong>{user.name}</p>
-                                        <p> _id: {user._id}</p>
-                                        <p>Date Profile Created: {user.dateCreated} </p>
-                                        <p>firebaseAuthID: {user.firebaseAuthID}</p>
-                                        <p>description: {user.description}</p>
-                                        <p>cryonicsProvider: {user.cryonicsProvider}</p>
-                                        <p>photoURL: {user.photoURL}</p>
+                    {userList
+                        .filter(user => user.name !== 'Initialized user name')
+                        .map(user => {
+                            return (
+                                <li className="list-group-item test-li" key={user._id}>
+                                    <p><strong>NAME: </strong>{user.name}</p>
+                                    <p> _id: {user._id}</p>
+                                    <p>Date Profile Created: {user.dateCreated} </p>
+                                    <p>firebaseAuthID: {user.firebaseAuthID}</p>
+                                    <p>description: {user.description}</p>
+                                    <p>cryonicsProvider: {user.cryonicsProvider}</p>
+                                    <p>photoURL: {user.photoURL}</p>
 
-                                        <p>Web Check in(most recent): return {" "}
-                                            {new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString() || <p>checkin data not found</p>} {" "}
-                                        </p>
-                                        <p>
-                                            {new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString() || <p>checkin data not found</p>}
-                                        </p>
-                                        <p>
-                                            Web Check in GPS: [{user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}]  [
-                                            {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}]
-                                        </p>
-                                        <p>
-                                            fitbit logs here:
-                                        </p>
-                                        {user.checkinDevices.fitbit.checkinArray &&
-                                            <div>
-                                                {user.checkinDevices.fitbit.checkinArray.map(array => {
-                                                    return (
-                                                        <div key={array._id}>
-                                                            <p>{new Date(array.dateCreated).toDateString()}
-                                                                {"----"} {new Date(array.dateCreated).toTimeString()}</p>
-                                                        </div>
-                                                    );
-                                                })}
-                                            </div>
-                                        }
+                                    <p>Web Check in(most recent): return {" "}
+                                        {new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString() || <p>checkin data not found</p>} {" "}
+                                    </p>
+                                    <p>
+                                        {new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString() || <p>checkin data not found</p>}
+                                    </p>
+                                    <p>
+                                        Web Check in GPS: [{user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}]  [
+                                        {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}]
+                                    </p>
+                                    <p>
+                                        fitbit logs here:
+                                    </p>
+                                    {user.checkinDevices.fitbit.checkinArray &&
+                                        <div>
+                                            {user.checkinDevices.fitbit.checkinArray.map(array => {
+                                                return (
+                                                    <div key={array._id}>
+                                                        <p>{new Date(array.dateCreated).toDateString()}
+                                                            {"----"} {new Date(array.dateCreated).toTimeString()}</p>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    }
 
-                                        <button value={user._id} onClick={handleDeleteClick}>
-                                            Delete Profile
-                                        </button>
-                                    </li>
-                                }
-                            </div>
-                        );
-                    })}
+                                    <button value={user._id} onClick={handleDeleteClick}>
+                                        Delete Profile
+                                    </button>
+                                </li>
+                            );
+                        })}
                 </ul>
             }
         </div>

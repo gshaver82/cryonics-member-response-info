@@ -67,19 +67,10 @@ function MemberDash() {
                             .sort((a, b) => (a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated > b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated) ? 1 : -1)
                             .map(user => {
                                 //this gets the milliseconds since checkin
-                                let minutes = 0
-                                let hours = 0
-                                let days = 0
-
-                                if (user.name !== 'Initialized user name') {
-                                    const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                    minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                    hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                    days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-                                }
-
-
-
+                                const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
+                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
                                 return (
                                     <div>
                                         {
@@ -92,15 +83,6 @@ function MemberDash() {
                                                         {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
                                                         {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
-
-                                                    {/*
-                                        <p>
-                                            Web Check in GPS: [{user.WebsiteCheckIn.loc.coordinates[0]}]  [
-                                            {user.WebsiteCheckIn.loc.coordinates[1]}]
-                                        </p>
-                                        {/* <button value={user._id} onClick={handleDeleteClick}>
-                                    Delete Profile
-                                </button> */}
                                                 </li>
                                             </Link>
                                         }

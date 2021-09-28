@@ -29,7 +29,7 @@ module.exports = {
                         "checkinDevices.fitbit.checkinArray": {
                             $each: [fitbitCheckinObjectForDB.newArrayEntry],
                             $position: 0,
-                            $slice: 5
+                            $slice: 25
                         }
                     }
                 }
