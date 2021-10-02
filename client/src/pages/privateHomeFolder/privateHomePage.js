@@ -57,7 +57,9 @@ function PrivateHomePage() {
             .catch(err => console.log(err));
     };
 
-
+    const handletest = async () => {
+        console.log("inside handle test")
+    };
     function geolocator() {
         if (!navigator.geolocation) {
             setStatus('Geolocation is not supported by your browser');
@@ -86,11 +88,11 @@ function PrivateHomePage() {
 
     let GoogleURL = "void";
     if (isLoading === false && user !== "starting user condition" && user) {
-        if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] 
-            && user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] ) {
-            GoogleURL = "https://www.google.com/maps/place/" + 
-            [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] + "+" + 
-            [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
+        if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]
+            && user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]) {
+            GoogleURL = "https://www.google.com/maps/place/" +
+                [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] + "+" +
+                [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
         }
     }
 
@@ -100,19 +102,10 @@ function PrivateHomePage() {
     else if (!user) {
         return (<div>
             <h3>No profile found, please create a profile to view the private home page. </h3>
-            <p>
-                this is where you will be able to view all of your active devices,
-                and what their status is according to this server
-            </p>
         </div>)
     } else if (user !== "starting user condition") {
         return (<div>
             <h3>Welcome <span>{user.name}</span></h3>
-            <h3>
-                You are now logged in and viewing your private home page!
-            </h3>
-            {!isLoading && <p>This page has loaded</p>}
-            {isLoading && <p>This page is loading</p>}
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
@@ -120,31 +113,42 @@ function PrivateHomePage() {
                         and what their status is according to this server
                     </p>
                 </div>
+                <div className="d-flex justify-content-between">
+                    <p>
+                        better name for this page? "device control panel" ? "check in" ?
+                    </p>
+                </div>
             </div>
-            <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
             <button type="button" onClick={handleputWebcheckIn}>
                 Website Checkin
             </button>
+            <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
             <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-            <h3>GPS Coordinates according to browser</h3>
+            {/* <h3>GPS Coordinates according to browser</h3>
             <p>{status}</p>
             {!lat && !lng &&
                 <p>no lat or Longitude</p>
             }
             {lat && lng &&
                 <p>Latitude: {lat} Longitude: {lng}</p>
-            }
+            } */}
 
             <p>Database shows:</p>
+            {GoogleURL !== "void"
+                ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+                : <p>no GPS coordinates found in database</p>}
             {!isLoading &&
                 user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
                 user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
-                <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}
-                    Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}</p>
+                <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
+                    Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
             }
-            {GoogleURL !== "void"
-                ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found in database</p>}    
+            <button type="button" onClick={handletest}>
+                Fitbit Login
+            </button>
+            <p>
+                the fitbit login code currently on the test page will be cleaned up and put here
+            </p>
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)

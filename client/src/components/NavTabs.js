@@ -8,7 +8,7 @@ function NavTabs() {
     <ul className="nav nav-tabs">
       <li className="nav-item display-4">
         <Link to="/publicHomePage" className={(location.pathname === "/" || location.pathname === "/publicHomePage") ? "nav-link active" : "nav-link"}>
-          publicHome
+          Home
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -27,22 +27,22 @@ function NavTabs() {
           CI
         </Link>
       </li>
-      <li className="nav-item display-4">
+      {/* <li className="nav-item display-4">
         <Link
           to="/TOSPage"
           className={location.pathname === "/TOSPage" ? "nav-link active" : "nav-link"}
         >
           TOS
         </Link>
-      </li>
-      <li className="nav-item display-4">
+      </li> */}
+      {/* <li className="nav-item display-4">
         <Link
           to="/PrivacyPolicyPage"
           className={location.pathname === "/PrivacyPolicyPage" ? "nav-link active" : "nav-link"}
         >
           PrivacyPol
         </Link>
-      </li>
+      </li> */}
       <li className="nav-item display-4">
         <Link
           to="/privateHomePage"
