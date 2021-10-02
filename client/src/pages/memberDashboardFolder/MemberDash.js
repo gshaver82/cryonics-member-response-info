@@ -32,7 +32,7 @@ function MemberDash() {
                 <div className="d-flex justify-content-between">
                     <p>
                         This is where you will see all the info about your group members.
-                        group functionality not yet added. 
+                        group functionality not yet added.
                         Will add options to sort or search.
                         currently sorts by longest time since webcheckin.
                     </p>
@@ -85,6 +85,19 @@ function MemberDash() {
                                                         {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
                                                         {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
+                                                    {user.checkinDevices.fitbit.fitbitDeviceRegistered
+                                                        ? <div>
+                                                            <p>Most recent fitbit Check in:
+                                                            </p>
+                                                            <p>
+                                                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                            </p>
+                                                            <p>
+                                                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+                                                            </p>
+                                                        </div>
+                                                        : <p>fitbit device not registered</p>
+                                                    }
                                                 </li>
                                             </Link>
                                         }
