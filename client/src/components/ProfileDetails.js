@@ -46,7 +46,19 @@ function ProfileDetails() {
           ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
           : <p>no GPS coordinates found</p>}
       </div>}
-
+      {user.checkinDevices.fitbit.fitbitDeviceRegistered
+        ? <div>
+          <p>Most recent fitbit Check in:
+          </p>
+          <p>
+            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+          </p>
+          <p>
+            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+          </p>
+        </div>
+        : <p>fitbit device not registered</p>
+      }
     </div>
   );
 }

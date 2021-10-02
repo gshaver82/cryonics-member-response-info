@@ -30,21 +30,23 @@ function MemberDash() {
         <>
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
-                    <h3>
-                        You are now logged in and viewing the cryonics member dashboard
-                    </h3>
+                    <p>
+                        This is where you will see all the info about your group members.
+                        group functionality not yet added. 
+                        Will add options to sort or search.
+                        currently sorts by longest time since webcheckin.
+                    </p>
                 </div>
-            </div>
-            <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
-                        This is where all the MN cryonics members info will be displayed.
-                        it will be a full list of all member with abridged info.
-                        abridged info will include date/time of last automated checkin.
-                        Will show members in emergency state on top, followed by members in alert state
-                        emergency state being a declared emergency by the user.
-                        alert state being that the server has not gotten member state for a long time.
-
+                        will have highlighted section at top of members who have signed up for checkins, and who havent checked in in a while
+                        will have another highlighted section of members in declared emergency state.
+                        should private members get revealed here if they are in declared emergency state?
+                        Can click on each members name to see thier full profile.
+                    </p>
+                </div>
+                <div className="d-flex justify-content-between">
+                    <p>
                         Can click on each members name to see thier full profile.
                     </p>
                 </div>

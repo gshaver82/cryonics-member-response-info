@@ -222,14 +222,12 @@ function Test() {
                     <span> is loaded and your resting heart rate is:
                         {fitbitUserHRDataResponse}</span>}
                 {!fitbitUserHRDataResponse && <span> has not yet loaded</span>}</p>
-            <p>-------------------------</p>
 
             <p>Fitbit Intra day data
                 {fitbitNewestTime &&
                     <span> is loaded and your most recent time according to the fitbit server is:
                         {fitbitNewestTime}</span>}
                 {!fitbitNewestTime && <span> has not yet loaded</span>}</p>
-            <p>-------------------------</p>
 
             <p>mapping through all users here</p>
             {userList &&

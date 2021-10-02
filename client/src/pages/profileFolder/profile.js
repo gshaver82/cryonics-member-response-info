@@ -54,7 +54,7 @@ function Profile() {
     };
 
     const handleSaveProfile = (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
         setisLoading(true)
         const editedUser = {
             firebaseAuthID: firebaseUserID,
@@ -95,15 +95,9 @@ function Profile() {
         <>
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
-                    <h3>
-                        You are now logged in and viewing your profile!
-                    </h3>
-                </div>
-            </div>
-            <div className="mb-2">
-                <div className="d-flex justify-content-between">
                     <p>
-                        the profile is where all your profile information will live.
+                        This profile page is viewable only by you unless you join a group.
+                        your profile will then be viewable by that group.
                     </p>
                 </div>
             </div>
@@ -137,6 +131,10 @@ function Profile() {
                                         onChange={(e) => setname(e.target.value)}
                                     />
                                     <br></br>
+                                    <p>
+                                        add group options here? :  privateprofile--mncryonics--mnEMS--alcor/CI?
+                                    </p>
+                                    <br></br>
                                     <label>description:</label>
                                     <textarea
                                         value={description}
@@ -161,8 +159,8 @@ function Profile() {
                                     </input>
                                     <br></br>
                                     <img src={photoURL} alt="photoURL" width="100" height="100"></img>
-
                                     <br></br>
+                                    <p>upload files here??</p>
                                     <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
                                 </form>
                             </div>
@@ -172,33 +170,20 @@ function Profile() {
                                     {" "}Edit Profile{" "}
                                 </button>
                                 <p>username is:  <span>{user.name}</span></p>
+                                <p>
+                                    add group options here? :  privateprofile--mncryonics--mnEMS--alcor/CI?
+                                </p>
                                 <p>description: {user.description}</p>
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
+                                <p>uploaded file link here:</p>
                             </div>
 
                         )
                     )
                 }
             </div>
-
-
-
-
-
-
-
-
             <br></br>
-            {/* <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
-                Logout
-            </button>
-            <br></br>
-            <div>
-                <Link to="/publicHomePage" className="btn-secondary rb-btn">Go To publicHomePage</Link>
-            </div> */}
-            {/* <p>username is: {firebase.auth().currentUser.providerData[0].displayName}</p>
-            <img src={firebase.auth().currentUser.providerData[0].photoURL} alt = 'default profile pic here'></img> */}
         </>
     );
 }
