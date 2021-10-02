@@ -36,29 +36,33 @@ function ProfileDetails() {
       {user && <div>
         <p>description: {user.description}</p>
         <p>cryonicsProvider: {user.cryonicsProvider}</p>
+        <p>Current location according to web checkin: {GoogleURL !== "void"
+          ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+          : <p>no GPS coordinates found</p>}
+        </p>
+
         <p>Web Check in: {" "}
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
         </p>
         <p>
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
         </p>
-        {GoogleURL !== "void"
-          ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-          : <p>no GPS coordinates found</p>}
+        {user.checkinDevices.fitbit.fitbitDeviceRegistered
+          ? <div>
+            <p>Most recent fitbit Check in:
+            </p>
+            <p>
+              {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+            </p>
+            <p>
+              {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+            </p>
+          </div>
+          : <p>fitbit device not registered</p>
+        }
+
       </div>}
-      {user.checkinDevices.fitbit.fitbitDeviceRegistered
-        ? <div>
-          <p>Most recent fitbit Check in:
-          </p>
-          <p>
-            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
-          </p>
-          <p>
-            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
-          </p>
-        </div>
-        : <p>fitbit device not registered</p>
-      }
+
     </div>
   );
 }
