@@ -203,6 +203,11 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     }
+    if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'){
+        return(
+            <h3>You are not authorized to access this page</h3>
+        )
+    }
 
     return (
         <div>
