@@ -1,8 +1,16 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
+import firebaseEnvConfigs from './../firebase';
+const firebase = firebaseEnvConfigs.firebase_;
 
 function NavTabs() {
   const location = useLocation();
+  let firebaseUserID = "no user"
+  if (firebase.auth().currentUser) {
+    firebaseUserID = firebase.auth().currentUser.uid
+  }
+
+
 
   return (
     <ul className="nav nav-tabs">
@@ -48,7 +56,7 @@ function NavTabs() {
           to="/privateHomePage"
           className={location.pathname === "/privateHomePage" ? "nav-link active" : "nav-link"}
         >
-          prvtHomePage
+          Device Control
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -56,7 +64,7 @@ function NavTabs() {
           to="/memberDashboard"
           className={location.pathname === "/memberDashboard" ? "nav-link active" : "nav-link"}
         >
-          memberDash
+          Member Dashboard
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -64,17 +72,21 @@ function NavTabs() {
           to="/profile"
           className={location.pathname === "/profile" ? "nav-link active" : "nav-link"}
         >
-          profile
+          Profile
         </Link>
       </li>
-      <li className="nav-item display-4">
-        <Link
-          to="/test"
-          className={location.pathname === "/test" ? "nav-link active" : "nav-link"}
-        >
-          test
-        </Link>
-      </li>
+      {firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'
+        ? <li className="nav-item display-4">
+          <Link
+            to="/test"
+            className={location.pathname === "/test" ? "nav-link active" : "nav-link"}
+          >
+            Admin
+          </Link>
+        </li>
+        : <div></div>
+      }
+
     </ul>
     //     <button type="button" onClick={() => firebaseEnvConfigs.auth().signOut()}>
     //     Logout

@@ -33,7 +33,7 @@ module.exports = {
                         "checkinDevices.fitbit.checkinArray": {
                             $each: [req.body.newArrayEntry],
                             $position: 0,
-                            $slice: 5
+                            $slice: 25
                         }
                     }
                 }
