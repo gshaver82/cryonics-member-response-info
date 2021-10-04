@@ -166,8 +166,8 @@ function PrivateHomePage() {
             API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                 .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                 .catch(err => console.log(err));
-            API.getuserList()
-                .then(res => setUsers(res.data))
+            API.getOneUserByFirebaseID(firebaseUserID)
+                .then(res => setUser(res.data))
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
         }
@@ -275,76 +275,79 @@ function PrivateHomePage() {
                         and what their status is according to this server
                     </p>
                 </div>
-                <div className="d-flex justify-content-between">
-                    <p>
-                        better name for this page? "device control panel" ? "check in" ?
-                    </p>
-                </div>
             </div>
-            <button type="button" onClick={handleputWebcheckIn}>
-                Website Checkin
-            </button>
-            <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
-            <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-            {/* <h3>GPS Coordinates according to browser</h3> */}
-            <p>Browser GPS status: {status}</p>
-            {/* {!lat && !lng &&
+            <div className="recipe-card recipe-border-2">
+                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
+                <button type="button" onClick={handleputWebcheckIn}>
+                    Website Checkin
+                </button>
+                <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
+                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
+                {/* <h3>GPS Coordinates according to browser</h3> */}
+                <p>Browser GPS status: {status}</p>
+                {/* {!lat && !lng &&
                 <p>no lat or Longitude</p>
             }
             {lat && lng &&
                 <p>Latitude: {lat} Longitude: {lng}</p>
             } */}
 
-            <p>Database shows:</p>
-            {GoogleURL !== "void"
-                ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                : <p>no GPS coordinates found in database</p>}
-            {!isLoading &&
-                user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
-                user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
-                <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
-                    Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
-            }
-            <p>Fitbit object is {fitbitObject && <span> valid and user id is: {fitbitObject.user_id}</span>}
-                {!fitbitObject && <span> not valid</span>}</p>
-            <p>
-                click here to go to fitbit, log in and register your fitbit with this website.
-            </p>
-            {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
-            <br></br>
-            <p>
-                click here to manually check with fitbit for the most recent heart rate timestamp. 
-                Please note that the server will automatically be doing this every 10-15 minutes for registered devices
-            </p>
-            <button onClick={handleGetHeartrate}>
-                Get most recent heart rate
-            </button>
-            <p>generic Data from fitbit
-                {fitbitUserHRDataResponse &&
-                    <span> is loaded and your resting heart rate is:
-                        {fitbitUserHRDataResponse}</span>}
-                {!fitbitUserHRDataResponse && <span> has not yet loaded</span>}</p>
-
-            <p>Fitbit Intra day data
-                {fitbitNewestTime &&
-                    <span> is loaded and your most recent time according to the fitbit server is:
-                        {fitbitNewestTime}</span>}
-                {!fitbitNewestTime && <span> has not yet loaded</span>}</p>
-
-
-            {user.checkinDevices.fitbit.fitbitDeviceRegistered
-                ? <div>
-                    <p>Most recent fitbit Check in:
-                    </p>
+                <p>Database shows:</p>
+                {GoogleURL !== "void"
+                    ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+                    : <p>no GPS coordinates found in database</p>}
+                {!isLoading &&
+                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
+                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
+                    <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
+                        Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
+                }
+            </div>
+            <div className="recipe-card recipe-border-2">
+                <div className="recipe-card recipe-border-2">
                     <p>
-                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                        click here to go to fitbit, log in and register your fitbit with this website.
                     </p>
-                    <p>
-                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
-                    </p>
+                    {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
                 </div>
-                : <p>fitbit device not registered</p>
-            }
+                <div className="recipe-card recipe-border-2">
+                    {/* <p>Fitbit object is {fitbitObject && <span> valid and user id is: {fitbitObject.user_id}</span>}
+                    {!fitbitObject && <span> not valid</span>}</p> */}
+                    <p>
+                        click here to manually check with fitbit for the most recent heart rate timestamp.
+                        Please note that the server will automatically be doing this every 10-15 minutes for registered devices
+                    </p>
+                    <button onClick={handleGetHeartrate}>
+                        Get most recent heart rate
+                    </button>
+                    {/* <p>generic Data from fitbit
+                    {fitbitUserHRDataResponse &&
+                        <span> is loaded and your resting heart rate is:
+                            {fitbitUserHRDataResponse}</span>}
+                    {!fitbitUserHRDataResponse && <span> has not yet loaded</span>}</p> */}
+
+                    {/* <p>Fitbit Intra day data
+                    {fitbitNewestTime &&
+                        <span> is loaded and your most recent time according to the fitbit server is:
+                            {fitbitNewestTime}</span>}
+                    {!fitbitNewestTime && <span> has not yet loaded</span>}</p> */}
+                </div>
+
+                {user.checkinDevices.fitbit.fitbitDeviceRegistered
+                    ? <div>
+                        <p>Most recent fitbit Check in:
+                        </p>
+                        <p>
+                            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                        </p>
+                        <p>
+                            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+                        </p>
+                    </div>
+                    : <p>fitbit device not registered</p>
+                }
+            </div>
+
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)

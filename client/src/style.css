@@ -356,7 +356,7 @@ input[type=number]::-webkit-inner-spin-button:focus {
     border-right-color: var(--card-border);
     border-bottom-color: var(--card-border);
     border-left-color: var(--card-border);
-    height: 400px !important;
+    height: auto;
 }
 
 .card-footer {
@@ -365,7 +365,6 @@ input[type=number]::-webkit-inner-spin-button:focus {
 
 .recipe-card:hover {
     box-shadow: -2px 4px 16px 0px var(--card-hover);
-    cursor: pointer;
 }
 
 .recipe-text {
