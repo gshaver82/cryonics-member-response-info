@@ -56,7 +56,7 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 900000);
+    }, 600000);
 }
 
 const handleGetHeartrate = async (user) => {
@@ -109,46 +109,53 @@ const handleGetHeartrate = async (user) => {
     //getting the most recent time from the fitbitdatajson
     //if the current days entry does not exist then skip
     if (fitBitDataJSON.activitiesheartintraday.dataset) {
-        let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-        YoungestFitbitHR = YoungestFitbitHR.time;
-        // console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
-        YoungestFitbitHR = YoungestFitbitHR.replace(/:/g, '')
-        YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
-        //convert to current date code
-        //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
-        let hours = YoungestFitbitHR.slice(0, 2)
-        // console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
-        let minutes = YoungestFitbitHR.slice(2, 4)
-        // console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
-        // const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
-        // console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+        try {
+            let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
+            YoungestFitbitHR = YoungestFitbitHR.time;
+            // console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
+            YoungestFitbitHR = YoungestFitbitHR.replace(/:/g, '')
+            YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
+            //convert to current date code
+            //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
+            let hours = YoungestFitbitHR.slice(0, 2)
+            // console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
+            let minutes = YoungestFitbitHR.slice(2, 4)
+            // console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
+            // const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
+            // console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
 
-        let FBcheckinDateCode = new Date();
-        //hardcoding timezone offset for central standard time
-        const timezoneOffset = -5;
-        // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
-        //central time zone offset hardcode. please change this later
-        FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
+            let FBcheckinDateCode = new Date();
+            //hardcoding timezone offset for central standard time
+            const timezoneOffset = -5;
+            // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
+            //central time zone offset hardcode. please change this later
+            FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
 
-        // console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
+            // console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
 
-        FBcheckinDateCode.setUTCHours(hours, minutes, '00');
-        // console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
+            FBcheckinDateCode.setUTCHours(hours, minutes, '00');
+            // console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
 
-        FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
+            FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
 
-        const newArrayEntry =
-        {
-            dateCreated: FBcheckinDateCode
+            const newArrayEntry =
+            {
+                dateCreated: FBcheckinDateCode
+            }
+            let fitbitCheckinObjectForDB = {
+                firebaseAuthID: user.firebaseAuthID,
+                newArrayEntry
+            }
+            // console.log("fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
+            serverCode.putFitBitManualCheckin(fitbitCheckinObjectForDB)
+                // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
+                .catch(err => console.log(err));
+        } catch (error) {
+            console.log("fitbit dataset pop failed", error);
+            // expected output: ReferenceError: nonExistentFunction is not defined
+            // Note - error messages will vary depending on browser
         }
-        let fitbitCheckinObjectForDB = {
-            firebaseAuthID: user.firebaseAuthID,
-            newArrayEntry
-        }
-        // console.log("fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
-        serverCode.putFitBitManualCheckin(fitbitCheckinObjectForDB)
-            // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
-            .catch(err => console.log(err));
+
     } else {
         console.log("fitBitDataJSON.activitiesheartintraday.dataset does not exist")
     }
