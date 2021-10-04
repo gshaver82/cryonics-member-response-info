@@ -56,7 +56,7 @@ function NavTabs() {
           to="/privateHomePage"
           className={location.pathname === "/privateHomePage" ? "nav-link active" : "nav-link"}
         >
-          Device Control
+          Device Control Panel
         </Link>
       </li>
       <li className="nav-item display-4">

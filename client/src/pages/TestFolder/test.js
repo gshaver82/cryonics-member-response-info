@@ -17,8 +17,6 @@ function Test() {
     const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
     const [user, setUser] = useState("starting user condition");
 
-    const firebaseAuthID = firebase.auth().currentUser.uid
-
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
@@ -85,7 +83,7 @@ function Test() {
         //fitbitdata is stored fitbitobject for display on webpage
         setfitbitObject(fitbitData)
         const fitbitObjectForDB = {
-            firebaseAuthID: firebaseAuthID,
+            firebaseAuthID: firebaseUserID,
             checkinDevices: {
                 fitbit: {
                     fitbitDeviceRegistered: true,
@@ -104,7 +102,7 @@ function Test() {
     const handleGetHeartrate = async () => {
         let fitBitDataJSON = 'starting value'
         let authTokens = 'starting value'
-        authTokens = await API.fitbitGetDBAuthToken(firebaseAuthID)
+        authTokens = await API.fitbitGetDBAuthToken(firebaseUserID)
             .then(res => res.data)
             .catch(err => console.log(err))
         if (!authTokens) {
