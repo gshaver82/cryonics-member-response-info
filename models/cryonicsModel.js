@@ -167,6 +167,30 @@ const cryonicsSchema = new Schema({
         type: String,
         required: false,
     },
+    textToUserDatecode: {
+        type: Date,
+        required: false,
+    },
+    textToEmerContactDatecode: {
+        type: Date,
+        required: false,
+    },
+    textToAdminDatecode: {
+        type: Date,
+        required: false,
+    },
+    Datecode0: {
+        type: Date,
+        required: false,
+    },
+    Datecode1: {
+        type: Date,
+        required: false,
+    },
+    Datecode2: {
+        type: Date,
+        required: false,
+    },
     text0: {
         type: String,
         required: false,
