@@ -24,7 +24,7 @@ function ProfileDetails() {
         "+" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
     }
   }
-
+//TODO error harden for [0].dateCreated. it somehow created a temporary error that was fixed with page refresh
   return (
 
     <div>
