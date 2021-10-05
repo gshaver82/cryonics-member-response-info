@@ -38,7 +38,7 @@ function ProfileDetails() {
         <p>cryonicsProvider: {user.cryonicsProvider}</p>
         <p>Current location according to web checkin: {GoogleURL !== "void"
           ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-          : <p>no GPS coordinates found</p>}
+          : <span>no GPS coordinates found</span>}
         </p>
 
         <p>Web Check in: {" "}

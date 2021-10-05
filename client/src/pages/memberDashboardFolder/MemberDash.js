@@ -74,34 +74,29 @@ function MemberDash() {
                                 let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                 let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
                                 return (
-                                    <div>
-                                        {
-                                            user.name !== 'Initialized user name' &&
-                                            <Link className="dashboard-li" to={`MemberDashboard/${user._id}`} key={user._id}>
-                                                <li className="list-group-item list-group-item-action dashboard-li" >
-                                                    <p><strong>NAME: </strong>{user.name}</p>
-                                                    <p>{days} d {hours} h {minutes} min since checkin</p>
-                                                    <p>Web Check in: {" "}
-                                                        {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
-                                                        {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
+                                    <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
+                                        <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
+                                            <p><strong>NAME: </strong>{user.name}</p>
+                                            <p>{days} d {hours} h {minutes} min since checkin</p>
+                                            <p>Web Check in: {" "}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
+                                            </p>
+                                            {user.checkinDevices.fitbit.fitbitDeviceRegistered
+                                                ? <div>
+                                                    <p>Most recent fitbit Check in:
                                                     </p>
-                                                    {user.checkinDevices.fitbit.fitbitDeviceRegistered
-                                                        ? <div>
-                                                            <p>Most recent fitbit Check in:
-                                                            </p>
-                                                            <p>
-                                                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
-                                                            </p>
-                                                            <p>
-                                                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
-                                                            </p>
-                                                        </div>
-                                                        : <p>fitbit device not registered</p>
-                                                    }
-                                                </li>
-                                            </Link>
-                                        }
-                                    </div>
+                                                    <p>
+                                                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                    </p>
+                                                    <p>
+                                                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+                                                    </p>
+                                                </div>
+                                                : <p>fitbit device not registered</p>
+                                            }
+                                        </Link>
+                                    </li>
                                 );
                             })}
                     </ul>

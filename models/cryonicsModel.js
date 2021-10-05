@@ -30,6 +30,13 @@ const cryonicsSchema = new Schema({
         required: true,
         default: false,
     },
+    group: [
+        {
+            type: String,
+            required: true,
+            default: "private",
+        }
+    ],
     checkinDevices: {
         WebsiteCheckIn: {
             WebsiteCheckinRegistered: {
@@ -98,6 +105,54 @@ const cryonicsSchema = new Schema({
                 }
             ]
         },
+        exampleDevice2: {
+            exampleDeviceRegistered: {
+                type: Boolean,
+                required: true,
+                default: false,
+            },
+            authToken: {
+                type: String,
+                required: false,
+            },
+            refreshToken: {
+                type: String,
+                required: false,
+            },
+            exampleCheckinArray: [
+                {
+                    dateCreated: {
+                        type: Date,
+                        default: Date.now,
+                        required: false,
+                    },
+                }
+            ]
+        },
+        exampleDevice3: {
+            exampleDeviceRegistered: {
+                type: Boolean,
+                required: true,
+                default: false,
+            },
+            authToken: {
+                type: String,
+                required: false,
+            },
+            refreshToken: {
+                type: String,
+                required: false,
+            },
+            exampleCheckinArray: [
+                {
+                    dateCreated: {
+                        type: Date,
+                        default: Date.now,
+                        required: false,
+                    },
+                }
+            ]
+        },
     },
     description: {
         type: String,
@@ -109,6 +164,66 @@ const cryonicsSchema = new Schema({
         required: false,
     },
     photoURL: {
+        type: String,
+        required: false,
+    },
+    text0: {
+        type: String,
+        required: false,
+    },
+    text1: {
+        type: String,
+        required: false,
+    },
+    text2: {
+        type: String,
+        required: false,
+    },
+    text3: {
+        type: String,
+        required: false,
+    },
+    text4: {
+        type: String,
+        required: false,
+    },
+    text5: {
+        type: String,
+        required: false,
+    },
+    text6: {
+        type: String,
+        required: false,
+    },
+    text7: {
+        type: String,
+        required: false,
+    },
+    text8: {
+        type: String,
+        required: false,
+    },
+    text9: {
+        type: String,
+        required: false,
+    },
+    file0: {
+        type: String,
+        required: false,
+    },
+    file1: {
+        type: String,
+        required: false,
+    },
+    file2: {
+        type: String,
+        required: false,
+    },
+    file3: {
+        type: String,
+        required: false,
+    },
+    file4: {
         type: String,
         required: false,
     }

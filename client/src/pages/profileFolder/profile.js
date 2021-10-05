@@ -46,6 +46,10 @@ function Profile() {
     };
 
     const handleEditProfile = () => {
+        setname(user.name)
+        setdescription(user.description)
+        setcryonicsProvider(user.cryonicsProvider)
+        setPhotoURL(user.photoURL)
         setisEditing(true)
     };
 
@@ -60,6 +64,7 @@ function Profile() {
             firebaseAuthID: firebaseUserID,
             name: name,
             description: description,
+            group: ["private"],
             cryonicsProvider: cryonicsProvider,
             photoURL: photoURL,
             checkinDevices: {
@@ -87,8 +92,12 @@ function Profile() {
     };
 
     const handleLoadGoogleProviderInfo = () => {
-        setname(firebase.auth().currentUser.providerData[0].displayName)
-        setPhotoURL(firebase.auth().currentUser.providerData[0].photoURL)
+        try {
+            setname(firebase.auth().currentUser.providerData[0].displayName)
+            setPhotoURL(firebase.auth().currentUser.providerData[0].photoURL)
+        } catch (error) {
+            console.log(error);
+        }
     };
     // console.log("auth Info", firebase.auth().currentUser.providerData[0]);
     return (
@@ -109,7 +118,7 @@ function Profile() {
             <div>
                 {isLoading
                     ? <p>Loading Profile....</p>
-                    : (!user
+                    : (!user || user === "starting user condition"
                         ? <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
                             {" "}here{" "}
                         </button></p>
@@ -132,7 +141,7 @@ function Profile() {
                                     />
                                     <br></br>
                                     <p>
-                                        add group options here? :  privateprofile--mncryonics--mnEMS--alcor/CI?
+                                        Group: Your profile will be private by default. Request approval from an admin to join a group
                                     </p>
                                     <br></br>
                                     <label>description:</label>
@@ -170,9 +179,7 @@ function Profile() {
                                     {" "}Edit Profile{" "}
                                 </button>
                                 <p>username is:  <span>{user.name}</span></p>
-                                <p>
-                                    add group options here? :  privateprofile--mncryonics--mnEMS--alcor/CI?
-                                </p>
+                                <p>group is:  {user.group}</p>
                                 <p>description: {user.description}</p>
                                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                                 <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>

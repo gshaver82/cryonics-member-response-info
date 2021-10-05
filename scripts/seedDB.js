@@ -1,6 +1,8 @@
 //change package json to the below code to go back to the seedDB.js
 // "seed": "node scripts/seedDB.js"
 
+//THIS IS OUT OF DATE, NO GROUPS ETC
+
 let mongoose = require("mongoose");
 let cryonicsModel = require("../models/cryonicsModel");
 

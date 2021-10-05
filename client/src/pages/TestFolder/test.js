@@ -25,7 +25,7 @@ function Test() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-
+//TODO get the individual user so we can later allow access only to users within the admin group
     useEffect(() => {
         API.getuserList()
             .then(res => setUsers(res.data))
@@ -201,6 +201,7 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     }
+    //TODO take the individual user and deny access if not a member of admin group
     if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'){
         return(
             <h3>You are not authorized to access this page</h3>
