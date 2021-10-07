@@ -209,8 +209,8 @@ function Test() {
         const client = require('twilio')(accountSid, authToken);
         client.messages
             .create({
-                body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-                from: process.env.TWILIO_AUTH_TOKEN,
+                body: 'client side test text',
+                from: process.env.TWILIO_PHONE_NUMBER,
                 to: '+16126421533'
             })
             .then(message => console.log(message.sid));

@@ -9,7 +9,7 @@ module.exports = {
         const client = require('twilio')(accountSid, authToken);
         client.messages
             .create({
-                body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+                body: 'server side test text',
                 from: process.env.TWILIO_PHONE_NUMBER,
                 to: '+16126421533'
             })
