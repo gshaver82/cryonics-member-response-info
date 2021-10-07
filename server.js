@@ -75,7 +75,7 @@ const handleGetHeartrate = async (user) => {
     if (fitBitDataJSON.success === false) {
         console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
         if (fitBitDataJSON.errors[0].errorType === "expired_token") {
-            console.log("!!!!!!!!!!expired_token!!!!!!!!!!!!!!")
+            console.log("!!!!!!!!!!expired_token for ", user.name)
             const fitbitRefreshTokenResponse = await getFitBitRefreshTokens(user.checkinDevices.fitbit.refreshToken)
             console.log("fitbitRefreshTokenResponse", fitbitRefreshTokenResponse)
             const fitbitObjectForDB = {
@@ -96,11 +96,13 @@ const handleGetHeartrate = async (user) => {
             if (fitBitDataJSON.success === false) {
                 console.log("!!!!!!!!!!!failed to get refreshed token!!!!!!!!!!!")
                 console.log("fitBitDataJSON", fitBitDataJSON)
-                return
+                return 1
+            }else {
+                console.log("no errors retrieving refreshed fitbit data for ", user.name)
             }
         }
     } else {
-        console.log("no errors retrieving fitbit data")
+        console.log("no errors retrieving fitbit data for ", user.name)
     }
 
     fitBitDataJSON = JSON.stringify(fitBitDataJSON);
@@ -111,11 +113,10 @@ const handleGetHeartrate = async (user) => {
     //if the current days entry does not exist then skip
 
     if (fitBitDataJSON.activitiesheartintraday.dataset && fitBitDataJSON.activitiesheartintraday.dataset.length === 0) {
-        console.log("no dataset data found. possibly because device doesnt support intraday, or just after midnight")
+        console.log(user.name, "no dataset data found. possibly because device doesnt support intraday, or just after midnight")
         return 1
     } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
-            console.log('fitBitDataJSON.activitiesheartintraday.dataset', fitBitDataJSON.activitiesheartintraday.dataset)
             let datasetpop = fitBitDataJSON.activitiesheartintraday.dataset.pop();
             console.log("datasetpop", datasetpop)
             let YoungestFitbitHR = datasetpop.time;
