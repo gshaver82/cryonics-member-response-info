@@ -2,26 +2,23 @@ const db = require("./models");
 module.exports = {
     startup: function () {
         console.log("server startup")
-        console.log("process env", process.env.TWILIO_ACCOUNT_SID)
+        const txtBody='function txt test'
+        const txtNum='-16126421533'
+        twilioOutboundTxt(txtBody, txtNum)
+    },
+    twilioOutboundTxt: function (txtBody, txtNum) {
 
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
         client.messages
             .create({
-                body: 'karla likes to be tickled',
+                body: txtBody,
                 from: process.env.TWILIO_PHONE_NUMBER,
-                to: '+16126421533'
+                to: txtNum
             })
             .then(message => console.log(message.sid));
-        client.messages
-            .create({
-                body: 'do you need to yawn?',
-                from: process.env.TWILIO_PHONE_NUMBER,
-                to: '+16122740103'
-            })
-            .then(message => console.log(message.sid));
-        console.log("server message sent")
+        console.log(txtBody, "server message sent", txtNum)
     },
     fifteenMin: function () {
         let hourcount = 0
