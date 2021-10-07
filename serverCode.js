@@ -10,7 +10,7 @@ module.exports = {
         client.messages
             .create({
                 body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
-                from: process.env.TWILIO_AUTH_TOKEN,
+                from: process.env.TWILIO_PHONE_NUMBER,
                 to: '+16126421533'
             })
             .then(message => console.log(message.sid));
