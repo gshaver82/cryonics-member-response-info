@@ -4,7 +4,7 @@ module.exports = {
         console.log("server startup")
         const txtBody='function txt test'
         const txtNum='-16126421533'
-        twilioOutboundTxt(txtBody, txtNum)
+        serverCode.twilioOutboundTxt(txtBody, txtNum)
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
