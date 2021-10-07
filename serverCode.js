@@ -2,6 +2,19 @@ const db = require("./models");
 module.exports = {
     startup: function () {
         console.log("server startup")
+        console.log("process env", process.env.TWILIO_ACCOUNT_SID)
+        
+        const accountSid = process.env.TWILIO_ACCOUNT_SID;
+        const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const client = require('twilio')(accountSid, authToken);
+        client.messages
+            .create({
+                body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+                from: process.env.TWILIO_AUTH_TOKEN,
+                to: '+16126421533'
+            })
+            .then(message => console.log(message.sid));
+        console.log("server message sent")
     },
     fifteenMin: function () {
         let hourcount = 0
@@ -37,7 +50,7 @@ module.exports = {
             .catch(err => console.log(err));
     },
     putFitBitTokens: function (fitbitObjectForDB) {
-        console.log("serverCode putFitBitTokens req.body",  fitbitObjectForDB)
+        console.log("serverCode putFitBitTokens req.body", fitbitObjectForDB)
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: fitbitObjectForDB.firebaseAuthID },
                 {

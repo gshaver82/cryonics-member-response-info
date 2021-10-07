@@ -25,7 +25,7 @@ function Test() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-//TODO get the individual user so we can later allow access only to users within the admin group
+    //TODO get the individual user so we can later allow access only to users within the admin group
     useEffect(() => {
         API.getuserList()
             .then(res => setUsers(res.data))
@@ -201,9 +201,24 @@ function Test() {
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
     }
+    const handletestTxt = async () => {
+        console.log("process env", process.env.TWILIO_ACCOUNT_SID)
+        console.log("server startup")
+        const accountSid = process.env.TWILIO_ACCOUNT_SID;
+        const authToken = process.env.TWILIO_AUTH_TOKEN;
+        const client = require('twilio')(accountSid, authToken);
+        client.messages
+            .create({
+                body: 'This is the ship that made the Kessel Run in fourteen parsecs?',
+                from: process.env.TWILIO_AUTH_TOKEN,
+                to: '+16126421533'
+            })
+            .then(message => console.log(message.sid));
+        console.log("server message sent")
+    }
     //TODO take the individual user and deny access if not a member of admin group
-    if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'){
-        return(
+    if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1') {
+        return (
             <h3>You are not authorized to access this page</h3>
         )
     }
@@ -211,6 +226,10 @@ function Test() {
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
+            <button onClick={handletestTxt}>
+                testTxt
+            </button>
+
             <h3>Fitbit testing area here: </h3>
 
             <p>Fitbit object is {fitbitObject && <span> valid and user id is: {fitbitObject.user_id}</span>}

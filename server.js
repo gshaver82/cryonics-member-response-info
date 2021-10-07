@@ -50,7 +50,7 @@ async function DBcalls() {
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
             const rtnvalue = await handleGetHeartrate(user)
-            console.log("rtnvalue", rtnvalue)
+            // console.log("rtnvalue", rtnvalue)
         });
         //30 seconds 30000
         //2 minutes 120000
@@ -113,7 +113,7 @@ const handleGetHeartrate = async (user) => {
     //if the current days entry does not exist then skip
 
     if (fitBitDataJSON.activitiesheartintraday.dataset && fitBitDataJSON.activitiesheartintraday.dataset.length === 0) {
-        console.log(user.name, "no dataset data found. possibly because device doesnt support intraday, or just after midnight")
+        console.log(user.name, "no dataset data found. possibly because user hasnt logged data for that time perio, device doesnt support intraday, or just after midnight")
         return 1
     } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
@@ -160,8 +160,6 @@ const handleGetHeartrate = async (user) => {
                 .catch(err => console.log(err));
         } catch (error) {
             console.log("fitbit dataset pop failed", error);
-            // expected output: ReferenceError: nonExistentFunction is not defined
-            // Note - error messages will vary depending on browser
             return 1
         }
 
