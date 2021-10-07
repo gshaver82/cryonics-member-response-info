@@ -49,8 +49,8 @@ async function DBcalls() {
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
-            console.log('running interval code for ', user.name)
-            handleGetHeartrate(user)
+            const rtnvalue = await handleGetHeartrate(user)
+            console.log("rtnvalue", rtnvalue)
         });
         //30 seconds 30000
         //2 minutes 120000
@@ -60,6 +60,7 @@ async function DBcalls() {
 }
 
 const handleGetHeartrate = async (user) => {
+    console.log('running interval code for ', user.name)
     let fitBitDataJSON = 'starting value'
     let authToken = 'starting value'
     authToken = user.checkinDevices.fitbit.authToken
@@ -93,13 +94,13 @@ const handleGetHeartrate = async (user) => {
 
             fitBitDataJSON = await getFitBitData(authToken)
             if (fitBitDataJSON.success === false) {
-                console.log("failed to get refreshed token")
+                console.log("!!!!!!!!!!!failed to get refreshed token!!!!!!!!!!!")
                 console.log("fitBitDataJSON", fitBitDataJSON)
                 return
             }
         }
     } else {
-        console.log("no errors")
+        console.log("no errors retrieving fitbit data")
     }
 
     fitBitDataJSON = JSON.stringify(fitBitDataJSON);
@@ -108,10 +109,16 @@ const handleGetHeartrate = async (user) => {
 
     //getting the most recent time from the fitbitdatajson
     //if the current days entry does not exist then skip
-    if (fitBitDataJSON.activitiesheartintraday.dataset) {
+
+    if (fitBitDataJSON.activitiesheartintraday.dataset && fitBitDataJSON.activitiesheartintraday.dataset.length === 0) {
+        console.log("no dataset data found. possibly because device doesnt support intraday, or just after midnight")
+        return 1
+    } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
-            let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-            YoungestFitbitHR = YoungestFitbitHR.time;
+            console.log('fitBitDataJSON.activitiesheartintraday.dataset', fitBitDataJSON.activitiesheartintraday.dataset)
+            let datasetpop = fitBitDataJSON.activitiesheartintraday.dataset.pop();
+            console.log("datasetpop", datasetpop)
+            let YoungestFitbitHR = datasetpop.time;
             // console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
             YoungestFitbitHR = YoungestFitbitHR.replace(/:/g, '')
             YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
@@ -154,12 +161,15 @@ const handleGetHeartrate = async (user) => {
             console.log("fitbit dataset pop failed", error);
             // expected output: ReferenceError: nonExistentFunction is not defined
             // Note - error messages will vary depending on browser
+            return 1
         }
 
     } else {
         console.log("fitBitDataJSON.activitiesheartintraday.dataset does not exist")
+        return 1
     }
-    console.log("-----------------end of interval code completed !---------------")
+    console.log('interval code complete for ', user.name)
+    return 0
 }
 
 async function getFitBitData(authToken) {

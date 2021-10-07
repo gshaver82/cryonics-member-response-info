@@ -135,6 +135,7 @@ function PrivateHomePage() {
         //if the current days entry does not exist then skip
         if (fitBitDataJSON.activitiesheartintraday.dataset) {
             setisLoading(true)
+            try{
             let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
             YoungestFitbitHR = YoungestFitbitHR.time;
             console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
@@ -170,6 +171,12 @@ function PrivateHomePage() {
                 .then(res => setUser(res.data))
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
+            } catch (error) {
+                setisLoading(false)
+                console.log("fitbit dataset pop failed", error);
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
+            }
         }
     }
 
