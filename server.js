@@ -39,17 +39,28 @@ app.listen(PORT, function () {
 
 const serverCode = require("./serverCode");
 serverCode.startup();
-const txtBody='function txt test'
-const txtNum='-16126421533'
-serverCode.twilioOutboundTxt(txtBody, txtNum)
+
 
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
 DBcalls();
+AlertInterval();
+async function AlertInterval() {
+    mainInterval = setInterval(async function () {
+        console.log("inside alert interval");
+        const txtBody = 'alert interval test'
+        const txtNum = '-16126421533'
+        serverCode.twilioOutboundTxt(txtBody, txtNum)
+        //30 seconds 30000
+        //2 minutes 120000
+        //10 minutes 600000
+        //15 minutes 900000
+    }, 120000);
+}
 
 async function DBcalls() {
     mainInterval = setInterval(async function () {
-        console.log("inside interval");
+        console.log("inside main interval");
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
@@ -98,7 +109,7 @@ const handleGetHeartrate = async (user) => {
 
             fitBitDataJSON = await getFitBitData(authToken)
             if (fitBitDataJSON.success === false) {
-                console.log("!!!!!!!!!!!failed to get refreshed token!!!!!!!!!!!")
+                console.log("!!!!!!!!!!!failed to get refreshed token for ", user.name)
                 console.log("fitBitDataJSON", fitBitDataJSON)
                 return 1
             } else {
@@ -159,7 +170,7 @@ const handleGetHeartrate = async (user) => {
                 newArrayEntry
             }
             // console.log("fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
-            serverCode.putFitBitManualCheckin(fitbitCheckinObjectForDB)
+            serverCode.putFitBitServerCheckin(fitbitCheckinObjectForDB)
                 // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                 .catch(err => console.log(err));
         } catch (error) {

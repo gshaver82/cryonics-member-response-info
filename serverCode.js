@@ -34,7 +34,7 @@ module.exports = {
             .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
             .catch(err => console.log(err));
     },
-    putFitBitManualCheckin: function (fitbitCheckinObjectForDB) {
+    putFitBitServerCheckin: function (fitbitCheckinObjectForDB) {
         // console.log("🚀 ~ putFitBitManualCheckin")
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: fitbitCheckinObjectForDB.firebaseAuthID },
