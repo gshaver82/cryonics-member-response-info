@@ -15,7 +15,7 @@ module.exports = {
                 to: txtNum
             })
             .then(message => console.log(message.sid));
-        console.log(txtBody, "server message sent", txtNum)
+        console.log(txtBody, "---server message sent---", txtNum)
     },
     fifteenMin: function () {
         let hourcount = 0
