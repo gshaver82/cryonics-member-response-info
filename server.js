@@ -39,6 +39,10 @@ app.listen(PORT, function () {
 
 const serverCode = require("./serverCode");
 serverCode.startup();
+const txtBody='function txt test'
+const txtNum='-16126421533'
+serverCode.twilioOutboundTxt(txtBody, txtNum)
+
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
 DBcalls();
@@ -97,7 +101,7 @@ const handleGetHeartrate = async (user) => {
                 console.log("!!!!!!!!!!!failed to get refreshed token!!!!!!!!!!!")
                 console.log("fitBitDataJSON", fitBitDataJSON)
                 return 1
-            }else {
+            } else {
                 console.log("no errors retrieving refreshed fitbit data for ", user.name)
             }
         }
@@ -113,7 +117,7 @@ const handleGetHeartrate = async (user) => {
     //if the current days entry does not exist then skip
 
     if (fitBitDataJSON.activitiesheartintraday.dataset && fitBitDataJSON.activitiesheartintraday.dataset.length === 0) {
-        console.log(user.name, "no dataset data found. possibly because user hasnt logged data for that time perio, device doesnt support intraday, or just after midnight")
+        console.log(user.name, "no dataset data found. user hasnt logged data for that time period, device doesnt support intraday, or just after midnight")
         return 1
     } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
