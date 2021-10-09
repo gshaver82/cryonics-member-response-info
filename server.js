@@ -46,6 +46,7 @@ const fetch = require("node-fetch");
 DBcalls();
 AlertInterval();
 
+//alert interval
 async function AlertInterval() {
     // mainInterval = setInterval(async function () {
     const FitbitUsers = await serverCode.DBFindFitbitUsers();
