@@ -325,7 +325,7 @@ function PrivateHomePage() {
                         Please note that the server will automatically be doing this every 10-15 minutes for registered devices
                     </p>
                     <button onClick={handleGetHeartrate}>
-                        Get most recent heart rate
+                        Get most recent heart rate and sign up for alerts
                     </button>
                     {/* <p>generic Data from fitbit
                     {fitbitUserHRDataResponse &&

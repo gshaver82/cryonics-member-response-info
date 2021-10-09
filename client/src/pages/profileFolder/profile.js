@@ -67,6 +67,10 @@ function Profile() {
             group: ["private"],
             cryonicsProvider: cryonicsProvider,
             photoURL: photoURL,
+            signedUpForAlerts: false,
+            textToUserDatecode: "",
+            textToEmerContactDatecode: "",
+            textToAdminDatecode: "",
             checkinDevices: {
                 WebsiteCheckIn: {
                     checkinArray: [
