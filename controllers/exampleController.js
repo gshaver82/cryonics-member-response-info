@@ -45,15 +45,6 @@ module.exports = {
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
-        db.CryonicsModel
-            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
-                {
-                    $unset: {
-                        "textToUserDatecode": ""
-                    }
-                }
-            )
-            .catch(err => console.log(err));
     },
 
     putWebcheckIn: function (req, res) {
