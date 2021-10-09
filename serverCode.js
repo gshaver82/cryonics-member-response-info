@@ -28,7 +28,7 @@ module.exports = {
                 " hours, and " + remainder + " minutes since server start");
         }, 900000);
     },
-    DBAlertDatecode: function (firebaseAuthID) {
+    DBuserAlertDatecode: function (firebaseAuthID) {
         console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID },
@@ -62,7 +62,7 @@ module.exports = {
             )
             .catch(err => console.log(err));
     },
-    putFitBitServerCheckin: function (firebaseAuthID) {
+    textDateCodeReset: function (firebaseAuthID) {
         // console.log("🚀 ~ putFitBitManualCheckin")
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID},

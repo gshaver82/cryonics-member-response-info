@@ -48,7 +48,7 @@ AlertInterval();
 
 //alert interval
 async function AlertInterval() {
-    // mainInterval = setInterval(async function () {
+    mainInterval = setInterval(async function () {
     const FitbitUsers = await serverCode.DBFindFitbitUsers();
     FitbitUsers.map(async (user) => {
         console.log("running alert checker for ", user.name)
@@ -61,19 +61,18 @@ async function AlertInterval() {
 
             console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
         } catch {
-            console.log("logouts failed for textToUserDatecode ")
+            console.log("console.logs failed for textToUserDatecode ")
         }
 
         try {
             console.log("inside interval checker")
-            if (minutes > 5 && Number(user.textToUserDatecode) === 0) {
+            if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
                 console.log("inside interval checker IF statement")
                 const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                 const txtNum = '-16126421533'
                 serverCode.twilioOutboundTxt(txtBody, txtNum)
                 //create textToUserDatecode
-                res = await serverCode.DBAlertDatecode(user.firebaseAuthID)
-                console.log("res", res)
+                res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
             }
         } catch {
             console.log("datecode failed")
@@ -85,7 +84,7 @@ async function AlertInterval() {
     // 2 minutes 120000
     //10 minutes 600000
     //15 minutes 900000
-    // }, 240000);
+    }, 120000);
 }
 
 async function DBcalls() {
