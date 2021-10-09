@@ -45,7 +45,9 @@ serverCode.fifteenMin();
 const fetch = require("node-fetch");
 DBcalls();
 AlertInterval();
-async function AlertInterval() {
+//-------------- delete this startup code
+runonce();
+async function runonce() {
     // mainInterval = setInterval(async function () {
     const FitbitUsers = await serverCode.DBFindFitbitUsers();
     FitbitUsers.map(async (user) => {
@@ -71,10 +73,42 @@ async function AlertInterval() {
 
     });
     //30 seconds 30000
-    //2 minutes 120000
+    // 2 minutes 120000
     //10 minutes 600000
     //15 minutes 900000
     // }, 240000);
+}
+//--------------delete abbove this
+async function AlertInterval() {
+    mainInterval = setInterval(async function () {
+    const FitbitUsers = await serverCode.DBFindFitbitUsers();
+    FitbitUsers.map(async (user) => {
+        console.log("running alert checker for ", user.name)
+        const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
+        let minutes = Math.floor(temptime / 1000 / 60)
+        console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", textToUserDatecode)
+        console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
+        try {
+            if (minutes > 5 && !user.textToUserDatecode) {
+
+                const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
+                const txtNum = '-16126421533'
+                serverCode.twilioOutboundTxt(txtBody, txtNum)
+                //create textToUserDatecode
+                res = await servercode.DBAlertDatecode(user.firebaseAuthID)
+                console.log("res", res)
+            }
+        } catch {
+            console.log("datecode failed")
+        }
+
+
+    });
+    //30 seconds 30000
+    // 2 minutes 120000
+    //10 minutes 600000
+    //15 minutes 900000
+    }, 240000);
 }
 
 async function DBcalls() {
