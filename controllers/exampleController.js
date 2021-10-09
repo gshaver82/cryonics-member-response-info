@@ -35,6 +35,11 @@ module.exports = {
                             $position: 0,
                             $slice: 25
                         }
+                    },
+                    $set: {
+                        "textToUserDatecode": 0,
+                        "textToEmerContactDatecode": 0,
+                        "textToAdminDatecode": 0
                     }
                 }
             )

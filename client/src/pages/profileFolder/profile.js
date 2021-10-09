@@ -68,9 +68,9 @@ function Profile() {
             cryonicsProvider: cryonicsProvider,
             photoURL: photoURL,
             signedUpForAlerts: false,
-            textToUserDatecode: "",
-            textToEmerContactDatecode: "",
-            textToAdminDatecode: "",
+            textToUserDatecode: 0,
+            textToEmerContactDatecode: 0,
+            textToAdminDatecode: 0,
             checkinDevices: {
                 WebsiteCheckIn: {
                     checkinArray: [

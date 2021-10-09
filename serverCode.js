@@ -1,7 +1,7 @@
 const db = require("./models");
 module.exports = {
     startup: function () {
-        console.log("server startup")        
+        console.log("server startup")
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
@@ -57,6 +57,11 @@ module.exports = {
                             $position: 0,
                             $slice: 25
                         }
+                    },
+                    $set: {
+                        "textToUserDatecode": 0,
+                        "textToEmerContactDatecode": 0,
+                        "textToAdminDatecode": 0
                     }
                 }
             )
