@@ -28,6 +28,18 @@ module.exports = {
                 " hours, and " + remainder + " minutes since server start");
         }, 900000);
     },
+    DBAlertDatecode: function (firebaseAuthID) {
+        console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: firebaseAuthID },
+                {
+                    $set: {
+                        "textToUserDatecode": Date.now()
+                    }
+                }
+            )
+            .catch(err => console.log(err));
+    },
     DBFindFitbitUsers: function () {
         // console.log("DBFindFitbitUsers")
         return db.CryonicsModel

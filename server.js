@@ -52,9 +52,19 @@ async function AlertInterval() {
         console.log("running alert checker for ", user.name)
         const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
         let minutes = Math.floor(temptime / 1000 / 60)
-        const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
-        const txtNum = '-16126421533'
-        serverCode.twilioOutboundTxt(txtBody, txtNum)
+        console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", textToUserDatecode)
+        console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
+
+        if (minutes > 5 && !textToUserDatecode) {
+
+            const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
+            const txtNum = '-16126421533'
+            serverCode.twilioOutboundTxt(txtBody, txtNum)
+            //create textToUserDatecode
+            res = await servercode.DBAlertDatecode(user.firebaseAuthID)
+            console.log("res", res)
+        }
+
     });
     //30 seconds 30000
     //2 minutes 120000
