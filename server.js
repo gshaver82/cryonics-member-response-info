@@ -55,15 +55,16 @@ async function AlertInterval() {
         const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
         let minutes = Math.floor(temptime / 1000 / 60)
         try {
-            console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", textToUserDatecode)
+            console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", user.textToUserDatecode)
             console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
         } catch {
             console.log("logouts failed for textToUserDatecode ")
         }
 
         try {
+            console.log("inside interval checker")
             if (minutes > 5 && user.textToUserDatecode === 0) {
-
+                console.log("inside interval checker IF statement")
                 const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                 const txtNum = '-16126421533'
                 serverCode.twilioOutboundTxt(txtBody, txtNum)
