@@ -66,7 +66,7 @@ async function AlertInterval() {
 
         try {
             console.log("inside interval checker")
-            if (minutes > 5 && new Date(user.textToUserDatecode) === 0) {
+            if (minutes > 5 && Number(user.textToUserDatecode) === 0) {
                 console.log("inside interval checker IF statement")
                 const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                 const txtNum = '-16126421533'
