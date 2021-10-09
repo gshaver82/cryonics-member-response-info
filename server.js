@@ -72,7 +72,7 @@ async function AlertInterval() {
                 const txtNum = '-16126421533'
                 serverCode.twilioOutboundTxt(txtBody, txtNum)
                 //create textToUserDatecode
-                res = await servercode.DBAlertDatecode(user.firebaseAuthID)
+                res = await serverCode.DBAlertDatecode(user.firebaseAuthID)
                 console.log("res", res)
             }
         } catch {
