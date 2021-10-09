@@ -89,7 +89,7 @@ async function AlertInterval() {
         console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", textToUserDatecode)
         console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
         try {
-            if (minutes > 5 && !user.textToUserDatecode) {
+            if (minutes > 50 && !user.textToUserDatecode) {
 
                 const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                 const txtNum = '-16126421533'
