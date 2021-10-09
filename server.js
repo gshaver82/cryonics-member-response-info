@@ -56,9 +56,9 @@ async function AlertInterval() {
         let minutes = Math.floor(temptime / 1000 / 60)
         try {
             console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", user.textToUserDatecode)
-            console.log("🚀 ~ FitbitUsers.map ~ new Date(user.textToUserDatecode)", 
-            new Date(user.textToUserDatecode))
-            
+            console.log("🚀 ~ FitbitUsers.map ~ new Date(user.textToUserDatecode)",
+                new Date(user.textToUserDatecode))
+
             console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
         } catch {
             console.log("logouts failed for textToUserDatecode ")
@@ -101,7 +101,7 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 600000);
+    }, 300000);
 }
 
 const handleGetHeartrate = async (user) => {
@@ -203,6 +203,18 @@ const handleGetHeartrate = async (user) => {
             serverCode.putFitBitServerCheckin(fitbitCheckinObjectForDB)
                 // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                 .catch(err => console.log(err));
+
+
+            const temptime = Date.now() - (new Date(FBcheckinDateCode).getTime());
+            let newMinutes = Math.floor(temptime / 1000 / 60)
+            console.log("newMinutes", newMinutes)
+            if (newMinutes < 25) {
+                serverCode.textDateCodeReset(user.firebaseAuthID)
+                    .then(console.log("reset date code sent because minutes was under 25"))
+                    .catch(err => console.log(err));
+            }
+
+
         } catch (error) {
             console.log("fitbit dataset pop failed", error);
             return 1

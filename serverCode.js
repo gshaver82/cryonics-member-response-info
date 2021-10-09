@@ -58,6 +58,15 @@ module.exports = {
                             $slice: 25
                         }
                     },
+                }
+            )
+            .catch(err => console.log(err));
+    },
+    putFitBitServerCheckin: function (firebaseAuthID) {
+        // console.log("🚀 ~ putFitBitManualCheckin")
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: firebaseAuthID},
+                {
                     $set: {
                         "textToUserDatecode": 0,
                         "textToEmerContactDatecode": 0,
@@ -67,6 +76,7 @@ module.exports = {
             )
             .catch(err => console.log(err));
     },
+
     putFitBitTokens: function (fitbitObjectForDB) {
         console.log("serverCode putFitBitTokens req.body", fitbitObjectForDB)
         return db.CryonicsModel

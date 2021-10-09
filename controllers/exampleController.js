@@ -36,11 +36,6 @@ module.exports = {
                             $slice: 25
                         }
                     },
-                    $set: {
-                        "textToUserDatecode": 0,
-                        "textToEmerContactDatecode": 0,
-                        "textToAdminDatecode": 0
-                    }
                 }
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
