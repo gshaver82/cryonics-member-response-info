@@ -54,7 +54,7 @@ async function AlertInterval() {
             console.log("running alert checker for ", user.name)
             const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
             let minutes = Math.floor(temptime / 1000 / 60)
-            console.log("alert interval", minutes)
+            console.log("alert interval " + minutes + "since fitbit HR reading")
 
             try {
                 if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
@@ -95,7 +95,7 @@ async function DBcalls() {
 }
 
 const handleGetHeartrate = async (user) => {
-    console.log('running interval code for ', user.name)
+    console.log('interval code for ' + user.name + "getting HR date from fitbit")
     let fitBitDataJSON = 'starting value'
     let authToken = 'starting value'
     authToken = user.checkinDevices.fitbit.authToken
@@ -201,11 +201,11 @@ const handleGetHeartrate = async (user) => {
             if (newMinutes < 25 && (Number(user.textToUserDatecode) !== 0
                 || Number(user.textToEmerContactDatecode) !== 0
                 || Number(user.textToAdminDatecode) !== 0)) {
+                console.log(newMinutes + " minutes. since minutes is under 25, sending date code reset")
                 serverCode.textDateCodeReset(user.firebaseAuthID)
-                    .then(console.log("reset date code sent because minutes was under 25"))
                     .catch(err => console.log(err));
             } else {
-                console.log("it has been " + newMinutes + " since fitbit registered heartbeat. date code number for user, emer, admin",
+                console.log(newMinutes + " min since fitbit registered HR. date code numb for user, emer, admin",
                     Number(user.textToUserDatecode),
                     Number(user.textToEmerContactDatecode),
                     Number(user.textToAdminDatecode))
