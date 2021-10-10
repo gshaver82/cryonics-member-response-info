@@ -49,41 +49,41 @@ AlertInterval();
 //alert interval
 async function AlertInterval() {
     mainInterval = setInterval(async function () {
-    const FitbitUsers = await serverCode.DBFindFitbitUsers();
-    FitbitUsers.map(async (user) => {
-        console.log("running alert checker for ", user.name)
-        const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
-        let minutes = Math.floor(temptime / 1000 / 60)
-        try {
-            console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", user.textToUserDatecode)
-            console.log("🚀 ~ FitbitUsers.map ~ new Date(user.textToUserDatecode)",
-                new Date(user.textToUserDatecode))
+        const FitbitUsers = await serverCode.DBFindFitbitUsers();
+        FitbitUsers.map(async (user) => {
+            console.log("running alert checker for ", user.name)
+            const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
+            let minutes = Math.floor(temptime / 1000 / 60)
+            try {
+                console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", user.textToUserDatecode)
+                console.log("🚀 ~ FitbitUsers.map ~ new Date(user.textToUserDatecode)",
+                    new Date(user.textToUserDatecode))
 
-            console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
-        } catch {
-            console.log("console.logs failed for textToUserDatecode ")
-        }
-
-        try {
-            console.log("inside interval checker")
-            if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
-                console.log("inside interval checker IF statement")
-                const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
-                const txtNum = '-16126421533'
-                serverCode.twilioOutboundTxt(txtBody, txtNum)
-                //create textToUserDatecode
-                res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
+                console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
+            } catch {
+                console.log("console.logs failed for textToUserDatecode ")
             }
-        } catch {
-            console.log("datecode failed")
-        }
+
+            try {
+                console.log("inside interval checker")
+                if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
+                    console.log("inside interval checker IF statement")
+                    const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
+                    const txtNum = '-16126421533'
+                    serverCode.twilioOutboundTxt(txtBody, txtNum)
+                    //create textToUserDatecode
+                    res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
+                }
+            } catch {
+                console.log("datecode failed")
+            }
 
 
-    });
-    //30 seconds 30000
-    // 2 minutes 120000
-    //10 minutes 600000
-    //15 minutes 900000
+        });
+        //30 seconds 30000
+        // 2 minutes 120000
+        //10 minutes 600000
+        //15 minutes 900000
     }, 120000);
 }
 
@@ -207,10 +207,17 @@ const handleGetHeartrate = async (user) => {
             const temptime = Date.now() - (new Date(FBcheckinDateCode).getTime());
             let newMinutes = Math.floor(temptime / 1000 / 60)
             console.log("newMinutes", newMinutes)
-            if (newMinutes < 25) {
+            if (newMinutes < 25 && (Number(user.textToUserDatecode) !== 0
+                || Number(user.textToEmerContactDatecode) !== 0
+                || Number(user.textToAdminDatecode) !== 0)) {
                 serverCode.textDateCodeReset(user.firebaseAuthID)
                     .then(console.log("reset date code sent because minutes was under 25"))
                     .catch(err => console.log(err));
+            } else {
+                console.log("reset date code not sent--- new minutes, then date codes", newMinutes,
+                    Number(user.textToUserDatecode),
+                    Number(user.textToEmerContactDatecode),
+                    Number(user.textToAdminDatecode))
             }
 
 
