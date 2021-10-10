@@ -70,11 +70,11 @@ async function AlertInterval() {
             } catch {
                 console.log("alert and text datecode text failed")
             }
-            try {
-                //this is going to trigger if normal alert would trigger PLUS
-                // 5 minutes later. this would then text the next contact down the line, the emergency contact
-                //UNTESTED but should work. currently pinging 1533 num
 
+            //this is going to trigger if normal alert would trigger PLUS
+            // 5 minutes later. this would then text the next contact down the line, the emergency contact
+            //UNTESTED but should work. currently pinging 1533 num
+            // try {
             //     if (minutes > 50 && Number(user.textToUserDatecode) !== 0 
             //     && ((Number(new Date()) - Number(user.textToUserDatecode)) > 300000) ) {
             //         // if (user.signedUpForAlerts === true){
