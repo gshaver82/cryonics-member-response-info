@@ -40,6 +40,18 @@ module.exports = {
             )
             .catch(err => console.log(err));
     },
+    DBuserAlertEmerDatecode: function (firebaseAuthID) {
+        console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: firebaseAuthID },
+                {
+                    $set: {
+                        "textToEmerContactDatecode": Date.now()
+                    }
+                }
+            )
+            .catch(err => console.log(err));
+    },
     DBFindFitbitUsers: function () {
         // console.log("DBFindFitbitUsers")
         return db.CryonicsModel

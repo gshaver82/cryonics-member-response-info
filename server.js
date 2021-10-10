@@ -68,8 +68,28 @@ async function AlertInterval() {
                     // }                    
                 }
             } catch {
-                console.log("datecode text failed")
+                console.log("alert and text datecode text failed")
             }
+            try {
+                //this is going to trigger if normal alert would trigger PLUS
+                // 5 minutes later. this would then text the next contact down the line, the emergency contact
+                //UNTESTED but should work. currently pinging 1533 num
+
+            //     if (minutes > 50 && Number(user.textToUserDatecode) !== 0 
+            //     && ((Number(new Date()) - Number(user.textToUserDatecode)) > 300000) ) {
+            //         // if (user.signedUpForAlerts === true){
+            //         const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
+            //         const txtNum = '-16126421533'
+            //         serverCode.twilioOutboundTxt(txtBody, txtNum)
+            //         res = await serverCode.DBuserAlertEmerDatecode(user.firebaseAuthID)
+            //         // }else{
+            //         //     console.log("alert situation triggered, but not sent due to not being signed up for alerts")
+            //         // }                    
+            //     }
+            // } catch {
+            //     console.log("emergency alert and text datecode text failed")
+            // }
+
         });
         //30 seconds 30000
         // 2 minutes 120000
