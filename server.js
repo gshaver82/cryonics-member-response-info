@@ -100,7 +100,7 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 300000);
+    }, 600000);
 }
 
 const handleGetHeartrate = async (user) => {
