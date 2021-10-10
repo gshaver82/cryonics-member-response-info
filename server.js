@@ -54,37 +54,28 @@ async function AlertInterval() {
             console.log("running alert checker for ", user.name)
             const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
             let minutes = Math.floor(temptime / 1000 / 60)
-            try {
-                console.log("🚀 ~ FitbitUsers.map ~ textToUserDatecode", user.textToUserDatecode)
-                console.log("🚀 ~ FitbitUsers.map ~ new Date(user.textToUserDatecode)",
-                    new Date(user.textToUserDatecode))
-
-                console.log("🚀 ~ FitbitUsers.map ~ minutes", minutes)
-            } catch {
-                console.log("console.logs failed for textToUserDatecode ")
-            }
+            console.log("alert interval", minutes)
 
             try {
-                console.log("inside interval checker")
                 if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
-                    console.log("inside interval checker IF statement")
+                    // if (user.signedUpForAlerts === true){
                     const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                     const txtNum = '-16126421533'
                     serverCode.twilioOutboundTxt(txtBody, txtNum)
-                    //create textToUserDatecode
                     res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
+                    // }else{
+                    //     console.log("alert situation triggered, but not sent due to not being signed up for alerts")
+                    // }                    
                 }
             } catch {
-                console.log("datecode failed")
+                console.log("datecode text failed")
             }
-
-
         });
         //30 seconds 30000
         // 2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 120000);
+    }, 180000);
 }
 
 async function DBcalls() {
@@ -162,7 +153,7 @@ const handleGetHeartrate = async (user) => {
     } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
             let datasetpop = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-            console.log("datasetpop", datasetpop)
+            // console.log("datasetpop", datasetpop)
             let YoungestFitbitHR = datasetpop.time;
             // console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
             YoungestFitbitHR = YoungestFitbitHR.replace(/:/g, '')
@@ -206,7 +197,7 @@ const handleGetHeartrate = async (user) => {
 
             const temptime = Date.now() - (new Date(FBcheckinDateCode).getTime());
             let newMinutes = Math.floor(temptime / 1000 / 60)
-            console.log("newMinutes", newMinutes)
+            // console.log("newMinutes", newMinutes)
             if (newMinutes < 25 && (Number(user.textToUserDatecode) !== 0
                 || Number(user.textToEmerContactDatecode) !== 0
                 || Number(user.textToAdminDatecode) !== 0)) {
@@ -214,7 +205,7 @@ const handleGetHeartrate = async (user) => {
                     .then(console.log("reset date code sent because minutes was under 25"))
                     .catch(err => console.log(err));
             } else {
-                console.log("reset date code not sent--- new minutes, then date codes", newMinutes,
+                console.log("it has been " + newMinutes + " since fitbit registered heartbeat. date code number for user, emer, admin",
                     Number(user.textToUserDatecode),
                     Number(user.textToEmerContactDatecode),
                     Number(user.textToAdminDatecode))
