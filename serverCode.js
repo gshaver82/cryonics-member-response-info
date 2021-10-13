@@ -28,6 +28,18 @@ module.exports = {
                 " hours, and " + remainder + " minutes since server start");
         }, 900000);
     },
+    DBuserFitbitDevice: function (firebaseAuthID, fitBitDevice) {
+        console.log("fitBitDevice inside servercode", fitBitDevice)
+        return db.CryonicsModel
+            .updateOne({ firebaseAuthID: firebaseAuthID },
+                {
+                    $set: {
+                        "text1": fitBitDevice[0].deviceVersion, "text2": fitBitDevice[0].batteryLevel
+                    }
+                }
+            )
+            .catch(err => console.log(err));
+    },
     DBuserAlertDatecode: function (firebaseAuthID) {
         console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
         return db.CryonicsModel

@@ -77,24 +77,34 @@ function MemberDash() {
                                     <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                         <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                             <p><strong>NAME: </strong>{user.name}</p>
-                                            <p>{days} d {hours} h {minutes} min since checkin</p>
-                                            <p>Web Check in: {" "}
-                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
-                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
-                                            </p>
+                                            {/* <p>{days} d {hours} h {minutes} min since checkin</p> */}
+
                                             {user.checkinDevices.fitbit.fitbitDeviceRegistered
                                                 ? <div>
                                                     <p>Most recent fitbit Check in:
-                                                    </p>
-                                                    <p>
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
                                                     </p>
                                                     <p>
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
+                                                    {user.text1 && user.text2
+                                                        ? <div>
+                                                            <p>
+                                                                FitBit Device Name: {user.text1} {" "}
+                                                            </p>
+                                                            <p>
+                                                                Battery Level: {user.text2}
+                                                            </p>
+                                                        </div>
+                                                        : <p>Unable to read device details</p>
+                                                    }
                                                 </div>
                                                 : <p>fitbit device not registered</p>
                                             }
+                                            <p>Web Check in: {" "}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
+                                            </p>
                                         </Link>
                                     </li>
                                 );

@@ -195,10 +195,12 @@ const cryonicsSchema = new Schema({
         type: String,
         required: false,
     },
+    //fitbit device name
     text1: {
         type: String,
         required: false,
     },
+    //fitbit device battery level
     text2: {
         type: String,
         required: false,

@@ -124,8 +124,28 @@ const handleGetHeartrate = async (user) => {
         return
     } else {
         // console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
+        // try{
+
+        // }
+        // catch{
+
+        // }
         fitBitDataJSON = await getFitBitData(authToken)
+        try {
+            fitBitDevice = await getFitBitDevice(authToken)
+            console.log("fitBitDevice", fitBitDevice)
+        }
+        catch {
+            console.log("error getting fitbit device")
+        }
     }
+    try {
+        serverCode.DBuserFitbitDevice(user.firebaseAuthID, fitBitDevice)
+    }
+    catch {
+        console.log("storing fitbit device info failed")
+    }
+
 
     if (fitBitDataJSON.success === false) {
         console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
@@ -248,6 +268,27 @@ const handleGetHeartrate = async (user) => {
 async function getFitBitData(authToken) {
     if (authToken) {
         const url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
+        const response = await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + authToken
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer'
+        });
+        return response.json(); // parses JSON response into native JavaScript objects
+    } else {
+        console.log("no auth tokens")
+    }
+}
+
+async function getFitBitDevice(authToken) {
+    if (authToken) {
+        const url = "https://api.fitbit.com/1/user/-/devices.json"
         const response = await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
