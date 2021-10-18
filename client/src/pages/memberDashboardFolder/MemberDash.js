@@ -66,21 +66,68 @@ function MemberDash() {
                             //TODO create another section for those that opt out of checkins 
                             //and just want to use the site for information
                             .filter(user => user.name !== 'Initialized user name')
-                            .sort((a, b) => (a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated > b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated) ? 1 : -1)
+                            // a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated 
+                            .sort(function (a, b) {
+                                //this will sort each user and put the user with the longest time since checkin at top. 
+                                //TODO sort by signed up for alerts field and map another time for people not wanting alerts
+                                if (
+                                    //this will check the max date of all device fields
+                                    //max will get milliseconds since 1970 and the highest number is the most recent. 
+                                    //website checkin is guarunteed so no need to error check that?
+                                    //fitbit time or other devices is not guarunteed so check if its registered, and if not submit 0 to the max formula
+                                    Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                    )
+                                    >
+                                    Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                    )
+                                )
+                                    return 1;
+                                else if (
+                                    Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                    )
+                                    <
+                                    Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                    )
+                                )
+                                    return -1;
+                                else { return 0 }
+
+                            })
+
+
+
                             .map(user => {
                                 //this gets the milliseconds since checkin
                                 const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                let minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                let hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                let days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                let webMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                let webHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                let webDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+
+                                let FBMinutes = "--"
+                                let FBHours = "--"
+                                let FBDays = "--"
+                                if (user.checkinDevices.fitbit.fitbitDeviceRegistered) {
+                                    console.log("inside fitbit time sorting thingy")
+                                    const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
+                                    FBMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                    FBHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                    FBDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+
+                                }
+
                                 return (
                                     <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                         <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                             <p><strong>NAME: </strong>{user.name}</p>
-                                            {/* <p>{days} d {hours} h {minutes} min since checkin</p> */}
+
 
                                             {user.checkinDevices.fitbit.fitbitDeviceRegistered
                                                 ? <div>
+                                                    <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit checkin</p>
                                                     <p>Most recent fitbit Check in:
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
                                                     </p>
@@ -101,6 +148,7 @@ function MemberDash() {
                                                 </div>
                                                 : <p>fitbit device not registered</p>
                                             }
+                                            <p>{webDays} d {webHours} h {webMinutes} min since website checkin</p>
                                             <p>Web Check in: {" "}
                                                 {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
                                                 {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
