@@ -1,0 +1,16 @@
+.font-20px{font-size: 20px!important;}
+.font-50px{font-size: 50px!important;}
+.font-70px{font-size: 70px!important;}
+
+.fa-battery-filling{
+  position: relative;
+}
+.fa-battery-filling span{
+  position: absolute;
+  background: orange;
+  top: 28%;
+  height: 44%;
+  left: 11%;
+  border-radius: 2px;
+  transition: 250ms ease;
+}

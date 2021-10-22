@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 // import firebaseEnvConfigs from '../../firebase';
 // import { Link } from 'react-router-dom';
 import API from "../../utils/API";
+import Battery from "./../../components/Battery";
 
 // const firebase = firebaseEnvConfigs.firebase_;
 
@@ -95,11 +96,7 @@ function MemberDash() {
                                 )
                                     return -1;
                                 else { return 0 }
-
                             })
-
-
-
                             .map(user => {
                                 //this gets the milliseconds since checkin
                                 const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
@@ -116,7 +113,6 @@ function MemberDash() {
                                     FBMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
                                     FBHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                     FBDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-
                                 }
 
                                 return (
@@ -135,14 +131,7 @@ function MemberDash() {
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
                                                     {user.text1 && user.text2
-                                                        ? <div>
-                                                            <p>
-                                                                FitBit Device Name: {user.text1} {" "}
-                                                            </p>
-                                                            <p>
-                                                                Battery Level: {user.text2}
-                                                            </p>
-                                                        </div>
+                                                        ? <Battery device={user.text1} batlvl={user.text2} />
                                                         : <p>Unable to read device details</p>
                                                     }
                                                 </div>

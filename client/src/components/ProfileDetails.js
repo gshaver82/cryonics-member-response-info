@@ -1,6 +1,7 @@
 import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import API from "../utils/API";
+import Battery from "../components/Battery";
 
 function ProfileDetails() {
   const { _id } = useParams()
@@ -24,7 +25,7 @@ function ProfileDetails() {
         "+" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
     }
   }
-//TODO error harden for [0].dateCreated. it somehow created a temporary error that was fixed with page refresh
+  //TODO error harden for [0].dateCreated. it somehow created a temporary error that was fixed with page refresh
   return (
 
     <div>
@@ -57,6 +58,10 @@ function ProfileDetails() {
             <p>
               {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
             </p>
+            {user.text1 && user.text2
+              ? <Battery device={user.text1} batlvl={user.text2} />
+              : <p>Unable to read device details</p>
+            }
           </div>
           : <p>fitbit device not registered</p>
         }

@@ -8,6 +8,7 @@ import { AuthProvider } from "./quickstartComponents/Auth";
 import PrivateRoute from "./quickstartComponents/PrivateRoute";
 import secondPage from "./pages/secondFolder/secondPage";
 import publicHomePage from "./pages/publicHomeFolder/publicHomePage";
+import "./cssBattery.css";
 import "./style.css";
 import { ThemeProvider } from "styled-components";
 import { useDarkMode } from "./quickstartComponents/DarkMode/useDarkMode";
