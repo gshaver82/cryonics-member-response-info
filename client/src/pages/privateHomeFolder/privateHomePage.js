@@ -135,42 +135,42 @@ function PrivateHomePage() {
         //if the current days entry does not exist then skip
         if (fitBitDataJSON.activitiesheartintraday.dataset) {
             setisLoading(true)
-            try{
-            let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-            YoungestFitbitHR = YoungestFitbitHR.time;
-            console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
-            YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
-            YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
-            setfitbitNewestTime(YoungestFitbitHR)
+            try {
+                let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
+                YoungestFitbitHR = YoungestFitbitHR.time;
+                console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
+                YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
+                YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
+                setfitbitNewestTime(YoungestFitbitHR)
 
-            //convert to current date code
-            //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
-            const CurrentDate = new Date();
-            console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
-            let hours = YoungestFitbitHR.slice(0, 2)
-            console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
-            let minutes = YoungestFitbitHR.slice(2, 4)
-            console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
-            const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
-            console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
-            //then putfitbit checkin
-            const newArrayEntry =
-            {
-                dateCreated: FBcheckinDateCode
-            }
-            let fitbitCheckinObjectForDB = {
-                firebaseAuthID: firebaseUserID,
-                newArrayEntry
-            }
-            console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
+                //convert to current date code
+                //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
+                const CurrentDate = new Date();
+                console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
+                let hours = YoungestFitbitHR.slice(0, 2)
+                console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
+                let minutes = YoungestFitbitHR.slice(2, 4)
+                console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
+                const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
+                console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
+                //then putfitbit checkin
+                const newArrayEntry =
+                {
+                    dateCreated: FBcheckinDateCode
+                }
+                let fitbitCheckinObjectForDB = {
+                    firebaseAuthID: firebaseUserID,
+                    newArrayEntry
+                }
+                console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
 
-            API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
-                .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
-                .catch(err => console.log(err));
-            API.getOneUserByFirebaseID(firebaseUserID)
-                .then(res => setUser(res.data))
-                .then(setisLoading(false))
-                .catch(err => console.log(err));
+                API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
+                    .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
+                    .catch(err => console.log(err));
+                API.getOneUserByFirebaseID(firebaseUserID)
+                    .then(res => setUser(res.data))
+                    .then(setisLoading(false))
+                    .catch(err => console.log(err));
             } catch (error) {
                 setisLoading(false)
                 console.log("fitbit dataset pop failed", error);
@@ -215,6 +215,40 @@ function PrivateHomePage() {
             .then(res => setUser(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
+    };
+
+
+    const handleAlertsSignUp = async () => {
+        console.log("inside handleAlertsSignUp")
+        setisLoading(true)
+        const editedUser = {
+            firebaseAuthID: firebaseUserID,
+            signedUpForAlerts: true,
+        }
+        await API.edituser(editedUser)
+            .catch(err => console.log(err));
+        await API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+        console.log("after  handleAlertsSignUp", user.signedUpForAlerts)
+    };
+
+    const handleAlertsSignOff = async () => {
+        console.log("inside handleAlertsSignOff")
+        setisLoading(true)
+        const editedUser = {
+            firebaseAuthID: firebaseUserID,
+            signedUpForAlerts: false,
+        }
+        await API.edituser(editedUser)
+            .catch(err => console.log(err));
+        await API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+
+        console.log("after  handleAlertsSignOff", user.signedUpForAlerts)
     };
     //defaults to 0 if lat and long are not detected
     async function newCheckinDataFunction(lat = 0, lng = 0) {
@@ -283,6 +317,25 @@ function PrivateHomePage() {
                     </p>
                 </div>
             </div>
+
+            <div className="recipe-card recipe-border-2">
+                <p>
+                    This server will monitor your heart rate devices. If the server does not detect a heartrate it will send out text and phone alerts to your numbers
+                </p>
+                <p>
+                    if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
+                </p>
+                {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
+                <button onClick={handleAlertsSignUp}>
+                    Alerts ON
+                </button>
+                <button onClick={handleAlertsSignOff}>
+                    Alerts OFF
+                </button>
+
+            </div>
+
+
             <div className="recipe-card recipe-border-2">
                 <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
                 <button type="button" onClick={handleputWebcheckIn}>

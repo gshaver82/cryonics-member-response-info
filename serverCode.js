@@ -67,7 +67,9 @@ module.exports = {
     DBFindFitbitUsers: function () {
         // console.log("DBFindFitbitUsers")
         return db.CryonicsModel
-            .find({ "checkinDevices.fitbit.fitbitDeviceRegistered": "true" })
+            .find({
+                "checkinDevices.fitbit.fitbitDeviceRegistered": "true"
+            })
             .catch(err => console.log(err));
     },
     putFitBitServerCheckin: function (fitbitCheckinObjectForDB) {
@@ -89,7 +91,7 @@ module.exports = {
     textDateCodeReset: function (firebaseAuthID) {
         // console.log("🚀 ~ putFitBitManualCheckin")
         return db.CryonicsModel
-            .updateOne({ firebaseAuthID: firebaseAuthID},
+            .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
                     $set: {
                         "textToUserDatecode": 0,

@@ -7,7 +7,7 @@ function Battery(prop) {
     'background': 'orange',
     'width': "calc(" + batlvl + "% * 0.73)"
   };
-  if (batlvl > 80) {
+  if (batlvl >= 80) {
     btnStyle.background = 'DarkGreen'
   } else if (batlvl < 80 && batlvl > 50) {
     btnStyle.background = 'DarkSeaGreen'

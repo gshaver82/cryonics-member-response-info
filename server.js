@@ -61,7 +61,14 @@ async function AlertInterval() {
                     // if (user.signedUpForAlerts === true){
                     const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
                     const txtNum = '-16126421533'
-                    serverCode.twilioOutboundTxt(txtBody, txtNum)
+
+
+                    if (user.signedUpForAlerts === true) {
+                        serverCode.twilioOutboundTxt(txtBody, txtNum)
+                        console.log("message sent due to user being signed up for alerts")
+                    } else {
+                        console.log("message not sent due to user not being signed up for alerts")
+                    }
                     res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
                     // }else{
                     //     console.log("alert situation triggered, but not sent due to not being signed up for alerts")
@@ -101,6 +108,7 @@ async function AlertInterval() {
 async function DBcalls() {
     mainInterval = setInterval(async function () {
         console.log("inside main interval");
+        //find fitbit users who have also signed up for alerts
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
         FitbitUsers.map(async (user) => {
@@ -123,13 +131,6 @@ const handleGetHeartrate = async (user) => {
         console.log("!authToken")
         return
     } else {
-        // console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
-        // try{
-
-        // }
-        // catch{
-
-        // }
         fitBitDataJSON = await getFitBitData(authToken)
         try {
             fitBitDevice = await getFitBitDevice(authToken)
