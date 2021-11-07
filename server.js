@@ -210,7 +210,7 @@ const handleGetHeartrate = async (user) => {
 
             let FBcheckinDateCode = new Date();
             //hardcoding timezone offset for central standard time
-            const timezoneOffset = -5;
+            const timezoneOffset = -6;
             // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
             //central time zone offset hardcode. please change this later
             FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
