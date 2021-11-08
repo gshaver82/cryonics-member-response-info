@@ -33,7 +33,10 @@ function checkAuth(req, res, next) {
                 console.log("[SERVER] Found unauthorized token");
                 res.status(403).send('Unauthorized')
             });
-    } else {
+    } else if (req.headers.semisecret && req.headers.semisecret === 'vegetable'){
+        console.log("[SERVER] semi secret token found");
+        res.status(403).send('Unauthorized but unconfigured semi secret')
+    }    else {
         console.log("[SERVER] No Authorization token found");
         res.status(403).send('Unauthorized')
     }
