@@ -82,7 +82,7 @@ let usersSeed = [
 async function seedAsyncFunction() {
     try {
         await cryonicsModel.deleteMany();
-        await cryonicsModel.insertMany(usersSeed);
+        // await cryonicsModel.insertMany(usersSeed);
         process.exit(0);
     } catch (err) {
         console.log(err);
