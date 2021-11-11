@@ -17,6 +17,7 @@ module.exports = {
                         "checkinDevices.fitbit.fitbitDeviceRegistered": req.body.checkinDevices.fitbit.fitbitDeviceRegistered,
                         "checkinDevices.fitbit.authToken": req.body.checkinDevices.fitbit.authToken,
                         "checkinDevices.fitbit.refreshToken": req.body.checkinDevices.fitbit.refreshToken,
+                        "checkinDevices.fitbit.user_id": req.body.checkinDevices.fitbit.user_id,
                     }
                 }
             )

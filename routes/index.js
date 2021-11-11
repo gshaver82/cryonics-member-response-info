@@ -48,10 +48,10 @@ router.use("/api", apiRoutes);
 
 function checkCompanion(req, res, next) {
     if (req.headers.semisecret && req.headers.semisecret === 'vegetable') {
-        console.log("[SERVER] semi secret token found");
+        console.log("[SERVER] correct semi secret token found");
         next()
     } else {
-        console.log("[SERVER] No companion Authorization token found");
+        console.log("[SERVER] incorrect or No companion Authorization token found");
         res.status(403).send('Unauthorized companion')
     }
 }

@@ -64,6 +64,10 @@ const cryonicsSchema = new Schema({
                 required: true,
                 default: false,
             },
+            user_id: {
+                type: String,
+                required: true,
+            },
             authToken: {
                 type: String,
                 required: false,
@@ -75,6 +79,51 @@ const cryonicsSchema = new Schema({
             checkinArray: [
                 {
                     dateCreated: {
+                        type: Date,
+                        required: false,
+                    },
+                }
+            ],
+            alertArray: [
+                {
+                    date: {
+                        type: Date,
+                        required: true,
+                    },
+                    lat: {
+                        type: Number,
+                        required: false,
+                    },
+                    long: {
+                        type: Number,
+                        required: false,
+                    },
+                    activeState: {
+                        type: Boolean,
+                        required: true,
+                        default: true,
+                    },
+                    stage1: {
+                        type: Date,
+                        required: false,
+                    },
+                    stage2: {
+                        type: Date,
+                        required: false,
+                    },
+                    stage3: {
+                        type: Date,
+                        required: false,
+                    },
+                    stage4: {
+                        type: Date,
+                        required: false,
+                    },
+                    stage5: {
+                        type: Date,
+                        required: false,
+                    },
+                    stage6: {
                         type: Date,
                         required: false,
                     },

@@ -90,7 +90,8 @@ function PrivateHomePage() {
                 fitbit: {
                     fitbitDeviceRegistered: true,
                     authToken: fitbitData.access_token,
-                    refreshToken: fitbitData.refresh_token
+                    refreshToken: fitbitData.refresh_token,
+                    user_id: fitbitData.user_id,
                 },
             }
         }
