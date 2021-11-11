@@ -4,7 +4,7 @@ module.exports = {
     putDeviceTest: function (req, res) {
         console.log("req.body", req.body)
         db.CryonicsModel
-            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+            .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
                 {
                     $set: {
                         "text3": "new data pushed as of " + Date.now()
