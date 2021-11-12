@@ -8,7 +8,14 @@ module.exports = {
                 {
                     $set: {
                         "text3": "new data pushed as of " + Date.now()
-                    }
+                    },
+                    $push: {
+                        "checkinDevices.fitbit.alertArray": {
+                            $each: [req.body.newArrayEntry],
+                            $position: 0,
+                            $slice: 25
+                        }
+                    },
                 }
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))

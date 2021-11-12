@@ -106,26 +106,32 @@ const cryonicsSchema = new Schema({
                     stage1: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                     stage2: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                     stage3: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                     stage4: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                     stage5: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                     stage6: {
                         type: Date,
                         required: false,
+                        default: false,
                     },
                 }
             ]
