@@ -394,7 +394,7 @@ function PrivateHomePage() {
                     {!fitbitNewestTime && <span> has not yet loaded</span>}</p> */}
                 </div>
 
-                {user.checkinDevices.fitbit.fitbitDeviceRegistered
+                {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
                     ? <div>
                         <p>Most recent fitbit Check in:
                         </p>
