@@ -121,7 +121,7 @@ function MemberDash() {
                                             <p><strong>NAME: </strong>{user.name}</p>
 
 
-                                            {user.checkinDevices.fitbit.fitbitDeviceRegistered
+                                            {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
                                                 ? <div>
                                                     <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit checkin</p>
                                                     <p>Most recent fitbit Check in:
