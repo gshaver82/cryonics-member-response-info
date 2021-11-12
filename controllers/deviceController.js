@@ -3,6 +3,7 @@ const db = require("../models");
 module.exports = {
     putDeviceTest: function (req, res) {
         console.log("req.body", req.body)
+        console.log("req.body.newArrayEntry", req.body.newArrayEntry)
         db.CryonicsModel
             .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
                 {
