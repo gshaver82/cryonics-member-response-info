@@ -31,24 +31,31 @@ module.exports = {
                     },
                 }
             )
-        //     .then(dbModelDataResult => res.json(dbModelDataResult))
-        //     .catch(err => res.status(422).json(err));
-        // console.log("after response")
-        // db.CryonicsModel
-            .findOne({ "checkinDevices.fitbit.user_id": req.body.user_id })
-            .then(response => response.json())
-            .then(data => {
-                console.log("data", data)
-                const txtBody = "for user " + data.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
-                    " current date is " + Date.now();
-                const txtNum = '-16126421533'
-                if (data.signedUpForAlerts === true) {
-                    serverCode.twilioOutboundTxt(txtBody, txtNum)
-                    console.log("message sent due to user being signed up for alerts")
-                } else {
-                    console.log("message not sent due to user not being signed up for alerts")
-                }
-            })
+            .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
+        console.log("after response")
+        // db.CryonicsModel
+        //     .findOne({ "checkinDevices.fitbit.user_id": req.body.user_id })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log("data", data)
+        //         const txtBody = "for user " + data.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+        //             " current date is " + Date.now();
+        //         const txtNum = '-16126421533'
+        //         if (data.signedUpForAlerts === true) {
+        //             serverCode.twilioOutboundTxt(txtBody, txtNum)
+        //             console.log("message sent due to user being signed up for alerts")
+        //         } else {
+        //             console.log("message not sent due to user not being signed up for alerts")
+        //         }
+        //     })
+        //     .catch(err => res.status(422).json(err));
+
+        const txtBody = "for user xxx Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+            " current date is " + Date.now();
+        const txtNum = '-16126421533'
+        serverCode.twilioOutboundTxt(txtBody, txtNum)
+        console.log("message sent due to user being signed up for alerts")
+
     },
 };
