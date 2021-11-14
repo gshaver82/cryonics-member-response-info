@@ -28,17 +28,19 @@ module.exports = {
         console.log("after response")
         let user = db.CryonicsModel
             .findOne({ "checkinDevices.fitbit.user_id": req.body.user_id })
+            .then(stage1Out(data))
             .catch(err => res.status(422).json(err));
-        const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
-            " current date is " + Date.now();
-        const txtNum = '-16126421533'
-        if (user.signedUpForAlerts === true) {
-            serverCode.twilioOutboundTxt(txtBody, txtNum)
-            console.log("message sent due to user being signed up for alerts")
-        } else {
-            console.log("message not sent due to user not being signed up for alerts")
+        function stage1Out(data) {
+            console.log("data", data)
+            const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+                " current date is " + Date.now();
+            const txtNum = '-16126421533'
+            if (user.signedUpForAlerts === true) {
+                serverCode.twilioOutboundTxt(txtBody, txtNum)
+                console.log("message sent due to user being signed up for alerts")
+            } else {
+                console.log("message not sent due to user not being signed up for alerts")
+            }
         }
     },
-
-
 };
