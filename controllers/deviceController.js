@@ -1,13 +1,13 @@
 const db = require("../models");
 const serverCode = require("../serverCode");
 
-delete: function (req, res) {
-    db.CryonicsModel
-        .findById({ _id: req.params._id })
-        .then(dbModelDataResult => dbModelDataResult.remove())
-        .then(dbModelDataResult => res.json(dbModelDataResult))
-        .catch(err => res.status(422).json(err));
-},
+// delete: function (req, res) {
+//     db.CryonicsModel
+//         .findById({ _id: req.params._id })
+//         .then(dbModelDataResult => dbModelDataResult.remove())
+//         .then(dbModelDataResult => res.json(dbModelDataResult))
+//         .catch(err => res.status(422).json(err));
+// },
 
 module.exports = {
     putDeviceTest: function (req, res) {
