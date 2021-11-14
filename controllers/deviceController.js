@@ -10,7 +10,7 @@ const serverCode = require("../serverCode");
 // },
 
 module.exports = {
-    putDeviceTest: function (req, res) {
+    putDeviceTest2: function (req, res) {
         console.log("req.body", req.body)
         console.log("req.body.newArrayEntry", req.body.newArrayEntry)
         //get alert array 0
@@ -34,23 +34,6 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
         console.log("after response")
-        // db.CryonicsModel
-        //     .findOne({ "checkinDevices.fitbit.user_id": req.body.user_id })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log("data", data)
-        //         const txtBody = "for user " + data.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
-        //             " current date is " + Date.now();
-        //         const txtNum = '-16126421533'
-        //         if (data.signedUpForAlerts === true) {
-        //             serverCode.twilioOutboundTxt(txtBody, txtNum)
-        //             console.log("message sent due to user being signed up for alerts")
-        //         } else {
-        //             console.log("message not sent due to user not being signed up for alerts")
-        //         }
-        //     })
-        //     .catch(err => res.status(422).json(err));
-
         const txtBody = "for user xxx Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
             " current date is " + Date.now();
         const txtNum = '-16126421533'
@@ -58,4 +41,47 @@ module.exports = {
         console.log("message sent due to user being signed up for alerts")
 
     },
+    putDeviceTest: async function (req, res) {
+        let update
+        let user
+        try {
+            update = await db.CryonicsModel
+                .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
+                    {
+                        $push: {
+                            "checkinDevices.fitbit.alertArray": {
+                                $each: [req.body.newArrayEntry],
+                                $position: 0,
+                                $slice: 25
+                            }
+                        },
+                    }
+                ).exec()
+        } catch (err) {
+            return res.status(400).json({
+                error: 'Error en STATUS1'
+            })
+        }
+        try {
+            user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
+        } catch (err) {
+            return res.status(400).json({
+                error: 'Error en STATUS2'
+            })
+        }
+        console.log("---first and then second DB call", update, user)
+        console.log("user.signedUpForAlerts", user.signedUpForAlerts)
+        const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+            " current date is " + Date.now();
+        const txtNum = '-16126421533'
+        if (user.signedUpForAlerts === true) {
+            serverCode.twilioOutboundTxt(txtBody, txtNum)
+            console.log("message sent due to user being signed up for alerts")
+        } else {
+            console.log("message not sent due to user not being signed up for alerts")
+        }
+
+        res.json({ update, user })
+    }
 };
+
