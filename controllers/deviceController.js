@@ -1,4 +1,5 @@
 const db = require("../models");
+const serverCode = require("../serverCode");
 
 module.exports = {
     putDeviceTest: function (req, res) {
@@ -8,6 +9,7 @@ module.exports = {
         //if active state = true, do nothing.
         //this means that an alert is already active and progressing through the stages. 
         //if active state false, then push to position 0 
+        req.body.newArrayEntry.stage1 = Date.now()
         db.CryonicsModel
             .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
                 {
@@ -23,6 +25,19 @@ module.exports = {
             )
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
+        console.log("after response")
+        let user = db.CryonicsModel
+            .findOne({ "checkinDevices.fitbit.user_id": req.body.user_id })
+            .catch(err => res.status(422).json(err));
+        const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+            " current date is " + Date.now();
+        const txtNum = '-16126421533'
+        if (user.signedUpForAlerts === true) {
+            serverCode.twilioOutboundTxt(txtBody, txtNum)
+            console.log("message sent due to user being signed up for alerts")
+        } else {
+            console.log("message not sent due to user not being signed up for alerts")
+        }
     },
 
 
