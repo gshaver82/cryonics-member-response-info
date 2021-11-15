@@ -212,7 +212,7 @@ function Profile() {
                     </div>
 
                     <p>
-                        Group: Your profile will be private by default. Request approval from an admin to join a group
+                        Feature not yet coded: Group: Your profile will be private by default. Request approval from an admin to join a group
                     </p>
                     <br></br>
                     <label>description:</label>
@@ -252,6 +252,12 @@ function Profile() {
                     {" "}Edit Profile{" "}
                 </button>
                 <p>username is:  <span>{user.name}</span></p>
+                <p>stage1Alert number is:  <span>{user.stage1Alert.num}</span> Contact method is:<span>{user.stage1Alert.method}</span></p>
+                <p>stage2Alert number is:  <span>{user.stage2Alert.num}</span> Contact method is:<span>{user.stage2Alert.method}</span></p>
+                <p>stage3Alert number is:  <span>{user.stage3Alert.num}</span> Contact method is:<span>{user.stage3Alert.method}</span></p>
+                <p>stage4Alert number is:  <span>{user.stage4Alert.num}</span> Contact method is:<span>{user.stage4Alert.method}</span></p>
+                <p>stage5Alert number is:  <span>{user.stage5Alert.num}</span> Contact method is:<span>{user.stage5Alert.method}</span></p>
+                <p>stage6Alert number is:  <span>{user.stage6Alert.num}</span> Contact method is:<span>{user.stage6Alert.method}</span></p>
                 <p>group is:  {user.group}</p>
                 <p>description: {user.description}</p>
                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
@@ -263,99 +269,5 @@ function Profile() {
     else {
         return (<p>error loading page</p>)
     }
-    // return (
-    //     <>
-    //         <div className="mb-2">
-    //             <div className="d-flex justify-content-between">
-    //                 <p>
-    //                     This profile page is viewable only by you unless you join a group.
-    //                     your profile will then be viewable by that group.
-    //                 </p>
-    //             </div>
-    //         </div>
-    //         <h2>Viewing Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-    //         {/* this will say LOADING if loading, and after loading is complete. if the set user has not yet completed then 
-    //         user will equal "starting user condition" therefore it technically exists so it will not display the create a profile button
-    //         when the API finally returns its value of NULL, then the create profile button will come up. if the profile exists, 
-    //         then the user.name field etc will be populated.  */}
-    //         <div>
-    //             {isLoading
-    //                 ? <p>Loading Profile....</p>
-    //                 : (!user || user === "starting user condition"
-    //                     ? <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
-    //                         {" "}here{" "}
-    //                     </button></p>
-    //                     : (isEditing
-    //                         //is editing---------------------
-    //                         ? <div>
-    //                             <button onClick={handleEditCancelProfile} className="btn btn-info">
-    //                                 {" "}cancel edits{" "}
-    //                             </button>
-    //                             <button onClick={handleLoadGoogleProviderInfo} className="btn btn-info">
-    //                                 {" "}Autofill Google Info{" "}
-    //                             </button>
-    //                             <form>
-    //                                 <label>name:</label>
-    //                                 <input
-    //                                     type="text"
-    //                                     required
-    //                                     value={name}
-    //                                     onChange={(e) => setname(e.target.value)}
-    //                                 />
-    //                                 <br></br>
-    //                                 <p>
-    //                                     Group: Your profile will be private by default. Request approval from an admin to join a group
-    //                                 </p>
-    //                                 <br></br>
-    //                                 <label>description:</label>
-    //                                 <textarea
-    //                                     value={description}
-    //                                     onChange={(e) => setdescription(e.target.value)}
-    //                                 ></textarea>
-    //                                 <br></br>
-    //                                 <label>cryonicsProvider:</label>
-    //                                 <select
-    //                                     value={cryonicsProvider}
-    //                                     onChange={(e) => setcryonicsProvider(e.target.value)}
-    //                                 >
-    //                                     <option value="Alcor">Alcor</option>
-    //                                     <option value="Cryonics Institute">Cryonics Institute</option>
-    //                                     <option value="None">None</option>
-    //                                 </select>
-    //                                 <br></br>
-    //                                 <label>PhotoURL:</label>
-    //                                 <input
-    //                                     value={photoURL}
-    //                                     onChange={(e) => setPhotoURL(e.target.value)}
-    //                                 >
-    //                                 </input>
-    //                                 <br></br>
-    //                                 <img src={photoURL} alt="photoURL" width="100" height="100"></img>
-    //                                 <br></br>
-    //                                 <p>upload files here??</p>
-    //                                 <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
-    //                             </form>
-    //                         </div>
-    //                         //is not editing---------------------
-    //                         : <div>
-    //                             <button onClick={handleEditProfile} className="btn btn-info">
-    //                                 {" "}Edit Profile{" "}
-    //                             </button>
-    //                             <p>username is:  <span>{user.name}</span></p>
-    //                             <p>group is:  {user.group}</p>
-    //                             <p>description: {user.description}</p>
-    //                             <p>cryonicsProvider: {user.cryonicsProvider}</p>
-    //                             <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
-    //                             <p>uploaded file link here:</p>
-    //                         </div>
-
-    //                     )
-    //                 )
-    //             }
-    //         </div>
-    //         <br></br>
-    //     </>
-    // );
 }
-
 export default Profile;

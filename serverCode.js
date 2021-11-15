@@ -3,6 +3,9 @@ module.exports = {
     startup: function () {
         console.log("server startup")
     },
+    devcontrollertest: function () {
+        console.log("devcontrollertest")
+    },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
