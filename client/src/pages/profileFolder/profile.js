@@ -31,18 +31,8 @@ function Profile() {
     }, []);
 
     const handleadduserclick = () => {
-        setisLoading(true)
-        const newUser = {
-            firebaseAuthID: firebaseUserID,
-            name: "Initialized user name",
-            dateCreated: Date.now(),
-        }
-        console.log("🚀 ~ handleadduserclick ~ newUser", newUser)
-        API.adduser(newUser)
-            .then(API.getOneUserByFirebaseID(firebaseUserID))
-            .then(res => setUser(res.data))
-            .catch(err => console.log(err));
-        setisLoading(false)
+        setisEditing(true)
+        setUser("Your name here")
     };
 
     const handleEditProfile = () => {
@@ -55,14 +45,19 @@ function Profile() {
 
     const handleEditCancelProfile = () => {
         setisEditing(false)
+        if (user === "Your name here") {
+            setUser("starting user condition")
+        }
+
     };
 
     const handleSaveProfile = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         setisLoading(true)
         const editedUser = {
             firebaseAuthID: firebaseUserID,
             name: name,
+            dateCreated: Date.now(),
             description: description,
             group: ["private"],
             cryonicsProvider: cryonicsProvider,
@@ -71,6 +66,30 @@ function Profile() {
             textToUserDatecode: 0,
             textToEmerContactDatecode: 0,
             textToAdminDatecode: 0,
+            stage1Alert: {
+                num: 0,
+                method: "txt"
+            },
+            stage2Alert: {
+                num: 0,
+                method: "txt"
+            },
+            stage3Alert: {
+                num: 0,
+                method: "txt"
+            },
+            stage4Alert: {
+                num: 0,
+                method: "txt"
+            },
+            stage5Alert: {
+                num: 0,
+                method: "txt"
+            },
+            stage6Alert: {
+                num: 0,
+                method: "txt"
+            },
             checkinDevices: {
                 WebsiteCheckIn: {
                     checkinArray: [
@@ -104,99 +123,178 @@ function Profile() {
         }
     };
     // console.log("auth Info", firebase.auth().currentUser.providerData[0]);
-    return (
-        <>
-            <div className="mb-2">
-                <div className="d-flex justify-content-between">
-                    <p>
-                        This profile page is viewable only by you unless you join a group.
-                        your profile will then be viewable by that group.
-                    </p>
-                </div>
-            </div>
-            <h2>Viewing Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-            {/* this will say LOADING if loading, and after loading is complete. if the set user has not yet completed then 
-            user will equal "starting user condition" therefore it technically exists so it will not display the create a profile button
-            when the API finally returns its value of NULL, then the create profile button will come up. if the profile exists, 
-            then the user.name field etc will be populated.  */}
-            <div>
-                {isLoading
-                    ? <p>Loading Profile....</p>
-                    : (!user || user === "starting user condition"
-                        ? <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
-                            {" "}here{" "}
-                        </button></p>
-                        : (isEditing
-                            //is editing---------------------
-                            ? <div>
-                                <button onClick={handleEditCancelProfile} className="btn btn-info">
-                                    {" "}cancel edits{" "}
-                                </button>
-                                <button onClick={handleLoadGoogleProviderInfo} className="btn btn-info">
-                                    {" "}Autofill Google Info{" "}
-                                </button>
-                                <form>
-                                    <label>name:</label>
-                                    <input
-                                        type="text"
-                                        required
-                                        value={name}
-                                        onChange={(e) => setname(e.target.value)}
-                                    />
-                                    <br></br>
-                                    <p>
-                                        Group: Your profile will be private by default. Request approval from an admin to join a group
-                                    </p>
-                                    <br></br>
-                                    <label>description:</label>
-                                    <textarea
-                                        value={description}
-                                        onChange={(e) => setdescription(e.target.value)}
-                                    ></textarea>
-                                    <br></br>
-                                    <label>cryonicsProvider:</label>
-                                    <select
-                                        value={cryonicsProvider}
-                                        onChange={(e) => setcryonicsProvider(e.target.value)}
-                                    >
-                                        <option value="Alcor">Alcor</option>
-                                        <option value="Cryonics Institute">Cryonics Institute</option>
-                                        <option value="None">None</option>
-                                    </select>
-                                    <br></br>
-                                    <label>PhotoURL:</label>
-                                    <input
-                                        value={photoURL}
-                                        onChange={(e) => setPhotoURL(e.target.value)}
-                                    >
-                                    </input>
-                                    <br></br>
-                                    <img src={photoURL} alt="photoURL" width="100" height="100"></img>
-                                    <br></br>
-                                    <p>upload files here??</p>
-                                    <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
-                                </form>
-                            </div>
-                            //is not editing---------------------
-                            : <div>
-                                <button onClick={handleEditProfile} className="btn btn-info">
-                                    {" "}Edit Profile{" "}
-                                </button>
-                                <p>username is:  <span>{user.name}</span></p>
-                                <p>group is:  {user.group}</p>
-                                <p>description: {user.description}</p>
-                                <p>cryonicsProvider: {user.cryonicsProvider}</p>
-                                <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
-                                <p>uploaded file link here:</p>
-                            </div>
 
-                        )
-                    )
-                }
+    if (isLoading) {
+        return (<p>Loading Profile....</p>)
+    } else if (!user || user === "starting user condition") {
+        return (
+            <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
+                {" "}here{" "}
+            </button></p>
+        )
+    } else if (isEditing) {
+        return (
+            <div>
+                <button onClick={handleEditCancelProfile} className="btn btn-info">
+                    {" "}cancel edits{" "}
+                </button>
+                <button onClick={handleLoadGoogleProviderInfo} className="btn btn-info">
+                    {" "}Autofill Google Info{" "}
+                </button>
+                <form>
+                    <label>name:</label>
+                    <input
+                        type="text"
+                        required
+                        value={name}
+                        onChange={(e) => setname(e.target.value)}
+                    />
+                    <br></br>
+                    <p>
+                        Group: Your profile will be private by default. Request approval from an admin to join a group
+                    </p>
+                    <br></br>
+                    <label>description:</label>
+                    <textarea
+                        value={description}
+                        onChange={(e) => setdescription(e.target.value)}
+                    ></textarea>
+                    <br></br>
+                    <label>cryonicsProvider:</label>
+                    <select
+                        value={cryonicsProvider}
+                        onChange={(e) => setcryonicsProvider(e.target.value)}
+                    >
+                        <option value="Alcor">Alcor</option>
+                        <option value="Cryonics Institute">Cryonics Institute</option>
+                        <option value="None">None</option>
+                    </select>
+                    <br></br>
+                    <label>PhotoURL:</label>
+                    <input
+                        value={photoURL}
+                        onChange={(e) => setPhotoURL(e.target.value)}
+                    >
+                    </input>
+                    <br></br>
+                    <img src={photoURL} alt="photoURL" width="100" height="100"></img>
+                    <br></br>
+                    <p>upload files here??</p>
+                    <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
+                </form>
             </div>
-            <br></br>
-        </>
-    );
+        )
+    } else if (!isEditing) {
+        return (
+            <div>
+                <button onClick={handleEditProfile} className="btn btn-info">
+                    {" "}Edit Profile{" "}
+                </button>
+                <p>username is:  <span>{user.name}</span></p>
+                <p>group is:  {user.group}</p>
+                <p>description: {user.description}</p>
+                <p>cryonicsProvider: {user.cryonicsProvider}</p>
+                <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
+                <p>uploaded file link here:</p>
+            </div>
+        )
+    }
+    else {
+        return (<p>error loading page</p>)
+    }
+    // return (
+    //     <>
+    //         <div className="mb-2">
+    //             <div className="d-flex justify-content-between">
+    //                 <p>
+    //                     This profile page is viewable only by you unless you join a group.
+    //                     your profile will then be viewable by that group.
+    //                 </p>
+    //             </div>
+    //         </div>
+    //         <h2>Viewing Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
+    //         {/* this will say LOADING if loading, and after loading is complete. if the set user has not yet completed then 
+    //         user will equal "starting user condition" therefore it technically exists so it will not display the create a profile button
+    //         when the API finally returns its value of NULL, then the create profile button will come up. if the profile exists, 
+    //         then the user.name field etc will be populated.  */}
+    //         <div>
+    //             {isLoading
+    //                 ? <p>Loading Profile....</p>
+    //                 : (!user || user === "starting user condition"
+    //                     ? <p>if you would like to create a profile, click <button onClick={handleadduserclick} className="btn btn-info">
+    //                         {" "}here{" "}
+    //                     </button></p>
+    //                     : (isEditing
+    //                         //is editing---------------------
+    //                         ? <div>
+    //                             <button onClick={handleEditCancelProfile} className="btn btn-info">
+    //                                 {" "}cancel edits{" "}
+    //                             </button>
+    //                             <button onClick={handleLoadGoogleProviderInfo} className="btn btn-info">
+    //                                 {" "}Autofill Google Info{" "}
+    //                             </button>
+    //                             <form>
+    //                                 <label>name:</label>
+    //                                 <input
+    //                                     type="text"
+    //                                     required
+    //                                     value={name}
+    //                                     onChange={(e) => setname(e.target.value)}
+    //                                 />
+    //                                 <br></br>
+    //                                 <p>
+    //                                     Group: Your profile will be private by default. Request approval from an admin to join a group
+    //                                 </p>
+    //                                 <br></br>
+    //                                 <label>description:</label>
+    //                                 <textarea
+    //                                     value={description}
+    //                                     onChange={(e) => setdescription(e.target.value)}
+    //                                 ></textarea>
+    //                                 <br></br>
+    //                                 <label>cryonicsProvider:</label>
+    //                                 <select
+    //                                     value={cryonicsProvider}
+    //                                     onChange={(e) => setcryonicsProvider(e.target.value)}
+    //                                 >
+    //                                     <option value="Alcor">Alcor</option>
+    //                                     <option value="Cryonics Institute">Cryonics Institute</option>
+    //                                     <option value="None">None</option>
+    //                                 </select>
+    //                                 <br></br>
+    //                                 <label>PhotoURL:</label>
+    //                                 <input
+    //                                     value={photoURL}
+    //                                     onChange={(e) => setPhotoURL(e.target.value)}
+    //                                 >
+    //                                 </input>
+    //                                 <br></br>
+    //                                 <img src={photoURL} alt="photoURL" width="100" height="100"></img>
+    //                                 <br></br>
+    //                                 <p>upload files here??</p>
+    //                                 <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
+    //                             </form>
+    //                         </div>
+    //                         //is not editing---------------------
+    //                         : <div>
+    //                             <button onClick={handleEditProfile} className="btn btn-info">
+    //                                 {" "}Edit Profile{" "}
+    //                             </button>
+    //                             <p>username is:  <span>{user.name}</span></p>
+    //                             <p>group is:  {user.group}</p>
+    //                             <p>description: {user.description}</p>
+    //                             <p>cryonicsProvider: {user.cryonicsProvider}</p>
+    //                             <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
+    //                             <p>uploaded file link here:</p>
+    //                         </div>
+
+    //                     )
+    //                 )
+    //             }
+    //         </div>
+    //         <br></br>
+    //     </>
+    // );
 }
 
 export default Profile;

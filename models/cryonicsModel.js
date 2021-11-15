@@ -301,7 +301,67 @@ const cryonicsSchema = new Schema({
     file4: {
         type: String,
         required: false,
-    }
+    },
+    stage1Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
+    stage2Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
+    stage3Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
+    stage4Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
+    stage5Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
+    stage6Alert: {
+        num: {
+            type: String,
+            required: false,
+        },
+        method: {
+            type: String,
+            required: false,
+        },
+    },
 }
 );
 cryonicsSchema.index({ "loc": "2dsphere" });

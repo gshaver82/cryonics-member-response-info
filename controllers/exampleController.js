@@ -88,7 +88,8 @@ module.exports = {
                 { firebaseAuthID: req.body.firebaseAuthID },
                 req.body,
                 {
-                    new: true
+                    new: true,
+                    upsert: true
                 })
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
