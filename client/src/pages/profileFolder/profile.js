@@ -49,6 +49,12 @@ function Profile() {
     };
 
     const handleEditProfile = () => {
+        setstage1AlertNum(user.stage1AlertNum)
+        setstage1AlertNum(user.stage2AlertNum)
+        setstage1AlertNum(user.stage3AlertNum)
+        setstage1AlertNum(user.stage4AlertNum)
+        setstage1AlertNum(user.stage5AlertNum)
+        setstage1AlertNum(user.stage6AlertNum)
         setname(user.name)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
