@@ -22,6 +22,19 @@ function Profile() {
     const [photoURL, setPhotoURL] = useState('');
     const [isEditing, setisEditing] = useState(false);
 
+    const [stage1AlertNum, setstage1AlertNum] = useState("none");
+    const [stage1AlertMethod, setstage1AlertMethod] = useState("txt");
+    const [stage2AlertNum, setstage2AlertNum] = useState("none");
+    const [stage2AlertMethod, setstage2AlertMethod] = useState("txt");
+    const [stage3AlertNum, setstage3AlertNum] = useState("none");
+    const [stage3AlertMethod, setstage3AlertMethod] = useState("txt");
+    const [stage4AlertNum, setstage4AlertNum] = useState("none");
+    const [stage4AlertMethod, setstage4AlertMethod] = useState("txt");
+    const [stage5AlertNum, setstage5AlertNum] = useState("none");
+    const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
+    const [stage6AlertNum, setstage6AlertNum] = useState("none");
+    const [stage6AlertMethod, setstage7AlertMethod] = useState("txt");
+
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
@@ -63,28 +76,28 @@ function Profile() {
             textToEmerContactDatecode: 0,
             textToAdminDatecode: 0,
             stage1Alert: {
-                num: 0,
-                method: "txt"
+                num: stage1AlertNum,
+                method: stage1AlertMethod
             },
             stage2Alert: {
-                num: 0,
-                method: "txt"
+                num: stage2AlertNum,
+                method: stage2AlertMethod
             },
             stage3Alert: {
-                num: 0,
-                method: "txt"
+                num: stage3AlertNum,
+                method: stage3AlertMethod
             },
             stage4Alert: {
-                num: 0,
-                method: "txt"
+                num: stage4AlertNum,
+                method: stage4AlertMethod
             },
             stage5Alert: {
-                num: 0,
-                method: "txt"
+                num: stage5AlertNum,
+                method: stage5AlertMethod
             },
             stage6Alert: {
-                num: 0,
-                method: "txt"
+                num: stage6AlertNum,
+                method: stage6AlertMethod
             },
             checkinDevices: {
                 WebsiteCheckIn: {
@@ -146,6 +159,58 @@ function Profile() {
                         onChange={(e) => setname(e.target.value)}
                     />
                     <br></br>
+                    <div>
+                        <p>use format "-16125550101"</p>
+                        <label>stage1Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage1AlertNum}
+                            onChange={(e) => setstage1AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                        <label>stage2Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage2AlertNum}
+                            onChange={(e) => setstage2AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                        <label>stage3Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage3AlertNum}
+                            onChange={(e) => setstage3AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                        <label>stage4Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage4AlertNum}
+                            onChange={(e) => setstage4AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                        <label>stage5Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage5AlertNum}
+                            onChange={(e) => setstage5AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                        <label>stage6Alert:</label>
+                        <input
+                            type="text"
+                            required
+                            value={stage6AlertNum}
+                            onChange={(e) => setstage6AlertNum(e.target.value)}
+                        />
+                        <br></br>
+                    </div>
+
                     <p>
                         Group: Your profile will be private by default. Request approval from an admin to join a group
                     </p>
