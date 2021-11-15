@@ -44,11 +44,7 @@ function Profile() {
     };
 
     const handleEditCancelProfile = () => {
-        setisEditing(false)
-        if (user === "Your name here") {
-            setUser("starting user condition")
-        }
-
+        window.location.reload();
     };
 
     const handleSaveProfile = (e) => {
