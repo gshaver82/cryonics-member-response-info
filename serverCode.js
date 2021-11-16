@@ -21,23 +21,22 @@ var self = module.exports = {
         // }
 
         //TODO if alert status active, make background red on webpage.
-
+        let updatedUser = ''
         var FBAlertInterval = setInterval(async function () {
-            let user
             console.log("FBAlertAction")
             try {
-                user = await db.CryonicsModel
-                    .findOne({ firebaseAuthID: req.params.firebaseUserID })
+                updatedUser = await db.CryonicsModel
+                    .findOne({ firebaseAuthID: user.firebaseAuthID })
                     .catch(err => res.status(422).json(err));
-                console.log("user FBAlertAction--------", user)
-                if (user.fitbit.alertArray[0].activeState === true) {
+                console.log("updatedUser FBAlertAction--------", updatedUser)
+                if (updatedUser.fitbit.alertArray[0].activeState === true) {
                     console.log("active state true")
-                    if (user.signedUpForAlerts === true && user.fitbit.alertArray[0].stage1 === 0) {
-                        user.fitbit.alertArray[0].stage1 = Date.now()
-                        res = await db.CryonicsModel
+                    if (updatedUser.signedUpForAlerts === true && updatedUser.fitbit.alertArray[0].stage1 === 0) {
+                        updatedUser.fitbit.alertArray[0].stage1 = Date.now()
+                        temp = await db.CryonicsModel
                             .findOneAndUpdate(
-                                { firebaseAuthID: req.body.firebaseAuthID },
-                                req.body,
+                                { firebaseAuthID: updatedUser.firebaseAuthID },
+                                updatedUser.body,
                                 {
                                     new: true,
                                 })
@@ -54,6 +53,7 @@ var self = module.exports = {
                 }
             } catch (error) {
                 console.error(error);
+                console.log("try catch error")
                 clearInterval(FBAlertInterval)
                 // expected output: ReferenceError: nonExistentFunction is not defined
                 // Note - error messages will vary depending on browser
