@@ -41,16 +41,18 @@ var self = module.exports = {
                 if (updatedUser.signedUpForAlerts === true && updatedUser.checkinDevices.fitbit.alertArray[0].stage1.getTime() === 0) {
                     console.log("alerts true and stage 1 ==0")
                     updatedUser.checkinDevices.fitbit.alertArray[0].stage1 = Date.now()
+                    console.log("should have date now---- alertArray[0].stage1", updatedUser.checkinDevices.fitbit.alertArray[0].stage1)
                     temp = await db.CryonicsModel
                         .findOneAndUpdate(
                             { firebaseAuthID: updatedUser.firebaseAuthID },
-                            updatedUser.body,
+                            updatedUser,
                             {
                                 new: true,
                             })
                         .lean()
                         .exec()
                         .catch(err => res.status(422).json(err));
+                    console.log("result from writing to DB", temp)
                     const txtBody = "FB watch alert sent for " + user.name
                     const txtNum = user.stage1Alert.num
                     self.twilioOutboundTxt(txtBody, txtNum)
