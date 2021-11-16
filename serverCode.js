@@ -52,11 +52,13 @@ var self = module.exports = {
                     console.log("active state not true, clearing interval")
                     clearInterval(FBAlertInterval)
                 }
-            } catch {
-                console.log("catch error", error)
+            } catch (error) {
+                console.error(error);
                 clearInterval(FBAlertInterval)
+                // expected output: ReferenceError: nonExistentFunction is not defined
+                // Note - error messages will vary depending on browser
             }
-        }, 5000);
+        }, 60000);
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
