@@ -1,10 +1,10 @@
 const db = require("./models");
-module.exports = {
+var self = module.exports = {
     startup: function () {
-        console.log("server startup")
+        console.log("serverCode startup")
     },
     FBAlertChain: function (user) {
-        console.log("FBAlertChain incoming user data is ", user)
+        console.log("FBAlertChain incoming user data is for user ", user.name)
 
         //user should have the new checkinDevices.fitbit.alertArray
         //start interval?
@@ -21,6 +21,46 @@ module.exports = {
         // }
 
         //TODO if alert status active, make background red on webpage.
+
+        var FBAlertInterval = setInterval(self.FBAlertAction, 5000);
+    },
+    FBAlertAction: function () {
+        let user
+        console.log("FBAlertAction")
+        try {
+            user = db.CryonicsModel
+                .findOne({ firebaseAuthID: req.params.firebaseUserID })
+                .then(dbModelDataResult => res.json(dbModelDataResult))
+                .catch(err => res.status(422).json(err));
+                console.log("user", user)
+            if (user.fitbit.alertArray[0].activeState === true) {
+                console.log("active state true")
+                if (user.fitbit.alertArray[0].stage1 === 0) {
+                    user.fitbit.alertArray[0].stage1 = Date.now()
+                    db.CryonicsModel
+                        .findOneAndUpdate(
+                            { firebaseAuthID: req.body.firebaseAuthID },
+                            req.body,
+                            {
+                                new: true,
+                                upsert: true
+                            })
+                        .then(dbModelDataResult => res.json(dbModelDataResult))
+                        .catch(err => res.status(422).json(err));
+                }
+                //TODO expand else statements here to chain through all stages
+                const txtBody = "FB watch alert sent for " + user.name
+                txtNum = user.stage1Alert.num
+                self.twilioOutboundTxt(txtBody, txtNum)
+            } else {
+                console.log("active state not true, clearing interval")
+                clearInterval(FBAlertInterval)
+            }
+        } catch {
+            clearInterval(FBAlertInterval)
+            console.log("catch error", error)
+        }
+
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
