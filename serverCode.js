@@ -19,6 +19,8 @@ module.exports = {
         // } else {
         //     console.log("message not sent due to user not being signed up for alerts")
         // }
+
+        //TODO if alert status active, make background red on webpage.
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
