@@ -31,10 +31,10 @@ var self = module.exports = {
                     .exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser FBAlertAction--------", updatedUser)
-                console.log("updatedUser updatedUser.checkinDevices.fitbit--------", updatedUser.fitbit)
-                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
-                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0]--------", updatedUser.fitbit.alertArray[0])
-                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0].activeState--------", updatedUser.fitbit.alertArray[0].activeState)
+                console.log("updatedUser updatedUser.checkinDevices.fitbit--------", updatedUser.checkinDevices.fitbit)
+                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray--------", updatedUser.checkinDevices.fitbit.alertArray)
+                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0]--------", updatedUser.checkinDevices.fitbit.alertArray[0])
+                console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0].activeState--------", updatedUser.checkinDevices.fitbit.alertArray[0].activeState)
                 if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
                     console.log("active state true")
                     if (updatedUser.signedUpForAlerts === true && updatedUser.checkinDevices.fitbit.alertArray[0].stage1 === 0) {
