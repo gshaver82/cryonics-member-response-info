@@ -27,11 +27,11 @@ var self = module.exports = {
             try {
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID })
-                    .then(dbModelDataResult => res.json(dbModelDataResult))
+                    .lean()
                     .exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser FBAlertAction--------", updatedUser)
-                console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
+                console.log("updatedUser updatedUser.fitbit--------", updatedUser.fitbit)
                 console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
                 console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", updatedUser.fitbit.alertArray[0])
                 console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", updatedUser.fitbit.alertArray[0].activeState)
@@ -46,7 +46,7 @@ var self = module.exports = {
                                 {
                                     new: true,
                                 })
-                                .then(dbModelDataResult => res.json(dbModelDataResult))
+                                .lean()
                                 .exec()
                             .catch(err => res.status(422).json(err));
                         const txtBody = "FB watch alert sent for " + user.name
