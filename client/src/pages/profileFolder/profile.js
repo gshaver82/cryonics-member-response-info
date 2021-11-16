@@ -33,7 +33,7 @@ function Profile() {
     const [stage5AlertNum, setstage5AlertNum] = useState("none");
     const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
     const [stage6AlertNum, setstage6AlertNum] = useState("none");
-    const [stage6AlertMethod, setstage7AlertMethod] = useState("txt");
+    const [stage6AlertMethod, setstage6AlertMethod] = useState("txt");
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
@@ -49,12 +49,12 @@ function Profile() {
     };
 
     const handleEditProfile = () => {
-        setstage1AlertNum(user.stage1AlertNum)
-        setstage1AlertNum(user.stage2AlertNum)
-        setstage1AlertNum(user.stage3AlertNum)
-        setstage1AlertNum(user.stage4AlertNum)
-        setstage1AlertNum(user.stage5AlertNum)
-        setstage1AlertNum(user.stage6AlertNum)
+        setstage1AlertNum(user.stage1Alert.num)
+        setstage1AlertNum(user.stage2Alert.num)
+        setstage1AlertNum(user.stage3Alert.num)
+        setstage1AlertNum(user.stage4Alert.num)
+        setstage1AlertNum(user.stage5Alert.num)
+        setstage1AlertNum(user.stage6Alert.Num)
         setname(user.name)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
@@ -66,7 +66,7 @@ function Profile() {
         window.location.reload();
     };
 
-    const handleSaveProfile = (e) => {
+    const handleSaveProfile = async (e) => {
         // e.preventDefault();
         setisLoading(true)
         const editedUser = {
@@ -119,16 +119,17 @@ function Profile() {
                 },
             },
         }
-        API.edituser(editedUser)
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-        setisEditing(false)
-        API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-    };
+        let foo = await API.edituser(editedUser).catch(error => console.error(error));
+        setUser(foo.data)
 
+        //this does not work I DONT KNOW WHY. user.stage1Alert is undefined
+        // API.edituser(editedUser)
+        //     .then(res => setUser(res.data))
+        //     .catch(error => console.error(error));
+
+        setisEditing(false)
+        setisLoading(false)
+    };
     const handleLoadGoogleProviderInfo = () => {
         try {
             setname(firebase.auth().currentUser.providerData[0].displayName)
@@ -147,6 +148,7 @@ function Profile() {
                 {" "}here{" "}
             </button></p>
         )
+        //temp
     } else if (isEditing) {
         return (
             <div>
@@ -174,6 +176,14 @@ function Profile() {
                             value={stage1AlertNum}
                             onChange={(e) => setstage1AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage1AlertMethod}
+                            onChange={(e) => setstage1AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                         <label>stage2Alert:</label>
                         <input
@@ -182,6 +192,14 @@ function Profile() {
                             value={stage2AlertNum}
                             onChange={(e) => setstage2AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage2AlertMethod}
+                            onChange={(e) => setstage2AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                         <label>stage3Alert:</label>
                         <input
@@ -190,6 +208,14 @@ function Profile() {
                             value={stage3AlertNum}
                             onChange={(e) => setstage3AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage3AlertMethod}
+                            onChange={(e) => setstage3AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                         <label>stage4Alert:</label>
                         <input
@@ -198,6 +224,14 @@ function Profile() {
                             value={stage4AlertNum}
                             onChange={(e) => setstage4AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage4AlertMethod}
+                            onChange={(e) => setstage4AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                         <label>stage5Alert:</label>
                         <input
@@ -206,6 +240,14 @@ function Profile() {
                             value={stage5AlertNum}
                             onChange={(e) => setstage5AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage5AlertMethod}
+                            onChange={(e) => setstage5AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                         <label>stage6Alert:</label>
                         <input
@@ -214,6 +256,14 @@ function Profile() {
                             value={stage6AlertNum}
                             onChange={(e) => setstage6AlertNum(e.target.value)}
                         />
+                        <label>text or phone call?:</label>
+                        <select
+                            value={stage6AlertMethod}
+                            onChange={(e) => setstage6AlertMethod(e.target.value)}
+                        >
+                            <option value="txt">Text</option>
+                            <option value="call">Phone call</option>
+                        </select>
                         <br></br>
                     </div>
 
@@ -264,8 +314,8 @@ function Profile() {
                 <p>stage4Alert number is:  <span>{user.stage4Alert.num}</span> Contact method is:<span>{user.stage4Alert.method}</span></p>
                 <p>stage5Alert number is:  <span>{user.stage5Alert.num}</span> Contact method is:<span>{user.stage5Alert.method}</span></p>
                 <p>stage6Alert number is:  <span>{user.stage6Alert.num}</span> Contact method is:<span>{user.stage6Alert.method}</span></p>
-                <p>group is:  {user.group}</p>
                 <p>description: {user.description}</p>
+                <p>group is:  {user.group}</p>
                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                 <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
                 <p>uploaded file link here:</p>

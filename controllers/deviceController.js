@@ -33,15 +33,15 @@ module.exports = {
         // console.log("---first and then second DB call", update, user)
         // console.log("user.signedUpForAlerts", user.signedUpForAlerts)
         //TODO send over to server code and to interval alerts there??
-        serverCode.devcontrollertest();
-        const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
-            " current date is " + Date.now();
-        if (user.signedUpForAlerts === true && user.stage1Alert.num != "none") {
-            serverCode.twilioOutboundTxt(txtBody, user.stage1Alert.num)
-            console.log("message sent due to user being signed up for alerts")
-        } else {
-            console.log("message not sent due to user not being signed up for alerts")
-        }
+        serverCode.FBAlertChain(user);
+        // const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
+        //     " current date is " + Date.now();
+        // if (user.signedUpForAlerts === true && user.stage1Alert.num != "none") {
+        //     serverCode.twilioOutboundTxt(txtBody, user.stage1Alert.num)
+        //     console.log("message sent due to user being signed up for alerts")
+        // } else {
+        //     console.log("message not sent due to user not being signed up for alerts")
+        // }
 
         res.json({ update, user })
     }
