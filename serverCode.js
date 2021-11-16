@@ -29,12 +29,12 @@ var self = module.exports = {
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser FBAlertAction--------", updatedUser)
-                console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
-                console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", updatedUser.fitbit.alertArray[0])
-                console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", updatedUser.fitbit.alertArray[0].activeState)
-                if (updatedUser.fitbit.alertArray[0].activeState === true) {
+                console.log("updatedUser updatedUser.fitbit.alertArray--------", JSON.stringify(updatedUser.fitbit.alertArray))
+                console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", JSON.stringify(updatedUser.fitbit.alertArray[0]))
+                console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", JSON.stringify(updatedUser.fitbit.alertArray[0].activeState))
+                if (JSON.stringify(updatedUser.fitbit.alertArray[0].activeState) === true) {
                     console.log("active state true")
-                    if (updatedUser.signedUpForAlerts === true && updatedUser.fitbit.alertArray[0].stage1 === 0) {
+                    if (updatedUser.signedUpForAlerts === true && JSON.stringify(updatedUser.fitbit.alertArray[0].stage1) === 0) {
                         updatedUser.fitbit.alertArray[0].stage1 = Date.now()
                         temp = await db.CryonicsModel
                             .findOneAndUpdate(
