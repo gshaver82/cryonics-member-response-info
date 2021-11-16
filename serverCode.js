@@ -85,6 +85,14 @@ var self = module.exports = {
             })
             .then(message => console.log(message.sid));
         console.log(txtBody, "---server message sent---", txtNum)
+        client.calls
+            .create({
+                url: 'http://demo.twilio.com/docs/voice.xml',
+                to: txtNum,
+                from: process.env.TWILIO_PHONE_NUMBER
+            })
+            .then(call => console.log(call.sid));
+            console.log( "---server phone out sent---", txtNum)
     },
     fifteenMin: function () {
         let hourcount = 0
