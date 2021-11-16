@@ -3,7 +3,7 @@ var self = module.exports = {
     startup: function () {
         console.log("serverCode startup")
     },
-    FBAlertChain: function (user) {
+    FBAlertChain: async function (user) {
         console.log("FBAlertChain incoming user data is for user ", user.name)
 
         //user should have the new checkinDevices.fitbit.alertArray
