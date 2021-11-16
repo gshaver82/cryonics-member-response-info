@@ -22,19 +22,20 @@ var self = module.exports = {
 
         //TODO if alert status active, make background red on webpage.
         let updatedUser = ''
-        var FBAlertInterval = setInterval(async function () {
+        // var FBAlertInterval = setInterval(async function () {
             console.log("FBAlertAction")
             try {
                 updatedUser = await db.CryonicsModel
-                    .findOne({ firebaseAuthID: user.firebaseAuthID }).exec()
+                    .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser FBAlertAction--------", updatedUser)
-                console.log("updatedUser updatedUser.fitbit.alertArray--------", JSON.stringify(updatedUser.fitbit.alertArray))
-                console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", JSON.stringify(updatedUser.fitbit.alertArray[0]))
-                console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", JSON.stringify(updatedUser.fitbit.alertArray[0].activeState))
-                if (JSON.stringify(updatedUser.fitbit.alertArray[0].activeState) === true) {
+                console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
+                console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
+                console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", updatedUser.fitbit.alertArray[0])
+                console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", updatedUser.fitbit.alertArray[0].activeState)
+                if (updatedUser.fitbit.alertArray[0].activeState === true) {
                     console.log("active state true")
-                    if (updatedUser.signedUpForAlerts === true && JSON.stringify(updatedUser.fitbit.alertArray[0].stage1) === 0) {
+                    if (updatedUser.signedUpForAlerts === true && updatedUser.fitbit.alertArray[0].stage1 === 0) {
                         updatedUser.fitbit.alertArray[0].stage1 = Date.now()
                         temp = await db.CryonicsModel
                             .findOneAndUpdate(
@@ -42,7 +43,7 @@ var self = module.exports = {
                                 updatedUser.body,
                                 {
                                     new: true,
-                                }).exec()
+                                }).lean().exec()
                             .catch(err => res.status(422).json(err));
                         const txtBody = "FB watch alert sent for " + user.name
                         const txtNum = user.stage1Alert.num
@@ -52,16 +53,16 @@ var self = module.exports = {
 
                 } else {
                     console.log("active state not true, clearing interval")
-                    clearInterval(FBAlertInterval)
+                    // clearInterval(FBAlertInterval)
                 }
             } catch (error) {
                 console.error(error);
                 console.log("try catch error")
-                clearInterval(FBAlertInterval)
+                // clearInterval(FBAlertInterval)
                 // expected output: ReferenceError: nonExistentFunction is not defined
                 // Note - error messages will vary depending on browser
             }
-        }, 60000);
+        // }, 60000);
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
