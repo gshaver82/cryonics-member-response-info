@@ -26,9 +26,12 @@ var self = module.exports = {
             console.log("FBAlertAction")
             try {
                 updatedUser = await db.CryonicsModel
-                    .findOne({ firebaseAuthID: user.firebaseAuthID })
+                    .findOne({ firebaseAuthID: user.firebaseAuthID }).exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser FBAlertAction--------", updatedUser)
+                console.log("updatedUser updatedUser.fitbit.alertArray--------", updatedUser.fitbit.alertArray)
+                console.log("updatedUser updatedUser.fitbit.alertArray[0]--------", updatedUser.fitbit.alertArray[0])
+                console.log("updatedUser updatedUser.fitbit.alertArray[0].activeState--------", updatedUser.fitbit.alertArray[0].activeState)
                 if (updatedUser.fitbit.alertArray[0].activeState === true) {
                     console.log("active state true")
                     if (updatedUser.signedUpForAlerts === true && updatedUser.fitbit.alertArray[0].stage1 === 0) {
@@ -39,7 +42,7 @@ var self = module.exports = {
                                 updatedUser.body,
                                 {
                                     new: true,
-                                })
+                                }).exec()
                             .catch(err => res.status(422).json(err));
                         const txtBody = "FB watch alert sent for " + user.name
                         const txtNum = user.stage1Alert.num
@@ -86,7 +89,7 @@ var self = module.exports = {
         }, 900000);
     },
     DBuserFitbitDevice: function (firebaseAuthID, fitBitDevice) {
-        console.log("fitBitDevice inside servercode", fitBitDevice)
+        // console.log("fitBitDevice inside servercode", fitBitDevice)
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
