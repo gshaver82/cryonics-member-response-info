@@ -37,7 +37,8 @@ var self = module.exports = {
                 console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0].activeState--------", updatedUser.checkinDevices.fitbit.alertArray[0].activeState)
                 if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
                     console.log("active state true")
-                    if (updatedUser.signedUpForAlerts === true && updatedUser.checkinDevices.fitbit.alertArray[0].stage1 === 0) {
+                    if (updatedUser.signedUpForAlerts === true && updatedUser.checkinDevices.fitbit.alertArray[0].stage1 === new Date(0)) {
+                        console.log("alerts true and stage 1 ==0")
                         updatedUser.checkinDevices.fitbit.alertArray[0].stage1 = Date.now()
                         temp = await db.CryonicsModel
                             .findOneAndUpdate(
