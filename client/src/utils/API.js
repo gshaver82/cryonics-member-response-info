@@ -36,9 +36,9 @@ export default {
     getuserList: function () {
         return authorize.get("/api/users");
     },
-    adduser: function (newUser) {
-        return authorize.put("/api/users", newUser);
-    },
+    // adduser: function (newUser) {
+    //     return authorize.put("/api/users", newUser);
+    // },
     edituser: function (editedUser) {
         return authorize.put("/api/users/edit", editedUser);
     },
