@@ -22,7 +22,7 @@ var self = module.exports = {
 
         //TODO if alert status active, make background red on webpage.
         let updatedUser = ''
-        let i = 0;
+        let i = 1;
         var FBAlertInterval = setInterval(async function () {
             console.log("FBAlertInterval")
             try {
