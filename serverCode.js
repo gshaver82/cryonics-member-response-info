@@ -29,9 +29,10 @@ var self = module.exports = {
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
-                console.log("i and updatedUser.alertstage.length", i, updatedUser.alertstage.length)
-                if (i > updatedUser.alertstage.length) {
-                    console.log("i > updatedUser.alertstage.length, clearing interval")
+                console.log("updatedUser", updatedUser)
+                console.log("i and user.alertstage.length", i, user.alertstage.length)
+                if (i > user.alertstage.length) {
+                    console.log("i > user.alertstage.length, clearing interval")
                     clearInterval(FBAlertInterval)
                 } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
                     console.log(i, " Index---alert array and alert stage IF",
