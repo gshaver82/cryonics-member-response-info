@@ -23,51 +23,51 @@ var self = module.exports = {
         //TODO if alert status active, make background red on webpage.
         let updatedUser = ''
         let i = 0;
-        // var FBAlertInterval = setInterval(async function () {
-
-        console.log("FBAlertAction")
-        try {
-            updatedUser = await db.CryonicsModel
-                .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
-                .catch(err => res.status(422).json(err));
-            if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
-
-                console.log(i, " Index---alert array and alert stage IF",
-                    updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
-                    updatedUser.alertStage[i])
-
-                if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] &&
-                    updatedUser.alertStage[i]) {
-                    updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now()
-                    temp = await db.CryonicsModel
-                        .findOneAndUpdate(
-                            { firebaseAuthID: updatedUser.firebaseAuthID },
-                            updatedUser,
-                            {
-                                new: true,
-                            }).lean().exec()
-                        .catch(err => res.status(422).json(err));
-                    const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + i
-                    const txtNum = user.alertStage[i].num
-                    if (updatedUser.signedUpForAlerts === true) {
-                        self.twilioOutboundTxt(txtBody, txtNum)
-                    } else {
-                        console.log("alerts triggered, but not sent because signedUpForAlerts == false")
-                        console.log(txtBody, txtNum)
+        var FBAlertInterval = setInterval(async function () {
+            console.log("FBAlertInterval")
+            try {
+                updatedUser = await db.CryonicsModel
+                    .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
+                    .catch(err => res.status(422).json(err));
+                console.log("i and updatedUser.alertstage.length", i, updatedUser.alertstage.length)
+                if (i > updatedUser.alertstage.length) {
+                    console.log("i > updatedUser.alertstage.length, clearing interval")
+                    clearInterval(FBAlertInterval)
+                } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
+                    console.log(i, " Index---alert array and alert stage IF",
+                        updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+                        updatedUser.alertStage[i])
+                    if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] &&
+                        updatedUser.alertStage[i]) {
+                        updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now()
+                        temp = await db.CryonicsModel
+                            .findOneAndUpdate(
+                                { firebaseAuthID: updatedUser.firebaseAuthID },
+                                updatedUser,
+                                {
+                                    new: true,
+                                }).lean().exec()
+                            .catch(err => res.status(422).json(err));
+                        const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + i
+                        const txtNum = user.alertStage[i].num
+                        if (updatedUser.signedUpForAlerts === true) {
+                            self.twilioOutboundTxt(txtBody, txtNum)
+                        } else {
+                            console.log("alerts triggered, but not sent because signedUpForAlerts == false")
+                            console.log(txtBody, txtNum)
+                        }
                     }
-                }
-                //TODO expand else statements here to chain through all stages
 
-            } else {
-                console.log("active state not true, clearing interval")
-                // clearInterval(FBAlertInterval)
+                } else {
+                    console.log("active state not true (or something else), clearing interval")
+                    clearInterval(FBAlertInterval)
+                }
+            } catch (error) {
+                console.error(error);
+                console.log("try catch error")
+                clearInterval(FBAlertInterval)
             }
-        } catch (error) {
-            console.error(error);
-            console.log("try catch error")
-            // clearInterval(FBAlertInterval)
-        }
-        // }, 60000);
+        }, 60000);
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
