@@ -34,7 +34,7 @@ function checkAuth(req, res, next) {
                 console.log("[SERVER] Found unauthorized token");
                 res.status(403).send('Unauthorized')
             });
-    } else if (req.headers.semisecret && req.headers.semisecret === 'vegetable') {
+    } else if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET) {
         console.log("[SERVER] semi secret token found");
         res.status(403).send('Unauthorized but unconfigured semi secret')
     } else {
@@ -47,7 +47,7 @@ router.use("/api", checkAuth);
 router.use("/api", apiRoutes);
 
 function checkCompanion(req, res, next) {
-    if (req.headers.semisecret && req.headers.semisecret === 'vegetable') {
+    if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET) {
         console.log("[SERVER] correct semi secret token found");
         next()
     } else {

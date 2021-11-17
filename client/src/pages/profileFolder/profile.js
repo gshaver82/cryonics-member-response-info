@@ -26,14 +26,14 @@ function Profile() {
     const [stage1AlertMethod, setstage1AlertMethod] = useState("txt");
     const [stage2AlertNum, setstage2AlertNum] = useState("none");
     const [stage2AlertMethod, setstage2AlertMethod] = useState("txt");
-    const [stage3AlertNum, setstage3AlertNum] = useState("none");
-    const [stage3AlertMethod, setstage3AlertMethod] = useState("txt");
-    const [stage4AlertNum, setstage4AlertNum] = useState("none");
-    const [stage4AlertMethod, setstage4AlertMethod] = useState("txt");
-    const [stage5AlertNum, setstage5AlertNum] = useState("none");
-    const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
-    const [stage6AlertNum, setstage6AlertNum] = useState("none");
-    const [stage6AlertMethod, setstage6AlertMethod] = useState("txt");
+    // const [stage3AlertNum, setstage3AlertNum] = useState("none");
+    // const [stage3AlertMethod, setstage3AlertMethod] = useState("txt");
+    // const [stage4AlertNum, setstage4AlertNum] = useState("none");
+    // const [stage4AlertMethod, setstage4AlertMethod] = useState("txt");
+    // const [stage5AlertNum, setstage5AlertNum] = useState("none");
+    // const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
+    // const [stage6AlertNum, setstage6AlertNum] = useState("none");
+    // const [stage6AlertMethod, setstage6AlertMethod] = useState("txt");
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
@@ -51,10 +51,10 @@ function Profile() {
     const handleEditProfile = () => {
         setstage1AlertNum(user.stage1Alert.num)
         setstage1AlertNum(user.stage2Alert.num)
-        setstage1AlertNum(user.stage3Alert.num)
-        setstage1AlertNum(user.stage4Alert.num)
-        setstage1AlertNum(user.stage5Alert.num)
-        setstage1AlertNum(user.stage6Alert.Num)
+        // setstage1AlertNum(user.stage3Alert.num)
+        // setstage1AlertNum(user.stage4Alert.num)
+        // setstage1AlertNum(user.stage5Alert.num)
+        // setstage1AlertNum(user.stage6Alert.Num)
         setname(user.name)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
@@ -87,19 +87,21 @@ function Profile() {
             }, {
                 num: stage2AlertNum,
                 method: stage2AlertMethod
-            }, {
-                num: stage3AlertNum,
-                method: stage3AlertMethod
-            }, {
-                num: stage4AlertNum,
-                method: stage4AlertMethod
-            }, {
-                num: stage5AlertNum,
-                method: stage5AlertMethod
-            }, {
-                num: stage6AlertNum,
-                method: stage6AlertMethod
-            }],
+            }, 
+            // {
+            //     num: stage3AlertNum,
+            //     method: stage3AlertMethod
+            // }, {
+            //     num: stage4AlertNum,
+            //     method: stage4AlertMethod
+            // }, {
+            //     num: stage5AlertNum,
+            //     method: stage5AlertMethod
+            // }, {
+            //     num: stage6AlertNum,
+            //     method: stage6AlertMethod
+            // }
+        ],
             checkinDevices: {
                 WebsiteCheckIn: {
                     checkinArray: [
@@ -196,7 +198,7 @@ function Profile() {
                             <option value="call">Phone call</option>
                         </select>
                         <br></br>
-                        <label>stage3Alert:</label>
+                        {/* <label>stage3Alert:</label>
                         <input
                             type="text"
                             required
@@ -258,7 +260,7 @@ function Profile() {
                         >
                             <option value="txt">Text</option>
                             <option value="call">Phone call</option>
-                        </select>
+                        </select> */}
                         <br></br>
                     </div>
 

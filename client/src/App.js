@@ -22,6 +22,7 @@ import test from "./pages/TestFolder/test";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
 import NavTabs from "./components/NavTabs";
 import ProfileDetails from "./components/ProfileDetails";
+import FBAlertClear from "./components/FBAlertClear";
 
 function App() {
     const [theme, toggleTheme, componentMounted] = useDarkMode();
@@ -51,6 +52,7 @@ function App() {
                                     <PrivateRoute exact path="/secondPage" component={secondPage} />
                                     <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
                                     <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
+                                    <Route exact path="/FBAlertClear/:_id" component={FBAlertClear} />
                                     <PrivateRoute exact path="/MemberDashboard" component={MemberDash} />
                                     <PrivateRoute exact path="/profile" component={profile} />
                                     <Route path="/" component={publicHomePage} />

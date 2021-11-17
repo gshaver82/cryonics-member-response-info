@@ -6,21 +6,6 @@ var self = module.exports = {
     FBAlertChain: async function (user) {
         console.log("FBAlertChain incoming user data is for user ", user)
 
-        //user should have the new checkinDevices.fitbit.alertArray
-        //start interval?
-        //if stage 1 has no date, get stage1Alert.num and active state === true and then call/text ---- stage 2 etc. 
-        //if active state is now false, cancel interval
-        //date.now() and put that into checkin devices--fitbit--alert array
-        //set interval for 3 min and run above loop again.
-        // 
-        // if (user.signedUpForAlerts === true && user.stage1Alert.num != "none") {
-        //     serverCode.twilioOutboundTxt(txtBody, user.stage1Alert.num)
-        //     console.log("message sent due to user being signed up for alerts")
-        // } else {
-        //     console.log("message not sent due to user not being signed up for alerts")
-        // }
-
-        //TODO if alert status active, make background red on webpage.
         let updatedUser = ''
         let i = 1;
         var FBAlertInterval = setInterval(async function () {
