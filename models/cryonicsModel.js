@@ -103,30 +103,12 @@ const cryonicsSchema = new Schema({
                         required: true,
                         default: true,
                     },
-                    stage1: {
-                        type: Date,
-                        required: false,
-                    },
-                    stage2: {
-                        type: Date,
-                        required: false,
-                    },
-                    stage3: {
-                        type: Date,
-                        required: false,
-                    },
-                    stage4: {
-                        type: Date,
-                        required: false,
-                    },
-                    stage5: {
-                        type: Date,
-                        required: false,
-                    },
-                    stage6: {
-                        type: Date,
-                        required: false,
-                    },
+                    stage: [
+                        {
+                            type: Date,
+                            required: false,
+                        }
+                    ]
                 }
             ]
         },
@@ -154,55 +136,19 @@ const cryonicsSchema = new Schema({
                 }
             ]
         },
-        exampleDevice2: {
-            exampleDeviceRegistered: {
-                type: Boolean,
-                required: true,
-                default: false,
-            },
-            authToken: {
-                type: String,
-                required: false,
-            },
-            refreshToken: {
-                type: String,
-                required: false,
-            },
-            exampleCheckinArray: [
-                {
-                    dateCreated: {
-                        type: Date,
-                        default: Date.now,
-                        required: false,
-                    },
-                }
-            ]
-        },
-        exampleDevice3: {
-            exampleDeviceRegistered: {
-                type: Boolean,
-                required: true,
-                default: false,
-            },
-            authToken: {
-                type: String,
-                required: false,
-            },
-            refreshToken: {
-                type: String,
-                required: false,
-            },
-            exampleCheckinArray: [
-                {
-                    dateCreated: {
-                        type: Date,
-                        default: Date.now,
-                        required: false,
-                    },
-                }
-            ]
-        },
     },
+    alertStage: [
+        {
+            num: {
+                type: String,
+                required: false,
+            },
+            method: {
+                type: String,
+                required: false,
+            },
+        }
+    ],
     description: {
         type: String,
         required: false,
@@ -228,18 +174,6 @@ const cryonicsSchema = new Schema({
         type: Date,
         required: false,
     },
-    Datecode0: {
-        type: Date,
-        required: false,
-    },
-    Datecode1: {
-        type: Date,
-        required: false,
-    },
-    Datecode2: {
-        type: Date,
-        required: false,
-    },
     text0: {
         type: String,
         required: false,
@@ -257,111 +191,7 @@ const cryonicsSchema = new Schema({
     text3: {
         type: String,
         required: false,
-    },
-    text4: {
-        type: String,
-        required: false,
-    },
-    text5: {
-        type: String,
-        required: false,
-    },
-    text6: {
-        type: String,
-        required: false,
-    },
-    text7: {
-        type: String,
-        required: false,
-    },
-    text8: {
-        type: String,
-        required: false,
-    },
-    text9: {
-        type: String,
-        required: false,
-    },
-    file0: {
-        type: String,
-        required: false,
-    },
-    file1: {
-        type: String,
-        required: false,
-    },
-    file2: {
-        type: String,
-        required: false,
-    },
-    file3: {
-        type: String,
-        required: false,
-    },
-    file4: {
-        type: String,
-        required: false,
-    },
-    stage1Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
-    stage2Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
-    stage3Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
-    stage4Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
-    stage5Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
-    stage6Alert: {
-        num: {
-            type: String,
-            required: false,
-        },
-        method: {
-            type: String,
-            required: false,
-        },
-    },
+    }
 }
 );
 cryonicsSchema.index({ "loc": "2dsphere" });

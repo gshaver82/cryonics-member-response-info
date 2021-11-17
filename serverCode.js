@@ -22,40 +22,38 @@ var self = module.exports = {
 
         //TODO if alert status active, make background red on webpage.
         let updatedUser = ''
+        let i = 0;
         // var FBAlertInterval = setInterval(async function () {
+
         console.log("FBAlertAction")
         try {
             updatedUser = await db.CryonicsModel
-                .findOne({ firebaseAuthID: user.firebaseAuthID })
-                .lean()
-                .exec()
+                .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                 .catch(err => res.status(422).json(err));
-            // console.log("updatedUser FBAlertAction--------", updatedUser)
-            console.log("updatedUser updatedUser.checkinDevices.fitbit--------", updatedUser.checkinDevices.fitbit)
-            // console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray--------", updatedUser.checkinDevices.fitbit.alertArray)
-            // console.log("updatedUser updatedUser.checkinDevices.fitbit.alertArray[0]--------", updatedUser.checkinDevices.fitbit.alertArray[0])
-            console.log("@@@updatedUser.checkinDevices.fitbit.alertArray[0].activeState--------", updatedUser.checkinDevices.fitbit.alertArray[0].activeState)
             if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
-                console.log("@@@active state true .signedUpForAlerts === true && .alertArray[0].stage1.getTime() === 0",
-                    updatedUser.signedUpForAlerts, updatedUser.checkinDevices.fitbit.alertArray[0].stage1.getTime())
-                if (updatedUser.signedUpForAlerts === true && updatedUser.checkinDevices.fitbit.alertArray[0].stage1.getTime() === 0) {
-                    console.log("alerts true and stage 1 ==0")
-                    updatedUser.checkinDevices.fitbit.alertArray[0].stage1 = Date.now()
-                    console.log("should have date now---- alertArray[0].stage1", updatedUser.checkinDevices.fitbit.alertArray[0].stage1)
+
+                console.log(i," Index---alert array and alert stage IF",
+                updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+                updatedUser.alertStage[i])
+
+                if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] &&
+                    updatedUser.alertStage[i]) {
+                    updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now()
                     temp = await db.CryonicsModel
                         .findOneAndUpdate(
                             { firebaseAuthID: updatedUser.firebaseAuthID },
                             updatedUser,
                             {
                                 new: true,
-                            })
-                        .lean()
-                        .exec()
+                            }).lean().exec()
                         .catch(err => res.status(422).json(err));
-                    console.log("result from writing to DB", temp)
                     const txtBody = "FB watch alert sent for " + user.name
                     const txtNum = user.stage1Alert.num
-                    self.twilioOutboundTxt(txtBody, txtNum)
+                    if (updatedUser.signedUpForAlerts === true) {
+                        self.twilioOutboundTxt(txtBody, txtNum)
+                    }else{
+                        console.log("alerts triggered, but not sent because signedUpForAlerts == false")
+                    }
                 }
                 //TODO expand else statements here to chain through all stages
 
@@ -67,8 +65,6 @@ var self = module.exports = {
             console.error(error);
             console.log("try catch error")
             // clearInterval(FBAlertInterval)
-            // expected output: ReferenceError: nonExistentFunction is not defined
-            // Note - error messages will vary depending on browser
         }
         // }, 60000);
     },
@@ -92,7 +88,7 @@ var self = module.exports = {
                 from: process.env.TWILIO_PHONE_NUMBER
             })
             .then(call => console.log(call.sid));
-            console.log( "---server phone out sent---", txtNum)
+        console.log("---server phone out sent---", txtNum)
     },
     fifteenMin: function () {
         let hourcount = 0

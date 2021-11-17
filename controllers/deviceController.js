@@ -13,7 +13,7 @@ module.exports = {
                             "checkinDevices.fitbit.alertArray": {
                                 $each: [req.body.newArrayEntry],
                                 $position: 0,
-                                $slice: 25
+                                $slice: 250
                             }
                         },
                     }

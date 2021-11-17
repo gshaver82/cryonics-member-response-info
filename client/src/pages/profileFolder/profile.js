@@ -81,30 +81,25 @@ function Profile() {
             textToUserDatecode: 0,
             textToEmerContactDatecode: 0,
             textToAdminDatecode: 0,
-            stage1Alert: {
+            alertStage: [{
                 num: stage1AlertNum,
                 method: stage1AlertMethod
-            },
-            stage2Alert: {
+            }, {
                 num: stage2AlertNum,
                 method: stage2AlertMethod
-            },
-            stage3Alert: {
+            }, {
                 num: stage3AlertNum,
                 method: stage3AlertMethod
-            },
-            stage4Alert: {
+            }, {
                 num: stage4AlertNum,
                 method: stage4AlertMethod
-            },
-            stage5Alert: {
+            }, {
                 num: stage5AlertNum,
                 method: stage5AlertMethod
-            },
-            stage6Alert: {
+            }, {
                 num: stage6AlertNum,
                 method: stage6AlertMethod
-            },
+            }],
             checkinDevices: {
                 WebsiteCheckIn: {
                     checkinArray: [
@@ -308,12 +303,15 @@ function Profile() {
                     {" "}Edit Profile{" "}
                 </button>
                 <p>username is:  <span>{user.name}</span></p>
-                <p>stage1Alert number is:  <span>{user.stage1Alert.num}</span> Contact method is:<span>{user.stage1Alert.method}</span></p>
-                <p>stage2Alert number is:  <span>{user.stage2Alert.num}</span> Contact method is:<span>{user.stage2Alert.method}</span></p>
-                <p>stage3Alert number is:  <span>{user.stage3Alert.num}</span> Contact method is:<span>{user.stage3Alert.method}</span></p>
-                <p>stage4Alert number is:  <span>{user.stage4Alert.num}</span> Contact method is:<span>{user.stage4Alert.method}</span></p>
-                <p>stage5Alert number is:  <span>{user.stage5Alert.num}</span> Contact method is:<span>{user.stage5Alert.method}</span></p>
-                <p>stage6Alert number is:  <span>{user.stage6Alert.num}</span> Contact method is:<span>{user.stage6Alert.method}</span></p>
+                {user.alertStage
+
+                    .map((obj, index) => {
+                        return (
+                            <div>
+                                <p> {index} alertnum: {obj.num} alertmethod: {obj.method}</p>
+                            </div>
+                        )
+                    })}
                 <p>description: {user.description}</p>
                 <p>group is:  {user.group}</p>
                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
