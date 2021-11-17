@@ -4,7 +4,7 @@ var self = module.exports = {
         console.log("serverCode startup")
     },
     FBAlertChain: async function (user) {
-        console.log("FBAlertChain incoming user data is for user ", user.name)
+        console.log("FBAlertChain incoming user data is for user ", user)
 
         //user should have the new checkinDevices.fitbit.alertArray
         //start interval?
@@ -30,9 +30,9 @@ var self = module.exports = {
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
                 console.log("updatedUser", updatedUser)
-                console.log("i and user.alertstage.length", i, user.alertstage.length)
-                if (i > user.alertstage.length) {
-                    console.log("i > user.alertstage.length, clearing interval")
+                console.log("i and user.alertStage.length", i, user.alertStage.length)
+                if (i > user.alertStage.length) {
+                    console.log("i > user.alertStage.length, clearing interval")
                     clearInterval(FBAlertInterval)
                 } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
                     console.log(i, " Index---alert array and alert stage IF",
@@ -65,7 +65,7 @@ var self = module.exports = {
                 }
             } catch (error) {
                 console.error(error);
-                console.log("try catch error")
+                console.log("try catch error. Clearing interval")
                 clearInterval(FBAlertInterval)
             }
         }, 60000);
