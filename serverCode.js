@@ -48,7 +48,7 @@ var self = module.exports = {
                             }).lean().exec()
                         .catch(err => res.status(422).json(err));
                     const txtBody = "FB watch alert sent for " + user.name
-                    const txtNum = user.stage1Alert.num
+                    const txtNum = user.stage[i].num
                     if (updatedUser.signedUpForAlerts === true) {
                         self.twilioOutboundTxt(txtBody, txtNum)
                     }else{
