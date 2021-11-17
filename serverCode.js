@@ -32,9 +32,9 @@ var self = module.exports = {
                 .catch(err => res.status(422).json(err));
             if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
 
-                console.log(i," Index---alert array and alert stage IF",
-                updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
-                updatedUser.alertStage[i])
+                console.log(i, " Index---alert array and alert stage IF",
+                    updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+                    updatedUser.alertStage[i])
 
                 if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] &&
                     updatedUser.alertStage[i]) {
@@ -47,12 +47,13 @@ var self = module.exports = {
                                 new: true,
                             }).lean().exec()
                         .catch(err => res.status(422).json(err));
-                    const txtBody = "FB watch alert sent for " + user.name
-                    const txtNum = user.stage[i].num
+                    const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + index
+                    const txtNum = user.alertStage[i].num
                     if (updatedUser.signedUpForAlerts === true) {
                         self.twilioOutboundTxt(txtBody, txtNum)
-                    }else{
+                    } else {
                         console.log("alerts triggered, but not sent because signedUpForAlerts == false")
+                        console.log(txtBody, txtNum)
                     }
                 }
                 //TODO expand else statements here to chain through all stages
