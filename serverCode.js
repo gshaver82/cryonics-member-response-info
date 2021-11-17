@@ -68,6 +68,7 @@ var self = module.exports = {
                 console.log("try catch error. Clearing interval")
                 clearInterval(FBAlertInterval)
             }
+            i++;
         }, 60000);
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
