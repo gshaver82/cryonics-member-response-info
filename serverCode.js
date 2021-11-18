@@ -7,7 +7,10 @@ var self = module.exports = {
         console.log("FBAlertChain incoming user data is for user ", user)
         let updatedUser = ''
         let i = 1;
-        var FBAlertInterval = setInterval(async function () {
+        // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
+
+        //FIX possible duplicate intervals running. 
+        let FBAlertInterval = setInterval(async function () {
             console.log("^^^^^^^^FBAlertInterval "+ i + " index " + user.alertStage.length + " user.alertStage.length ")
             try {
                 updatedUser = await db.CryonicsModel
@@ -69,14 +72,14 @@ var self = module.exports = {
             })
             .then(message => console.log(message.sid));
         console.log(txtBody, "---server message sent---", txtNum)
-        client.calls
-            .create({
-                url: 'http://demo.twilio.com/docs/voice.xml',
-                to: txtNum,
-                from: process.env.TWILIO_PHONE_NUMBER
-            })
-            .then(call => console.log(call.sid));
-        console.log("---server phone out sent---", txtNum)
+        // client.calls
+        //     .create({
+        //         url: 'http://demo.twilio.com/docs/voice.xml',
+        //         to: txtNum,
+        //         from: process.env.TWILIO_PHONE_NUMBER
+        //     })
+        //     .then(call => console.log(call.sid));
+        // console.log("---server phone out sent---", txtNum)
     },
     fifteenMin: function () {
         let hourcount = 0
