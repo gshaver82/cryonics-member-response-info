@@ -59,7 +59,7 @@ export default {
     },
     putClearFBAlert: function (_id) {
         console.log("[API] ~ putClearFBAlert ")
-        return noAuth.put("/capi/ClearFBAlert" + _id, 0, {
+        return noAuth.put("/capi/ClearFBAlert/" + _id, 0, {
             headers: {
                 'semisecret': "vegetable"
             }
