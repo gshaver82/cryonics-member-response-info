@@ -49,8 +49,8 @@ function Profile() {
     };
 
     const handleEditProfile = () => {
-        setstage1AlertNum(user.stage1Alert.num)
-        setstage1AlertNum(user.stage2Alert.num)
+        setstage1AlertNum(user.alertStage[0].num)
+        setstage2AlertNum(user.alertStage[1].num)
         // setstage1AlertNum(user.stage3Alert.num)
         // setstage1AlertNum(user.stage4Alert.num)
         // setstage1AlertNum(user.stage5Alert.num)
@@ -305,7 +305,7 @@ function Profile() {
                     {" "}Edit Profile{" "}
                 </button>
                 <p>username is:  <span>{user.name}</span></p>
-                {user.alertStage
+                {user.alertStage [0] ? user.alertStage
 
                     .map((obj, index) => {
                         return (
@@ -313,7 +313,9 @@ function Profile() {
                                 <p> {index} alertnum: {obj.num} alertmethod: {obj.method}</p>
                             </div>
                         )
-                    })}
+                    })
+                :<p>no alert stages found</p>
+                }
                 <p>description: {user.description}</p>
                 <p>group is:  {user.group}</p>
                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
