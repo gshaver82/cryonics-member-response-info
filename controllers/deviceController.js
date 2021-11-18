@@ -44,6 +44,20 @@ module.exports = {
         // }
 
         res.json({ update, user })
-    }
+    },
+    
+    putClearFBAlert: function (req, res) {
+        console.log("putClearFBAlert req.params._id", putClearFBAlert, req.params._id)
+        db.CryonicsModel
+            .updateOne({ _id: req.params._id },
+                {
+                    $set: {
+                        "checkinDevices.fitbit.alertArray[0].activeState": false,
+                    }
+                }
+            )
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
 };
 

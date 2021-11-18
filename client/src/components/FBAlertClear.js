@@ -4,24 +4,26 @@ import API from "../utils/API";
 
 function ProfileDetails() {
   const { _id } = useParams()
-
-  const [user, setUser] = useState(false);
   const [isLoading, setisLoading] = useState(true);
+  const [AlertResponse, setAlertResponse] = useState(0);
 
   useEffect(() => {
-    API.getOneUser(_id)
-      .then(res => setUser(res.data))
+    const response = API.putClearFBAlert(_id)
+      .then(res => setAlertResponse(res.data))
       .then(setisLoading(false))
       .catch(err => console.log(err));
+    console.log("response", response)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  console.log("AlertResponse", AlertResponse)
   return (
 
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-
-      <p>username is: {user && <span>{user.name} </span>}</p>
-      <p>This page will eventualy clear the FB alert status. </p>
+      <p>Alert state cleared</p>
+      <p>If it hasnt already, the Fitbit watch will automatically resume monitoring
+        when it detects heart rate after it sent the alert</p>
     </div>
   );
 }

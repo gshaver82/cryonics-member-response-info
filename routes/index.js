@@ -47,7 +47,8 @@ router.use("/api", checkAuth);
 router.use("/api", apiRoutes);
 
 function checkCompanion(req, res, next) {
-    if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET) {
+    if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET
+    ) {
         console.log("[SERVER] correct semi secret token found");
         next()
     } else {

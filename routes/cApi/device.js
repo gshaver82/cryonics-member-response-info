@@ -5,5 +5,8 @@ const deviceController = require("../../controllers/deviceController");
 router.route("/")
     // .get(exampleController.getcheckin)
     .put(deviceController.putDeviceTest)
+router
+    .route("/:_id")
+    .put(deviceController.putClearFBAlert)
 
 module.exports = router;

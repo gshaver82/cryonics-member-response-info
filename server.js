@@ -54,7 +54,7 @@ async function AlertInterval() {
             console.log("running alert checker for ", user.name)
             const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
             let minutes = Math.floor(temptime / 1000 / 60)
-            console.log("alert interval " + minutes + "since fitbit HR reading")
+            console.log("alert interval " + minutes + " minutes since fitbit HR reading")
 
             try {
                 if (minutes > 50 && Number(user.textToUserDatecode) === 0) {

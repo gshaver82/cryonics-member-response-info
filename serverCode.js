@@ -5,24 +5,22 @@ var self = module.exports = {
     },
     FBAlertChain: async function (user) {
         console.log("FBAlertChain incoming user data is for user ", user)
-
         let updatedUser = ''
         let i = 1;
         var FBAlertInterval = setInterval(async function () {
-            console.log("FBAlertInterval")
+            console.log("^^^^^^^^FBAlertInterval "+ i + " index " + user.alertStage.length + " user.alertStage.length ")
             try {
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
-                console.log("updatedUser", updatedUser)
-                console.log("i and user.alertStage.length", i, user.alertStage.length)
+                // console.log("updatedUser", updatedUser)
                 if (i > user.alertStage.length) {
                     console.log("i > user.alertStage.length, clearing interval")
                     clearInterval(FBAlertInterval)
                 } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
-                    console.log(i, " Index---alert array and alert stage IF",
-                        updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
-                        updatedUser.alertStage[i])
+                    // console.log(i, " Index---alert array and alert stage IF",
+                    //     updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+                    //     updatedUser.alertStage[i])
                     if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] &&
                         updatedUser.alertStage[i]) {
                         updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now()
@@ -34,7 +32,9 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-                        const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + i
+                        const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + i +
+                        "click this link to clear the alert status if you are OK" + 
+                        "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true) {
                             self.twilioOutboundTxt(txtBody, txtNum)

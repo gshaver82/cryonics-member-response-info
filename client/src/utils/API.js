@@ -5,7 +5,7 @@ import firebaseEnvConfigs from '../firebase';
 // Initialize an instance of axios, pass in the header type.
 const firebase = firebaseEnvConfigs.firebase_;
 const authorize = axios.create();
-
+const noAuth = axios.create();
 // Observing firebase.auth() to listen signin/signout.
 firebase.auth().onAuthStateChanged(function (user) {
     if (user) {
@@ -25,7 +25,7 @@ firebase.auth().onAuthStateChanged(function (user) {
 
 export default {
     fitbitGetDBAuthToken: function (firebaseAuthID) {
-        return authorize.get("/api/fitbit/"+ firebaseAuthID);
+        return authorize.get("/api/fitbit/" + firebaseAuthID);
     },
     putFitBitTokens: function (fitbitObjectForDB) {
         return authorize.put("/api/fitbit", fitbitObjectForDB);
@@ -56,5 +56,14 @@ export default {
     },
     getcheckIn: function () {
         return authorize.get("/api/checkin");
+    },
+    putClearFBAlert: function (_id) {
+        console.log("[API] ~ putClearFBAlert ")
+        return noAuth.put("/capi/ClearFBAlert" + _id, 0, {
+            headers: {
+                'semisecret': process.env.REACT_APP_SEMISECRET
+            }
+        }
+        );
     },
 };
