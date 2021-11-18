@@ -2,6 +2,9 @@ import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import API from "../utils/API";
 
+// FBAlertClear
+
+
 function ProfileDetails() {
   const { _id } = useParams()
   const [isLoading, setisLoading] = useState(true);

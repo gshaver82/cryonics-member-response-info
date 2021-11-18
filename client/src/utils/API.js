@@ -61,7 +61,7 @@ export default {
         console.log("[API] ~ putClearFBAlert ")
         return noAuth.put("/capi/ClearFBAlert" + _id, 0, {
             headers: {
-                'semisecret': process.env.REACT_APP_SEMISECRET
+                'semisecret': process.env.SEMISECRET
             }
         }
         );
