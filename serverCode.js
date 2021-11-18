@@ -17,8 +17,8 @@ var self = module.exports = {
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
                 // console.log("updatedUser", updatedUser)
-                if (i > user.alertStage.length) {
-                    console.log("i > user.alertStage.length, clearing interval")
+                if (i >= user.alertStage.length) {
+                    console.log("i >= user.alertStage.length, clearing interval")
                     clearInterval(FBAlertInterval)
                 } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
                     // console.log(i, " Index---alert array and alert stage IF",
