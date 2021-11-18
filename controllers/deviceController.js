@@ -47,7 +47,7 @@ module.exports = {
     },
     
     putClearFBAlert: function (req, res) {
-        console.log("putClearFBAlert req.params._id", putClearFBAlert, req.params._id)
+        console.log("putClearFBAlert req.params._id", req.params._id)
         db.CryonicsModel
             .updateOne({ _id: req.params._id },
                 {
