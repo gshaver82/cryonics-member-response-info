@@ -6,7 +6,7 @@ var self = module.exports = {
     FBAlertChain: async function (user) {
         console.log("FBAlertChain incoming user data is for user ", user)
         let updatedUser = ''
-        let i = 1;
+        let i = 0;
         // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
 
         //FIX possible duplicate intervals running. 
@@ -35,7 +35,7 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-                        const txtBody = "FB watch alert sent for " + user.name + "this is alert number " + i +
+                        const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i+1)+
                         "click this link to clear the alert status if you are OK" + 
                         "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
@@ -43,7 +43,7 @@ var self = module.exports = {
                             self.twilioOutboundTxt(txtBody, txtNum)
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false")
-                            console.log(txtBody, txtNum)
+                            console.log(txtNum, txtBody)
                         }
                     }
 
