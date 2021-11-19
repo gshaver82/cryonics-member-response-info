@@ -33,7 +33,13 @@ module.exports = {
         // console.log("---first and then second DB call", update, user)
         // console.log("user.signedUpForAlerts", user.signedUpForAlerts)
         //TODO send over to server code and to interval alerts there??
-        serverCode.FBAlertChain(user);
+        console.log("🚀 ~ user", user)
+        console.log("user.checkinDevices.fitbit.user_id", req.body.user_id)
+        if (user.checkinDevices.fitbit.user_id === req.body.user_id) {
+            serverCode.FBAlertChain(user);
+        } else {
+            console.log("user not found or error retrieving user and matching with fitbit user id")
+        }
         // const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
         //     " current date is " + Date.now();
         // if (user.signedUpForAlerts === true && user.stage1Alert.num != "none") {
@@ -45,7 +51,7 @@ module.exports = {
 
         res.json({ update, user })
     },
-    
+
     putClearFBAlert: function (req, res) {
         console.log("putClearFBAlert req.params._id", req.params._id)
         db.CryonicsModel

@@ -8,11 +8,13 @@ var self = module.exports = {
         let updatedUser = ''
         let i = 0;
         // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
-
         //FIX possible duplicate intervals running. 
+        //TODO maybe, in device controller, get the ID of the alert array. 
+        //then in here search the array for that ID and work off of that
+        //that way if double alerts come in, the link will clear only that one?
         let FBAlertInterval = setInterval(async function () {
-            console.log("^^^^^^^^FBAlertInterval "+ i + " index " + user.alertStage.length + " user.alertStage.length ")
             try {
+                console.log("^^^^^^^^FBAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
@@ -35,9 +37,9 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-                        const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i+1)+
-                        "click this link to clear the alert status if you are OK" + 
-                        "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
+                        const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i + 1) +
+                            "click this link to clear the alert status if you are OK" +
+                            "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true) {
                             self.twilioOutboundTxt(txtBody, txtNum)
