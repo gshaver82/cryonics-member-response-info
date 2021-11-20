@@ -19,8 +19,8 @@ function ProfileDetails() {
 
   let GoogleURL = "void";
   if (isLoading === false && user && user.name !== 'Initialized user name') {
-    if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
-      user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]) {
+    if (user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[0] &&
+      user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[1]) {
       GoogleURL = "https://www.google.com/maps/place/" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] +
         "+" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
     }
@@ -29,8 +29,8 @@ function ProfileDetails() {
   if (isLoading === false && user && user.name !== 'Initialized user name') {
     if (user?.checkinDevices?.fitbit?.alertArray[0]?.lat &&
       user?.checkinDevices?.fitbit?.alertArray[0]?.long ) {
-      GoogleURL = "https://www.google.com/maps/place/" + user?.checkinDevices?.fitbit?.alertArray[0]?.lat +
-        "+" + user?.checkinDevices?.fitbit?.alertArray[0]?.long
+        GoogleAlertURL = "https://www.google.com/maps/place/" + user.checkinDevices.fitbit.alertArray[0].lat +
+        "+" + user.checkinDevices.fitbit.alertArray[0].long
     }
   }
   //TODO error harden for [0].dateCreated. it somehow created a temporary error that was fixed with page refresh

@@ -123,7 +123,7 @@ var self = module.exports = {
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
-        if (twilioOutboundCount > 79 || twilioOutboundCount > 0) {
+        if (twilioOutboundCount > 79) {
             client.messages
                 .create({
                     body: "twilioOutboundCount is " + twilioOutboundCount,
