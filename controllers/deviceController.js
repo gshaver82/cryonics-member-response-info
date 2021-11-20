@@ -3,11 +3,14 @@ const serverCode = require("../serverCode");
 
 module.exports = {
     putDeviceTest: async function (req, res) {
+        console.log("🚀 ~ putDeviceTest")
         let update
         let user
         try {
+            
+            console.log("🚀 ~ req.body.user_id", req.body.user_id)
             update = await db.CryonicsModel
-                .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
+                .updateOne({ "device controller checkinDevices.fitbit.user_id": req.body.user_id },
                     {
                         $push: {
                             "checkinDevices.fitbit.alertArray": {
@@ -24,7 +27,9 @@ module.exports = {
             })
         }
         try {
-            user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
+            
+            console.log("🚀 ~ req.body.user_id", req.body.user_id)
+            user = await db.CryonicsModel.findOne({ "device controller checkinDevices.fitbit.user_id": req.body.user_id }).exec()
         } catch (err) {
             return res.status(400).json({
                 error: 'Error en STATUS2'
@@ -40,15 +45,6 @@ module.exports = {
         } else {
             console.log("user not found or error retrieving user and matching with fitbit user id")
         }
-        // const txtBody = "for user " + user.name + " Your fitbit watch has sent an alert as of " + req.body.newArrayEntry.date +
-        //     " current date is " + Date.now();
-        // if (user.signedUpForAlerts === true && user.stage1Alert.num != "none") {
-        //     serverCode.twilioOutboundTxt(txtBody, user.stage1Alert.num)
-        //     console.log("message sent due to user being signed up for alerts")
-        // } else {
-        //     console.log("message not sent due to user not being signed up for alerts")
-        // }
-
         res.json({ update, user })
     },
 
