@@ -42,7 +42,7 @@ var self = module.exports = {
                             + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line" +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
-                        if (updatedUser.signedUpForAlerts === true) {
+                        if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none") {
                             self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false")
@@ -95,10 +95,10 @@ var self = module.exports = {
                             "Please sync your fitbit, and click this link to clear the alert status otherwise alerts will be sent to the next number down the line " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
-                        if (updatedUser.signedUpForAlerts === true) {
+                        if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none") {
                             self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
                         } else {
-                            console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false")
+                            console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false or number is none")
                             console.log(txtNum, txtBody)
                         }
                     }

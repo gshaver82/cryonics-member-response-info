@@ -26,14 +26,14 @@ function Profile() {
     const [stage1AlertMethod, setstage1AlertMethod] = useState("txt");
     const [stage2AlertNum, setstage2AlertNum] = useState("none");
     const [stage2AlertMethod, setstage2AlertMethod] = useState("txt");
-    // const [stage3AlertNum, setstage3AlertNum] = useState("none");
-    // const [stage3AlertMethod, setstage3AlertMethod] = useState("txt");
-    // const [stage4AlertNum, setstage4AlertNum] = useState("none");
-    // const [stage4AlertMethod, setstage4AlertMethod] = useState("txt");
-    // const [stage5AlertNum, setstage5AlertNum] = useState("none");
-    // const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
-    // const [stage6AlertNum, setstage6AlertNum] = useState("none");
-    // const [stage6AlertMethod, setstage6AlertMethod] = useState("txt");
+    const [stage3AlertNum, setstage3AlertNum] = useState("none");
+    const [stage3AlertMethod, setstage3AlertMethod] = useState("txt");
+    const [stage4AlertNum, setstage4AlertNum] = useState("none");
+    const [stage4AlertMethod, setstage4AlertMethod] = useState("txt");
+    const [stage5AlertNum, setstage5AlertNum] = useState("none");
+    const [stage5AlertMethod, setstage5AlertMethod] = useState("txt");
+    const [stage6AlertNum, setstage6AlertNum] = useState("none");
+    const [stage6AlertMethod, setstage6AlertMethod] = useState("txt");
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
@@ -49,12 +49,19 @@ function Profile() {
     };
 
     const handleEditProfile = () => {
-        setstage1AlertNum(user.alertStage[0].num)
-        setstage2AlertNum(user.alertStage[1].num)
-        // setstage1AlertNum(user.stage3Alert.num)
-        // setstage1AlertNum(user.stage4Alert.num)
-        // setstage1AlertNum(user.stage5Alert.num)
-        // setstage1AlertNum(user.stage6Alert.Num)
+        setstage1AlertNum(user.alertStage[0].num.slice(2))
+        setstage2AlertNum(user.alertStage[1].num.slice(2))
+        setstage3AlertNum(user.alertStage[2].num.slice(2))
+        setstage4AlertNum(user.alertStage[3].num.slice(2))
+        setstage5AlertNum(user.alertStage[4].num.slice(2))
+        setstage6AlertNum(user.alertStage[5].num.slice(2))
+
+        setstage1AlertMethod(user.alertStage[0].method)
+        setstage2AlertMethod(user.alertStage[1].method)
+        setstage3AlertMethod(user.alertStage[2].method)
+        setstage4AlertMethod(user.alertStage[3].method)
+        setstage5AlertMethod(user.alertStage[4].method)
+        setstage6AlertMethod(user.alertStage[5].method)
         setname(user.name)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
@@ -69,63 +76,77 @@ function Profile() {
     const handleSaveProfile = async (e) => {
         // e.preventDefault();
         setisLoading(true)
-        const editedUser = {
-            firebaseAuthID: firebaseUserID,
-            name: name,
-            dateCreated: Date.now(),
-            description: description,
-            group: ["private"],
-            cryonicsProvider: cryonicsProvider,
-            photoURL: photoURL,
-            signedUpForAlerts: false,
-            textToUserDatecode: 0,
-            textToEmerContactDatecode: 0,
-            textToAdminDatecode: 0,
-            alertStage: [{
-                num: stage1AlertNum,
-                method: stage1AlertMethod
-            }, {
-                num: stage2AlertNum,
-                method: stage2AlertMethod
-            }, 
-            // {
-            //     num: stage3AlertNum,
-            //     method: stage3AlertMethod
-            // }, {
-            //     num: stage4AlertNum,
-            //     method: stage4AlertMethod
-            // }, {
-            //     num: stage5AlertNum,
-            //     method: stage5AlertMethod
-            // }, {
-            //     num: stage6AlertNum,
-            //     method: stage6AlertMethod
-            // }
-        ],
-            checkinDevices: {
-                WebsiteCheckIn: {
-                    checkinArray: [
-                        {
-                            dateCreated: Date.now(),
-                            loc: {
-                                type: "Point",
-                                coordinates: [0, 0],
-                            }
-                        }
-                    ]
+        const re = /^\d+$/;
+        if (
+            (re.test(stage1AlertNum) && stage1AlertNum === "none") &&
+            (re.test(stage2AlertNum) && stage2AlertNum === "none") &&
+            (re.test(stage3AlertNum) && stage3AlertNum === "none") &&
+            (re.test(stage4AlertNum) && stage4AlertNum === "none") &&
+            (re.test(stage5AlertNum) && stage5AlertNum === "none") &&
+            (re.test(stage6AlertNum) && stage6AlertNum === "none")
+        ) {
+            setisLoading(false)
+            alert("incorrect phone number format")
+        } else {
+            const editedUser = {
+                firebaseAuthID: firebaseUserID,
+                name: name,
+                dateCreated: Date.now(),
+                description: description,
+                group: ["private"],
+                cryonicsProvider: cryonicsProvider,
+                photoURL: photoURL,
+                signedUpForAlerts: false,
+                textToUserDatecode: 0,
+                textToEmerContactDatecode: 0,
+                textToAdminDatecode: 0,
+                alertStage: [{
+                    num: "-1" + stage1AlertNum,
+                    method: stage1AlertMethod
+                }, {
+                    num: "-1" + stage2AlertNum,
+                    method: stage2AlertMethod
                 },
-            },
+                {
+                    num: "-1" + stage3AlertNum,
+                    method: stage3AlertMethod
+                }, {
+                    num: "-1" + stage4AlertNum,
+                    method: stage4AlertMethod
+                }, {
+                    num: "-1" + stage5AlertNum,
+                    method: stage5AlertMethod
+                }, {
+                    num: "-1" + stage6AlertNum,
+                    method: stage6AlertMethod
+                }
+                ],
+                checkinDevices: {
+                    WebsiteCheckIn: {
+                        checkinArray: [
+                            {
+                                dateCreated: Date.now(),
+                                loc: {
+                                    type: "Point",
+                                    coordinates: [0, 0],
+                                }
+                            }
+                        ]
+                    },
+                },
+            }
+            let foo = await API.edituser(editedUser).catch(error => console.error(error));
+            setUser(foo.data)
+
+            //this does not work I DONT KNOW WHY. user.stage1Alert is undefined
+            // API.edituser(editedUser)
+            //     .then(res => setUser(res.data))
+            //     .catch(error => console.error(error));
+
+            setisEditing(false)
+            setisLoading(false)
         }
-        let foo = await API.edituser(editedUser).catch(error => console.error(error));
-        setUser(foo.data)
 
-        //this does not work I DONT KNOW WHY. user.stage1Alert is undefined
-        // API.edituser(editedUser)
-        //     .then(res => setUser(res.data))
-        //     .catch(error => console.error(error));
-
-        setisEditing(false)
-        setisLoading(false)
     };
     const handleLoadGoogleProviderInfo = () => {
         try {
@@ -145,7 +166,6 @@ function Profile() {
                 {" "}here{" "}
             </button></p>
         )
-        //temp
     } else if (isEditing) {
         return (
             <div>
@@ -165,7 +185,7 @@ function Profile() {
                     />
                     <br></br>
                     <div>
-                        <p>use format "-16125550101"</p>
+                        <p>use format "6125550101"</p>
                         <label>stage1Alert:</label>
                         <input
                             type="text"
@@ -198,7 +218,7 @@ function Profile() {
                             <option value="call">Phone call</option>
                         </select>
                         <br></br>
-                        {/* <label>stage3Alert:</label>
+                        <label>stage3Alert:</label>
                         <input
                             type="text"
                             required
@@ -260,7 +280,7 @@ function Profile() {
                         >
                             <option value="txt">Text</option>
                             <option value="call">Phone call</option>
-                        </select> */}
+                        </select>
                         <br></br>
                     </div>
 
@@ -305,7 +325,7 @@ function Profile() {
                     {" "}Edit Profile{" "}
                 </button>
                 <p>username is:  <span>{user.name}</span></p>
-                {user.alertStage [0] ? user.alertStage
+                {user.alertStage[0] ? user.alertStage
 
                     .map((obj, index) => {
                         return (
@@ -314,7 +334,7 @@ function Profile() {
                             </div>
                         )
                     })
-                :<p>no alert stages found</p>
+                    : <p>no alert stages found</p>
                 }
                 <p>description: {user.description}</p>
                 <p>group is:  {user.group}</p>
