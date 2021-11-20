@@ -48,7 +48,7 @@ function ProfileDetails() {
         <p>
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
         </p>
-        {user.checkinDevices.fitbit.fitbitDeviceRegistered
+        {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0].dateCreated
           ? <div>
             <p>Most recent fitbit Check in:
             </p>
@@ -58,8 +58,8 @@ function ProfileDetails() {
             <p>
               {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
             </p>
-            {user.text1 && user.text2
-              ? <Battery device={user.text1} batlvl={user.text2} />
+            {user.fitbit.FBDeviceName && user.fitbit.FBDeviceBat
+              ? <Battery device={user.fitbit.FBDeviceName} batlvl={user.fitbit.FBDeviceBat} />
               : <p>Unable to read device details</p>
             }
           </div>

@@ -59,8 +59,9 @@ async function AlertInterval() {
             try {
                 if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
                     // if (user.signedUpForAlerts === true){
-                    const txtBody = "for user " + user.name + " it has been " + minutes + " minutes since the last registered heartbeat from fitbit"
-                    const txtNum = '-16126421533'
+                    const txtBody = "for user " + user.name + " it has been " + minutes + 
+                    " minutes since fitbit sync completed. Stop code is not yet complete, please visit Device control panel and set alerts to OFF "
+                    const txtNum = user.alertStage[0].num
 
 
                     if (user.signedUpForAlerts === true) {
@@ -214,25 +215,14 @@ const handleGetHeartrate = async (user) => {
             serverCode.putFitBitServerCheckin(fitbitCheckinObjectForDB)
                 // .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                 .catch(err => console.log(err));
-
-
             const temptime = Date.now() - (new Date(FBcheckinDateCode).getTime());
             let newMinutes = Math.floor(temptime / 1000 / 60)
             // console.log("newMinutes", newMinutes)
-            if (newMinutes < 25 && (Number(user.textToUserDatecode) !== 0
-                || Number(user.textToEmerContactDatecode) !== 0
-                || Number(user.textToAdminDatecode) !== 0)) {
-                console.log(newMinutes + " minutes. since minutes is under 25, sending date code reset")
-                serverCode.textDateCodeReset(user.firebaseAuthID)
-                    .catch(err => console.log(err));
+            if (newMinutes < 25) {
+                console.log(newMinutes + " minutes. since minutes is under 25, NEED TO RESET")
             } else {
-                console.log(newMinutes + " min since fitbit registered HR. date code numb for user, emer, admin",
-                    Number(user.textToUserDatecode),
-                    Number(user.textToEmerContactDatecode),
-                    Number(user.textToAdminDatecode))
+                console.log(newMinutes + " min since fitbit registered HR.")
             }
-
-
         } catch (error) {
             console.log("fitbit dataset pop failed", error);
             return 1

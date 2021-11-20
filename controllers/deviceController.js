@@ -3,14 +3,12 @@ const serverCode = require("../serverCode");
 
 module.exports = {
     putDeviceTest: async function (req, res) {
-        console.log("🚀 ~ putDeviceTest")
         let update
         let user
-        try {
-            
-            console.log("🚀 ~ req.body.user_id", req.body.user_id)
+        try {            
+            console.log("device controller  ~ req.body.user_id", req.body.user_id)
             update = await db.CryonicsModel
-                .updateOne({ "device controller checkinDevices.fitbit.user_id": req.body.user_id },
+                .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
                     {
                         $push: {
                             "checkinDevices.fitbit.alertArray": {
@@ -28,8 +26,8 @@ module.exports = {
         }
         try {
             
-            console.log("🚀 ~ req.body.user_id", req.body.user_id)
-            user = await db.CryonicsModel.findOne({ "device controller checkinDevices.fitbit.user_id": req.body.user_id }).exec()
+            console.log("device controller  ~ req.body.user_id", req.body.user_id)
+            user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
         } catch (err) {
             return res.status(400).json({
                 error: 'Error en STATUS2'

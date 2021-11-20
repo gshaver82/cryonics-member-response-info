@@ -154,20 +154,6 @@ var self = module.exports = {
             )
             .catch(err => console.log(err));
     },
-    textDateCodeReset: function (firebaseAuthID) {
-        // console.log("🚀 ~ putFitBitManualCheckin")
-        return db.CryonicsModel
-            .updateOne({ firebaseAuthID: firebaseAuthID },
-                {
-                    $set: {
-                        "textToUserDatecode": 0,
-                        "textToEmerContactDatecode": 0,
-                        "textToAdminDatecode": 0
-                    }
-                }
-            )
-            .catch(err => console.log(err));
-    },
 
     putFitBitTokens: function (fitbitObjectForDB) {
         console.log("serverCode putFitBitTokens req.body", fitbitObjectForDB)

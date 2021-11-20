@@ -76,6 +76,14 @@ const cryonicsSchema = new Schema({
                 type: String,
                 required: false,
             },
+            FBDeviceName: {
+                type: String,
+                required: false,
+            },
+            FBDeviceBat: {
+                type: String,
+                required: false,
+            },
             checkinArray: [
                 {
                     dateCreated: {
@@ -162,36 +170,6 @@ const cryonicsSchema = new Schema({
         type: String,
         required: false,
     },
-    textToUserDatecode: {
-        type: Date,
-        required: false,
-    },
-    textToEmerContactDatecode: {
-        type: Date,
-        required: false,
-    },
-    textToAdminDatecode: {
-        type: Date,
-        required: false,
-    },
-    text0: {
-        type: String,
-        required: false,
-    },
-    //fitbit device name
-    text1: {
-        type: String,
-        required: false,
-    },
-    //fitbit device battery level
-    text2: {
-        type: String,
-        required: false,
-    },
-    text3: {
-        type: String,
-        required: false,
-    }
 }
 );
 cryonicsSchema.index({ "loc": "2dsphere" });

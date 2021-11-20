@@ -77,21 +77,25 @@ function MemberDash() {
                                     //website checkin is guarunteed so no need to error check that?
                                     //fitbit time or other devices is not guarunteed so check if its registered, and if not submit 0 to the max formula
                                     Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        a.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                            ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                     >
                                     Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        b.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                            ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                 )
                                     return 1;
                                 else if (
                                     Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        a.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                            ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                     <
                                     Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        b.checkinDevices.fitbit.fitbitDeviceRegistered ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                            ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                 )
                                     return -1;
@@ -107,7 +111,7 @@ function MemberDash() {
                                 let FBMinutes = "--"
                                 let FBHours = "--"
                                 let FBDays = "--"
-                                if (user.checkinDevices.fitbit.fitbitDeviceRegistered) {
+                                if (user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0].dateCreated) {
                                     console.log("inside fitbit time sorting thingy")
                                     const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
                                     FBMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
@@ -130,8 +134,8 @@ function MemberDash() {
                                                     <p>
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
-                                                    {user.text1 && user.text2
-                                                        ? <Battery device={user.text1} batlvl={user.text2} />
+                                                    {user.fitbit.FBDeviceName && user.fitbit.FBDeviceBat
+                                                        ? <Battery device={user.fitbit.FBDeviceName} batlvl={user.fitbit.FBDeviceBat} />
                                                         : <p>Unable to read device details</p>
                                                     }
                                                 </div>
