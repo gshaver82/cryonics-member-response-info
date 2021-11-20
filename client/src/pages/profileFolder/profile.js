@@ -330,7 +330,7 @@ function Profile() {
                     .map((obj, index) => {
                         return (
                             <div>
-                                <p> {index} alertnum: {obj.num} alertmethod: {obj.method}</p>
+                                <p> {index} alertnum: {obj.num.slice(2)} alertmethod: {obj.method}</p>
                             </div>
                         )
                     })

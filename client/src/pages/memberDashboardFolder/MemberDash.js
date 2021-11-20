@@ -125,22 +125,34 @@ function MemberDash() {
                                             <p><strong>NAME: </strong>{user.name}</p>
 
 
-                                            {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
-                                                ? <div>
+                                            {/* {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
+                                                ? <div> */}
+                                                    {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+                                                        ? <div>
+                                                            <p>active fitbit watch alert!</p>
+                                                        </div>
+                                                        : <p>No active fitbit watch alert</p>
+                                                    }
+                                                    {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+                                                        ? <div>
+                                                            <p>active sync alert!</p>
+                                                        </div>
+                                                        : <p>No active sync alert</p>
+                                                    }
                                                     <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit checkin</p>
                                                     <p>Most recent fitbit Check in:
-                                                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                                                        {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toDateString())} {" "}
                                                     </p>
                                                     <p>
-                                                        {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+                                                        {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toTimeString())}
                                                     </p>
-                                                    {user.checkinDevices.fitbit.FBDeviceName && user.checkinDevices.fitbit.FBDeviceBat
+                                                    {user.checkinDevices.fitbit.fBDeviceName && user.checkinDevices.fitbit.fBDeviceBat
                                                         ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
                                                         : <p>Unable to read device details</p>
                                                     }
-                                                </div>
+                                                {/* </div>
                                                 : <p>fitbit device not registered</p>
-                                            }
+                                            } */}
                                             <p>{webDays} d {webHours} h {webMinutes} min since website checkin</p>
                                             <p>Web Check in: {" "}
                                                 {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
