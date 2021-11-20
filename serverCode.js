@@ -45,8 +45,8 @@ var self = module.exports = {
                             + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line" +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
-                        if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none") {
-                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
+                        if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
+                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method)
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false")
                             console.log(txtNum, txtBody)
