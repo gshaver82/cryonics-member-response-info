@@ -52,6 +52,7 @@ module.exports = {
             .updateOne({ _id: req.params._id },
                 {
                     $set: {
+                        "checkinDevices.fitbit.syncAlertArray.0.activeState": false,
                         "checkinDevices.fitbit.alertArray.0.activeState": false,
                     }
                 }

@@ -57,23 +57,8 @@ async function AlertInterval() {
             console.log("alert interval " + minutes + " minutes since fitbit HR reading")
 
             try {
-                if (minutes > 50 && Number(user.textToUserDatecode) === 0) {
-                    // if (user.signedUpForAlerts === true){
-                    const txtBody = "for user " + user.name + " it has been " + minutes + 
-                    " minutes since fitbit sync completed. Stop code is not yet complete, please visit Device control panel and set alerts to OFF "
-                    const txtNum = user.alertStage[0].num
-
-
-                    if (user.signedUpForAlerts === true) {
-                        serverCode.twilioOutboundTxt(txtBody, txtNum)
-                        console.log("message sent due to user being signed up for alerts")
-                    } else {
-                        console.log("message not sent due to user not being signed up for alerts")
-                    }
-                    res = await serverCode.DBuserAlertDatecode(user.firebaseAuthID)
-                    // }else{
-                    //     console.log("alert situation triggered, but not sent due to not being signed up for alerts")
-                    // }                    
+                if (minutes > 40) {
+                    serverCode.putSyncAlert(user);
                 }
             } catch {
                 console.log("alert and text datecode text failed")

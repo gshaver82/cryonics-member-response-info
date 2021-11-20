@@ -4,7 +4,7 @@ var self = module.exports = {
         console.log("serverCode startup")
     },
     FBAlertChain: async function (user) {
-        console.log("FBAlertChain incoming user data is for user ", user)
+        console.log("**************FBAlertChain incoming user data is for user ", user)
         let updatedUser = ''
         let i = 0;
         // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
@@ -38,7 +38,8 @@ var self = module.exports = {
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
                         const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i + 1) +
-                            "click this link to clear the alert status if you are OK" +
+                            "When the watch detects heart rate again it will begin monitoring again, and will send out more alerts if HR is not detected."
+                            + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line" +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true) {
@@ -60,6 +61,59 @@ var self = module.exports = {
             }
             i++;
         }, 60000);
+    },
+    FBSyncAlertChain: async function (user) {
+        console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
+        let updatedUser = ''
+        let i = 0;
+        let FBSyncAlertInterval = setInterval(async function () {
+            try {
+                console.log("^^^^^^^^FBSyncAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
+                updatedUser = await db.CryonicsModel
+                    .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
+                    .catch(err => res.status(422).json(err));
+                // console.log("updatedUser", updatedUser)
+                if (i >= user.alertStage.length) {
+                    console.log("i >= user.alertStage.length, clearing interval")
+                    clearInterval(FBSyncAlertInterval)
+                } else if (updatedUser.checkinDevices.fitbit.syncAlertArray[0].activeState === true) {
+                    // console.log(i, " Index---alert array and alert stage IF",
+                    //     updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+                    //     updatedUser.alertStage[i])
+                    if (!updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] &&
+                        updatedUser.alertStage[i]) {
+                        updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] = Date.now()
+                        temp = await db.CryonicsModel
+                            .findOneAndUpdate(
+                                { firebaseAuthID: updatedUser.firebaseAuthID },
+                                updatedUser,
+                                {
+                                    new: true,
+                                }).lean().exec()
+                            .catch(err => res.status(422).json(err));
+                        const txtBody = "Fitbit alert " + (i + 1) + " Fitbit data has not been recieved for a while for " + user.name +
+                            "Please sync your fitbit, and click this link to clear the alert status otherwise alerts will be sent to the next number down the line " +
+                            "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
+                        const txtNum = user.alertStage[i].num
+                        if (updatedUser.signedUpForAlerts === true) {
+                            self.twilioOutboundTxt(txtBody, txtNum)
+                        } else {
+                            console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false")
+                            console.log(txtNum, txtBody)
+                        }
+                    }
+
+                } else {
+                    console.log("FBSyncAlertInterval active state not true (or something else), clearing interval")
+                    clearInterval(FBSyncAlertInterval)
+                }
+            } catch (error) {
+                console.error(error);
+                console.log("FBSyncAlertInterval try catch error. Clearing interval")
+                clearInterval(FBSyncAlertInterval)
+            }
+            i++;
+        }, 200000);
     },
     twilioOutboundTxt: function (txtBody, txtNum) {
 
@@ -100,31 +154,7 @@ var self = module.exports = {
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
                     $set: {
-                        "text1": fitBitDevice[0].deviceVersion, "text2": fitBitDevice[0].batteryLevel
-                    }
-                }
-            )
-            .catch(err => console.log(err));
-    },
-    DBuserAlertDatecode: function (firebaseAuthID) {
-        console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
-        return db.CryonicsModel
-            .updateOne({ firebaseAuthID: firebaseAuthID },
-                {
-                    $set: {
-                        "textToUserDatecode": Date.now()
-                    }
-                }
-            )
-            .catch(err => console.log(err));
-    },
-    DBuserAlertEmerDatecode: function (firebaseAuthID) {
-        console.log("DBAlertDatecode function, setting firebaseAuthID ", firebaseAuthID)
-        return db.CryonicsModel
-            .updateOne({ firebaseAuthID: firebaseAuthID },
-                {
-                    $set: {
-                        "textToEmerContactDatecode": Date.now()
+                        "FBDeviceName": fitBitDevice[0].deviceVersion, "FBDeviceBat": fitBitDevice[0].batteryLevel
                     }
                 }
             )
@@ -168,5 +198,33 @@ var self = module.exports = {
                 }
             )
             .catch(err => console.log(err));
+    },
+    putSyncAlert: async function (user) {
+        console.log("$$$$$$$$$$$$$$$putSyncAlert function user", user)
+        const syncAlertArray =
+        {
+            date: Date.now(),
+            activeState: true,
+            stage: []
+        }
+        try {
+            update = await db.CryonicsModel
+                .updateOne({ "checkinDevices.fitbit.firebaseAuthID": req.body.firebaseAuthID },
+                    {
+                        $push: {
+                            "checkinDevices.fitbit.syncAlertArray": {
+                                $each: [syncAlertArray],
+                                $position: 0,
+                                $slice: 250
+                            }
+                        },
+                    }
+                ).exec()
+        } catch (err) {
+            return res.status(400).json({
+                error: 'Error en STATUS1'
+            })
+        }
+        self.FBSyncAlertChain(user);
     },
 };

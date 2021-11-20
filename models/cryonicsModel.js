@@ -92,6 +92,25 @@ const cryonicsSchema = new Schema({
                     },
                 }
             ],
+            syncAlertArray: [
+                {
+                    date: {
+                        type: Date,
+                        required: true,
+                    },
+                    activeState: {
+                        type: Boolean,
+                        required: true,
+                        default: true,
+                    },
+                    stage: [
+                        {
+                            type: Date,
+                            required: false,
+                        }
+                    ]
+                }
+            ],
             alertArray: [
                 {
                     date: {
