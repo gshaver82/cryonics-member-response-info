@@ -25,18 +25,36 @@ function ProfileDetails() {
         "+" + [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
     }
   }
+  let GoogleAlertURL = "void";
+  if (isLoading === false && user && user.name !== 'Initialized user name') {
+    if (user?.checkinDevices?.fitbit?.alertArray[0]?.lat &&
+      user?.checkinDevices?.fitbit?.alertArray[0]?.long ) {
+      GoogleURL = "https://www.google.com/maps/place/" + user?.checkinDevices?.fitbit?.alertArray[0]?.lat +
+        "+" + user?.checkinDevices?.fitbit?.alertArray[0]?.long
+    }
+  }
   //TODO error harden for [0].dateCreated. it somehow created a temporary error that was fixed with page refresh
   return (
 
     <div>
       <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
 
-      <p>username is: {user && <span>{user.name} </span>}{user.photoURL && <img src={user.photoURL} alt='default profile pic here'></img>}</p>
-      <p>userdate created is: {user && <span>{user.dateCreated}</span>}</p>
+      <p>username is: {user && <span>{user?.name} </span>}{user.photoURL && <img src={user?.photoURL} alt='default profile pic here'></img>}</p>
+      <p>userdate created is: {user && <span>{user?.dateCreated}</span>}</p>
       {/* <p>id is: {_id && <span>{_id}</span>}</p> */}
       {user && <div>
-        <p>description: {user.description}</p>
-        <p>cryonicsProvider: {user.cryonicsProvider}</p>
+        {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+          ? <div>
+            <p>active fitbit watch alert!</p>
+            <p>link to GPS according to google maps: {GoogleAlertURL !== "void"
+              ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+              : <span>no GPS coordinates found</span>}
+            </p>
+          </div>
+          : <p>No active fitbit watch alert</p>
+        }
+        <p>description: {user?.description}</p>
+        <p>cryonicsProvider: {user?.cryonicsProvider}</p>
         <p>Current location according to web checkin: {GoogleURL !== "void"
           ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
           : <span>no GPS coordinates found</span>}
@@ -53,12 +71,12 @@ function ProfileDetails() {
             <p>Most recent fitbit Check in:
             </p>
             <p>
-              {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+              {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toDateString())} {" "}
             </p>
             <p>
-              {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+              {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toTimeString())}
             </p>
-            {user.checkinDevices.fitbit.fBDeviceName && user.checkinDevices.fitbit.fBDeviceBat
+            {user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat
               ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
               : <p>Unable to read device details</p>
             }
