@@ -72,22 +72,18 @@ function Profile() {
     const handleEditCancelProfile = () => {
         window.location.reload();
     };
-
     const handleSaveProfile = async (e) => {
         // e.preventDefault();
         setisLoading(true)
         const re = /^\d+$/;
         if (
-            (re.test(stage1AlertNum) && stage1AlertNum === "none") &&
-            (re.test(stage2AlertNum) && stage2AlertNum === "none") &&
-            (re.test(stage3AlertNum) && stage3AlertNum === "none") &&
-            (re.test(stage4AlertNum) && stage4AlertNum === "none") &&
-            (re.test(stage5AlertNum) && stage5AlertNum === "none") &&
-            (re.test(stage6AlertNum) && stage6AlertNum === "none")
+            ((re.test(stage1AlertNum) && stage1AlertNum.length === 10) || stage1AlertNum === "none") &&
+            ((re.test(stage2AlertNum) && stage2AlertNum.length === 10) || stage2AlertNum === "none") &&
+            ((re.test(stage3AlertNum) && stage3AlertNum.length === 10) || stage3AlertNum === "none") &&
+            ((re.test(stage4AlertNum) && stage4AlertNum.length === 10) || stage4AlertNum === "none") &&
+            ((re.test(stage5AlertNum) && stage5AlertNum.length === 10) || stage5AlertNum === "none") &&
+            ((re.test(stage6AlertNum) && stage6AlertNum.length === 10) || stage6AlertNum === "none")
         ) {
-            setisLoading(false)
-            alert("incorrect phone number format")
-        } else {
             const editedUser = {
                 firebaseAuthID: firebaseUserID,
                 name: name,
@@ -145,6 +141,10 @@ function Profile() {
 
             setisEditing(false)
             setisLoading(false)
+        } else {
+            setisLoading(false)
+            alert("incorrect phone number format")
+
         }
 
     };

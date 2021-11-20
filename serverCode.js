@@ -120,27 +120,41 @@ var self = module.exports = {
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
-        client.messages
-            .create({
-                body: txtBody,
-                from: process.env.TWILIO_PHONE_NUMBER,
-                to: txtNum
-            })
-            .then(message => console.log(message.sid));
-        console.log(txtBody, "---server message sent---", txtNum)
-
-        if (callOrTxt === "call") {
-            client.calls
+        if (twilioOutboundCount > 79 || twilioOutboundCount > 0) {
+            client.messages
                 .create({
-                    twiml: '<Response><Say>Minnesota Cryonics alert. Please check your text message</Say></Response>',
-                    to: txtNum,
-                    from: process.env.TWILIO_PHONE_NUMBER
+                    body: "twilioOutboundCount is " + twilioOutboundCount,
+                    from: process.env.TWILIO_PHONE_NUMBER,
+                    to: process.env.PHONE
                 })
-                .then(call => console.log(call.sid));
-            console.log("---server phone out sent---", txtNum)
-            twilioOutboundCount++
+                .then(message => console.log(message.sid));
         }
-        twilioOutboundCount++
+        if (twilioOutboundCount < 120) {
+            client.messages
+                .create({
+                    body: txtBody,
+                    from: process.env.TWILIO_PHONE_NUMBER,
+                    to: txtNum
+                })
+                .then(message => console.log(message.sid));
+            console.log(txtBody, "---server message sent---", txtNum)
+
+            if (callOrTxt === "call") {
+                client.calls
+                    .create({
+                        twiml: '<Response><Say>Minnesota Cryonics alert. Please check your text message</Say></Response>',
+                        to: txtNum,
+                        from: process.env.TWILIO_PHONE_NUMBER
+                    })
+                    .then(call => console.log(call.sid));
+                console.log("---server phone out sent---", txtNum)
+                twilioOutboundCount++
+            }
+            twilioOutboundCount++
+        } else {
+            console.log('twillio outbound count is too high for the day')
+        }
+
     },
     fifteenMin: function () {
         let hourcount = 0
@@ -160,7 +174,7 @@ var self = module.exports = {
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
                     $set: {
-                        "checkinDevices.fitbit.fbDeviceName": fitBitDevice[0].deviceVersion, 
+                        "checkinDevices.fitbit.fbDeviceName": fitBitDevice[0].deviceVersion,
                         "checkinDevices.fitbit.fbDeviceBat": fitBitDevice[0].batteryLevel
                     }
                 }
