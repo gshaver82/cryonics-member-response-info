@@ -43,7 +43,7 @@ var self = module.exports = {
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true) {
-                            self.twilioOutboundTxt(txtBody, txtNum)
+                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false")
                             console.log(txtNum, txtBody)
@@ -96,7 +96,7 @@ var self = module.exports = {
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true) {
-                            self.twilioOutboundTxt(txtBody, txtNum)
+                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
                         } else {
                             console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false")
                             console.log(txtNum, txtBody)
@@ -115,8 +115,8 @@ var self = module.exports = {
             i++;
         }, 200000);
     },
-    twilioOutboundTxt: function (txtBody, txtNum) {
-
+    twilioOutboundTxt: function (txtBody, txtNum, callOrTxt) {
+        console.log("twilioOutboundCount", twilioOutboundCount)
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
@@ -128,14 +128,19 @@ var self = module.exports = {
             })
             .then(message => console.log(message.sid));
         console.log(txtBody, "---server message sent---", txtNum)
-        // client.calls
-        //     .create({
-        //         url: 'http://demo.twilio.com/docs/voice.xml',
-        //         to: txtNum,
-        //         from: process.env.TWILIO_PHONE_NUMBER
-        //     })
-        //     .then(call => console.log(call.sid));
-        // console.log("---server phone out sent---", txtNum)
+
+        if (callOrTxt === "call") {
+            client.calls
+                .create({
+                    twiml: '<Response><Say>Minnesota Cryonics alert. Please check your text message</Say></Response>',
+                    to: txtNum,
+                    from: process.env.TWILIO_PHONE_NUMBER
+                })
+                .then(call => console.log(call.sid));
+            console.log("---server phone out sent---", txtNum)
+            twilioOutboundCount++
+        }
+        twilioOutboundCount++
     },
     fifteenMin: function () {
         let hourcount = 0
@@ -150,11 +155,13 @@ var self = module.exports = {
     },
     DBuserFitbitDevice: function (firebaseAuthID, fitBitDevice) {
         console.log("fitBitDevice inside servercode", fitBitDevice)
+        console.log("fitBitDevice[0].batteryLevel", fitBitDevice[0].batteryLevel)
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
                     $set: {
-                        "fbDeviceName": fitBitDevice[0].deviceVersion, "fbDeviceBat": fitBitDevice[0].batteryLevel
+                        "checkinDevices.fitbit.fbDeviceName": fitBitDevice[0].deviceVersion, 
+                        "checkinDevices.fitbit.fbDeviceBat": fitBitDevice[0].batteryLevel
                     }
                 }
             )

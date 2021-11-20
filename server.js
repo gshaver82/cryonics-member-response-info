@@ -43,6 +43,7 @@ serverCode.startup();
 
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
+let twilioOutboundCount = 0;
 DBcalls();
 AlertInterval();
 
