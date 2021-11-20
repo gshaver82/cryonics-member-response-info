@@ -149,12 +149,12 @@ var self = module.exports = {
         }, 900000);
     },
     DBuserFitbitDevice: function (firebaseAuthID, fitBitDevice) {
-        // console.log("fitBitDevice inside servercode", fitBitDevice)
+        console.log("fitBitDevice inside servercode", fitBitDevice)
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {
                     $set: {
-                        "FBDeviceName": fitBitDevice[0].deviceVersion, "FBDeviceBat": fitBitDevice[0].batteryLevel
+                        "fbDeviceName": fitBitDevice[0].deviceVersion, "fbDeviceBat": fitBitDevice[0].batteryLevel
                     }
                 }
             )

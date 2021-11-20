@@ -76,11 +76,11 @@ const cryonicsSchema = new Schema({
                 type: String,
                 required: false,
             },
-            FBDeviceName: {
+            fbDeviceName: {
                 type: String,
                 required: false,
             },
-            FBDeviceBat: {
+            fbDeviceBat: {
                 type: String,
                 required: false,
             },

@@ -134,8 +134,8 @@ function MemberDash() {
                                                     <p>
                                                         {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                                                     </p>
-                                                    {user.fitbit.FBDeviceName && user.fitbit.FBDeviceBat
-                                                        ? <Battery device={user.fitbit.FBDeviceName} batlvl={user.fitbit.FBDeviceBat} />
+                                                    {user.checkinDevices.fitbit.FBDeviceName && user.checkinDevices.fitbit.FBDeviceBat
+                                                        ? <Battery device={user.checkinDevices.fitbit.FBDeviceName} batlvl={user.checkinDevices.fitbit.FBDeviceBat} />
                                                         : <p>Unable to read device details</p>
                                                     }
                                                 </div>

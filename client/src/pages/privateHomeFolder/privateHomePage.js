@@ -104,6 +104,7 @@ function PrivateHomePage() {
 
     const handleGetHeartrate = async () => {
         let fitBitDataJSON = 'starting value'
+        let fitBitDeviceDataJSON = 'starting value'
         let authTokens = 'starting value'
         authTokens = await API.fitbitGetDBAuthToken(firebaseUserID)
             .then(res => res.data)
@@ -114,6 +115,7 @@ function PrivateHomePage() {
         } else {
             console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
             fitBitDataJSON = await getFitBitData(authTokens)
+            // fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
         }
 
         if (!fitBitDataJSON) {
@@ -164,10 +166,13 @@ function PrivateHomePage() {
                     newArrayEntry
                 }
                 console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
-
+                //TODO fitBitDeviceDataJSON send that to upload the battery info
                 API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                     .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                     .catch(err => console.log(err));
+                // API.putFitBitManualDeviceCheckin(fitBitDeviceDataJSON)
+                //     .then(console.log("ManualDeviceCheckin", fitBitDeviceDataJSON))
+                //     .catch(err => console.log(err));
                 API.getOneUserByFirebaseID(firebaseUserID)
                     .then(res => setUser(res.data))
                     .then(setisLoading(false))
@@ -201,7 +206,26 @@ function PrivateHomePage() {
             console.log("no auth tokens")
         }
     }
-
+    async function getFitBitDeviceData(authTokens) {
+        if (authTokens) {
+            const url = "https://api.fitbit.com/1/user/-/devices.json"
+            const response = await fetch(url, {
+                method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + authTokens.authToken
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer'
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        } else {
+            console.log("no auth tokens")
+        }
+    }
     const handleputWebcheckIn = async () => {
         setisLoading(true)
         //sends lat and lng to create a new object for the array. function will default to 0 
