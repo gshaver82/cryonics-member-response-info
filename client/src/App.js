@@ -18,6 +18,7 @@ import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
 import TOSPage from "./pages/TOSFolder/TOSPage";
 import AlcorPage from "./pages/AlcorFolder/AlcorPage";
 import CIPage from "./pages/CIFolder/CIPage";
+import ClockfaceCards from "./pages/ClockfaceFolder/ClockfaceCards";
 import test from "./pages/TestFolder/test";
 import PrivacyPolicyPage from "./pages/PrivacyPolicyFolder/PrivacyPolicyPage";
 import NavTabs from "./components/NavTabs";
@@ -49,6 +50,7 @@ function App() {
                                     <Route exact path="/Login" component={Login} />
                                     <Route exact path="/AlcorPage" component={AlcorPage} />
                                     <Route exact path="/CIPage" component={CIPage} />
+                                    <Route exact path="/ClockfaceCards" component={ClockfaceCards} />
                                     <PrivateRoute exact path="/secondPage" component={secondPage} />
                                     <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
                                     <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />

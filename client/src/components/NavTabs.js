@@ -19,7 +19,7 @@ function NavTabs() {
           Home
         </Link>
       </li>
-      <li className="nav-item display-4">
+      {/* <li className="nav-item display-4">
         <Link
           to="/AlcorPage"
           className={location.pathname === "/AlcorPage" ? "nav-link active" : "nav-link"}
@@ -34,7 +34,7 @@ function NavTabs() {
         >
           CI
         </Link>
-      </li>
+      </li> */}
       {/* <li className="nav-item display-4">
         <Link
           to="/TOSPage"
@@ -73,6 +73,14 @@ function NavTabs() {
           className={location.pathname === "/profile" ? "nav-link active" : "nav-link"}
         >
           Profile
+        </Link>
+      </li>
+      <li className="nav-item display-4">
+        <Link
+          to="/ClockfaceCards"
+          className={location.pathname === "/ClockfaceCards" ? "nav-link active" : "nav-link"}
+        >
+          FB Clockface
         </Link>
       </li>
       {/* hardcode admin auth ids here */}

@@ -1,0 +1,56 @@
+.card2 {
+  background: #fff;
+  border-radius: 2px;
+  height: fit-content;
+  margin: 1rem;
+  /* position: relative; */
+  /* min-width: 300px;
+  max-width: 500px; */
+  width: 30vw;
+  min-width: 300px;
+  max-width: 500px;
+  box-shadow: 0 3px 6px #999, 0 3px 6px #999;
+  text-align: left;
+}
+
+.card2 > .img-container {
+  height: auto;
+  overflow: hidden;
+  text-align: center;
+  background:red;
+}
+.card2 > .img-container > a > img {
+  width: 100%;
+  height: auto;
+  /* position: relative; */
+}
+
+.card2 > .content {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  font-size: 15px;
+}
+
+.card2 > .content > .projecttitle {
+  text-align: center;
+  font-size: 2rem;
+  color: black;
+  margin-bottom: 1rem;
+}
+.card2 > .content > .descriptions {
+  text-align: center;
+  font-size: 1rem;
+  color: black;
+  margin-bottom: 1rem;
+}
+.clockfaceStyles {
+    padding-top: 50px;
+    /* background: #6b0101; */
+    height: 100%;
+    display: flex;
+    flex-flow: row wrap;
+    padding: 20px;
+    justify-content: space-evenly;
+    /* align-content: flex-start; */
+    overflow: auto;
+  }
