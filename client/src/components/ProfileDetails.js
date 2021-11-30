@@ -46,7 +46,7 @@ function ProfileDetails() {
           ? <div>
             <p>active fitbit watch alert!</p>
             <p>link to GPS according to google maps: {GoogleAlertURL !== "void"
-              ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+              ? <a href={GoogleAlertURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
               : <span>no GPS coordinates found</span>}
             </p>
           </div>
