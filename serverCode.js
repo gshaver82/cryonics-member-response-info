@@ -233,7 +233,7 @@ var self = module.exports = {
         }
         try {
             update = await db.CryonicsModel
-                .updateOne({ "checkinDevices.fitbit.firebaseAuthID": req.body.firebaseAuthID },
+                .updateOne({ firebaseAuthID: user.firebaseAuthID },
                     {
                         $push: {
                             "checkinDevices.fitbit.syncAlertArray": {
@@ -245,9 +245,7 @@ var self = module.exports = {
                     }
                 ).exec()
         } catch (err) {
-            return res.status(400).json({
-                error: 'Error en STATUS1'
-            })
+            console.log("ERROR putSyncAlert")
         }
         self.FBSyncAlertChain(user);
     },
