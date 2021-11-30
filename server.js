@@ -266,7 +266,7 @@ async function getFitBitDevice(authToken) {
 async function getFitBitRefreshTokens(RefreshToken) {
     if (RefreshToken) {
         const fitbitAuthTokenNeededData = {
-            Authorization: "Basic " + process.env.ENCODEDBASE,
+            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
             refresh_token: RefreshToken,
         }
         const url = "https://api.fitbit.com/oauth2/token"

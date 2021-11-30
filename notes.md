@@ -42,12 +42,12 @@ DELETE the copied key. you will expose the key if not and its a bit of a pain to
 
 FIREBASE_PROJECT_ID
 FIREBASE_CLIENT_EMAIL
-FIREBASE_APP_ID
-FIREBASE_DOMAIN
-FIREBASE_KEY
-FIREBASE_PROJECT_ID
-FIREBASE_SENDER_ID
-FIREBASE_STORAGE_BUCKET
+REACT_APP_FIREBASE_APP_ID
+REACT_APP_FIREBASE_DOMAIN
+REACT_APP_FIREBASE_KEY
+REACT_APP_FIREBASE_PROJECT_ID
+REACT_APP_FIREBASE_SENDER_ID
+REACT_APP_FIREBASE_STORAGE_BUCKET
 
 possible problems and solutions
 
@@ -62,16 +62,16 @@ entered in ALL config vars, uncommented service account in routes index, adjuste
 fill out .env file
 
 ## Firebase
-FIREBASE_KEY=""
-FIREBASE_DOMAIN=""
+REACT_APP_FIREBASE_KEY=""
+REACT_APP_FIREBASE_DOMAIN=""
 -------
 the below one line is optional if you have a firebase database or not
 ------
-FIREBASE_DATABASE=""
-FIREBASE_PROJECT_ID=""
-FIREBASE_STORAGE_BUCKET=""
-FIREBASE_SENDER_ID=""
-FIREBASE_APP_ID=""
+REACT_APP_FIREBASE_DATABASE=""
+REACT_APP_FIREBASE_PROJECT_ID=""
+REACT_APP_FIREBASE_STORAGE_BUCKET=""
+REACT_APP_FIREBASE_SENDER_ID=""
+REACT_APP_FIREBASE_APP_ID=""
 
 --------------------
 add sign in methods on firebase console under authentication > sign in method.

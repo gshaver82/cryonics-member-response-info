@@ -42,7 +42,7 @@ function PrivateHomePage() {
         //----------
         //this block creates the fitbit URL for the login link
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
-        let fitbitURLclientid = "&client_id=" + process.env.CLIENT_ID
+        let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
         //this should be test or privateHomePage
         let fitbitURLredirect_uriNavPage = "privateHomePage";
         let fitbitURLredirect_uri = ""
@@ -61,8 +61,8 @@ function PrivateHomePage() {
     };
     async function fitbitGetAuthToken(fitbitURLredirect_uri) {
         const fitbitAuthTokenNeededData = {
-            Authorization: "Basic " + process.env.ENCODEDBASE,
-            clientId: process.env.CLIENT_ID,
+            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
+            clientId: process.env.REACT_APP_CLIENT_ID,
             grant_type: 'authorization_code',
             redirect_uri: fitbitURLredirect_uri,
             code: window.location.search.substring(6),
