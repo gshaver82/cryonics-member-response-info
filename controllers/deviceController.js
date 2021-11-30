@@ -52,8 +52,20 @@ module.exports = {
             .updateOne({ _id: req.params._id },
                 {
                     $set: {
-                        "checkinDevices.fitbit.syncAlertArray.$[].activeState": false,
-                        "checkinDevices.fitbit.alertArray.$[].activeState": false,
+                        "checkinDevices.fitbit.alertArray.0.activeState": false
+                    }
+                }
+            )
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
+    putClearFBSyncAlert: function (req, res) {
+        console.log("putClearFBSyncAlert req.params._id", req.params._id)
+        db.CryonicsModel
+            .updateOne({ _id: req.params._id },
+                {
+                    $set: {
+                        "checkinDevices.fitbit.syncAlertArray.0.activeState": false
                     }
                 }
             )

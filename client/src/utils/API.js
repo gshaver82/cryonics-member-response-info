@@ -63,7 +63,6 @@ export default {
             headers: {
                 'semisecret': "vegetable"
             }
-        }
-        );
+        });
     },
 };

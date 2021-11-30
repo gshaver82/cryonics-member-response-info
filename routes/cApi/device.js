@@ -8,5 +8,5 @@ router.route("/")
 router
     .route("/:_id")
     .put(deviceController.putClearFBAlert)
-
+    .put(deviceController.putClearFBSyncAlert)
 module.exports = router;
