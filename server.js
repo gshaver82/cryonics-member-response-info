@@ -46,22 +46,35 @@ const fetch = require("node-fetch");
 DBcalls();
 AlertInterval();
 
-//alert interval
+//alert interval this checks sync data only
 async function AlertInterval() {
     mainInterval = setInterval(async function () {
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         FitbitUsers.map(async (user) => {
-            console.log("running alert checker for ", user.name)
-            const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
-            let minutes = Math.floor(temptime / 1000 / 60)
-            console.log("alert interval " + minutes + " minutes since fitbit HR reading")
-
+            console.log("running sync alert checker for ", user.name)
             try {
-                if (minutes > 40) {
+                const FBsyncDate =  user?.checkinDevices?.fitbit.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated :0
+                const temptime = Date.now() - (new Date(FBsyncDate).getTime());
+                let minutes = Math.floor(temptime / 1000 / 60)
+                console.log("alert interval " + minutes + " minutes since fitbit HR reading")
+                let timeSinceLastSyncAlert = Date.now() - user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date:0
+                console.log("🚀 ~ FitbitUsers.map ~ timeSinceLastSyncAlert", timeSinceLastSyncAlert)
+
+                if (minutes > 40 &&
+                    user.checkinDevices.fitbit.syncAlertArray[0].activeState === false &&
+                    (timeSinceLastSyncAlert > 900000)
+                ) {
+                    console.log("putting sync alert")
                     serverCode.putSyncAlert(user);
+                } else if (minutes > 40) {
+                    console.log("NOT putSyncAlert. minutes > 40 but not puting sync alert, active state is true, or time since last sync alert is ", timeSinceLastSyncAlert)
+                } else {
+                    console.log("Completed sync alert checker for " + user.name + "minutes" + minutes)
                 }
+
+
             } catch {
-                console.log("alert and text datecode text failed")
+                console.log("AlertInterval failed for " + user.name + " maybe no sync data yet?")
             }
         });
         //30 seconds 30000
