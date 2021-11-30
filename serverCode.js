@@ -46,7 +46,7 @@ var self = module.exports = {
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
-                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method)
+                            self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method)
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false")
                             console.log(txtNum, txtBody)
@@ -99,7 +99,7 @@ var self = module.exports = {
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
-                            self.twilioOutboundTxt(txtBody, txtNum, user.alertStage[i].method || "txt")
+                            self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method || "txt")
                         } else {
                             console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false or number is none")
                             console.log(txtNum, txtBody)
@@ -118,7 +118,7 @@ var self = module.exports = {
             i++;
         }, 200000);
     },
-    twilioOutboundTxt: function (txtBody, txtNum, callOrTxt) {
+    twilioOutboundTxt: function (username, txtBody, txtNum, callOrTxt) {
         console.log("twilioOutboundCount", twilioOutboundCount)
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
@@ -145,7 +145,7 @@ var self = module.exports = {
             if (callOrTxt === "call") {
                 client.calls
                     .create({
-                        twiml: '<Response><Say>Minnesota Cryonics alert. Please check your text message</Say></Response>',
+                        twiml: '<Response><Say>Minnesota Cryonics alert for ' + username + ' Please check your text message</Say></Response>',
                         to: txtNum,
                         from: process.env.TWILIO_PHONE_NUMBER
                     })
