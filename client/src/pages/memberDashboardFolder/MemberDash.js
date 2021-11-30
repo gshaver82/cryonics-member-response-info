@@ -140,12 +140,12 @@ function MemberDash() {
                                                         : <p>No active sync alert</p>
                                                     }
                                                     <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit checkin</p>
-                                                    <p>Most recent fitbit Check in:
+                                                    {/* <p>Most recent fitbit Check in:
                                                         {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toDateString())} {" "}
                                                     </p>
                                                     <p>
                                                         {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toTimeString())}
-                                                    </p>
+                                                    </p> */}
                                                     {user.checkinDevices.fitbit.fBDeviceName && user.checkinDevices.fitbit.fBDeviceBat
                                                         ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
                                                         : <p>Unable to read device details</p>
@@ -153,11 +153,11 @@ function MemberDash() {
                                                 {/* </div>
                                                 : <p>fitbit device not registered</p>
                                             } */}
-                                            <p>{webDays} d {webHours} h {webMinutes} min since website checkin</p>
+                                            {/* <p>{webDays} d {webHours} h {webMinutes} min since website checkin</p>
                                             <p>Web Check in: {" "}
                                                 {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
                                                 {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
-                                            </p>
+                                            </p> */}
                                         </Link>
                                     </li>
                                 );

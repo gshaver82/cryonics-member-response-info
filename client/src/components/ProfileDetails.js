@@ -28,8 +28,8 @@ function ProfileDetails() {
   let GoogleAlertURL = "void";
   if (isLoading === false && user && user.name !== 'Initialized user name') {
     if (user?.checkinDevices?.fitbit?.alertArray[0]?.lat &&
-      user?.checkinDevices?.fitbit?.alertArray[0]?.long ) {
-        GoogleAlertURL = "https://www.google.com/maps/place/" + user.checkinDevices.fitbit.alertArray[0].lat +
+      user?.checkinDevices?.fitbit?.alertArray[0]?.long) {
+      GoogleAlertURL = "https://www.google.com/maps/place/" + user.checkinDevices.fitbit.alertArray[0].lat +
         "+" + user.checkinDevices.fitbit.alertArray[0].long
     }
   }
@@ -37,10 +37,9 @@ function ProfileDetails() {
   return (
 
     <div>
-      <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>}</h2>
-
-      <p>username is: {user && <span>{user?.name} </span>}{user.photoURL && <img src={user?.photoURL} alt='default profile pic here'></img>}</p>
-      <p>userdate created is: {user && <span>{user?.dateCreated}</span>}</p>
+      <h2>Profile Details{isLoading && <span>please wait, loading the data now.</span>} for: {user && <span>{user?.name} </span>}</h2>
+      <br></br>
+      {user.photoURL && <img src={user?.photoURL} alt='default profile pic here'></img>}
       {/* <p>id is: {_id && <span>{_id}</span>}</p> */}
       {user && <div>
         {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
@@ -53,19 +52,26 @@ function ProfileDetails() {
           </div>
           : <p>No active fitbit watch alert</p>
         }
+        {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+          ? <div>
+            <p>active sync alert!</p>
+          </div>
+          : <p>No active sync alert</p>
+        }
         <p>description: {user?.description}</p>
         <p>cryonicsProvider: {user?.cryonicsProvider}</p>
-        <p>Current location according to web checkin: {GoogleURL !== "void"
+        <p>userdate created is: {user && <span>{user?.dateCreated}</span>}</p>
+        {/* <p>Current location according to web checkin: {GoogleURL !== "void"
           ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
           : <span>no GPS coordinates found</span>}
-        </p>
+        </p> */}
 
-        <p>Web Check in: {" "}
+        {/* <p>Web Check in: {" "}
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toDateString())} {" "}
         </p>
         <p>
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
-        </p>
+        </p> */}
         {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0].dateCreated
           ? <div>
             <p>Most recent fitbit Check in:
@@ -78,7 +84,7 @@ function ProfileDetails() {
             </p>
             {user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat
               ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
-              : <p>Unable to read device details</p>
+              : <p>Fitbit device name and battery level not yet loaded</p>
             }
           </div>
           : <p>fitbit device not registered</p>
