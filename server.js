@@ -54,14 +54,14 @@ async function AlertInterval() {
             console.log("running sync alert checker for ", user.name)
             try {
                 const FBsyncDate =  user?.checkinDevices?.fitbit.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated :0
+                const activeState =  user?.checkinDevices?.fitbit.syncAlertArray[0]?.activeState ? user.checkinDevices.fitbit.syncAlertArray[0].activeState :false
                 const temptime = Date.now() - (new Date(FBsyncDate).getTime());
                 let minutes = Math.floor(temptime / 1000 / 60)
-                console.log("alert interval " + minutes + " minutes since fitbit HR reading")
                 let timeSinceLastSyncAlert = Date.now() - user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date:0
-                console.log("🚀 ~ FitbitUsers.map ~ timeSinceLastSyncAlert", timeSinceLastSyncAlert)
+                console.log("alert interval " + minutes + " minutes since fitbit HR reading" + "🚀 ~ FitbitUsers.map ~ timeSinceLastSyncAlert" + timeSinceLastSyncAlert)
 
                 if (minutes > 40 &&
-                    user.checkinDevices.fitbit.syncAlertArray[0].activeState === false &&
+                    activeState === false &&
                     (timeSinceLastSyncAlert > 900000)
                 ) {
                     console.log("putting sync alert")
