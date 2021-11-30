@@ -14,15 +14,11 @@ function ProfileDetails() {
   useEffect(() => {
 
     const response = API.putClearFBAlert(_id)
-      .then(res => setAlertResponse(res.data.nModified))
+      .then(res => setAlertResponse(res.data))
+      .then(setisLoading(false))
       .catch(err => console.log(err));
     console.log("api response", response)
 
-    const syncresponse = API.putClearFBSyncAlert(_id)
-      .then(res => setsyncAlertResponse(res.data.nModified))
-      .then(setisLoading(false))
-      .catch(err => console.log(err));
-    console.log("api  syncresponse", syncresponse)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
