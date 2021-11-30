@@ -42,7 +42,7 @@ function PrivateHomePage() {
         //----------
         //this block creates the fitbit URL for the login link
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
-        let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
+        let fitbitURLclientid = "&client_id=" + process.env.CLIENT_ID
         //this should be test or privateHomePage
         let fitbitURLredirect_uriNavPage = "privateHomePage";
         let fitbitURLredirect_uri = ""
@@ -61,8 +61,8 @@ function PrivateHomePage() {
     };
     async function fitbitGetAuthToken(fitbitURLredirect_uri) {
         const fitbitAuthTokenNeededData = {
-            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
-            clientId: process.env.REACT_APP_CLIENT_ID,
+            Authorization: "Basic " + process.env.ENCODEDBASE,
+            clientId: process.env.CLIENT_ID,
             grant_type: 'authorization_code',
             redirect_uri: fitbitURLredirect_uri,
             code: window.location.search.substring(6),
@@ -359,35 +359,6 @@ function PrivateHomePage() {
                 </button>
 
             </div>
-
-
-            <div className="recipe-card recipe-border-2">
-                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-                <button type="button" onClick={handleputWebcheckIn}>
-                    Website Checkin
-                </button>
-                <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
-                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-                {/* <h3>GPS Coordinates according to browser</h3> */}
-                <p>Browser GPS status: {status}</p>
-                {/* {!lat && !lng &&
-                <p>no lat or Longitude</p>
-            }
-            {lat && lng &&
-                <p>Latitude: {lat} Longitude: {lng}</p>
-            } */}
-
-                <p>Database shows:</p>
-                {GoogleURL !== "void"
-                    ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                    : <p>no GPS coordinates found in database</p>}
-                {!isLoading &&
-                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
-                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
-                    <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
-                        Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
-                }
-            </div>
             <div className="recipe-card recipe-border-2">
                 <div className="recipe-card recipe-border-2">
                     <p>
@@ -432,7 +403,33 @@ function PrivateHomePage() {
                     : <p>fitbit device not registered</p>
                 }
             </div>
+            <div className="recipe-card recipe-border-2">
+                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
+                <button type="button" onClick={handleputWebcheckIn}>
+                    Website Checkin
+                </button>
+                <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
+                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
+                {/* <h3>GPS Coordinates according to browser</h3> */}
+                <p>Browser GPS status: {status}</p>
+                {/* {!lat && !lng &&
+                <p>no lat or Longitude</p>
+            }
+            {lat && lng &&
+                <p>Latitude: {lat} Longitude: {lng}</p>
+            } */}
 
+                <p>Database shows:</p>
+                {GoogleURL !== "void"
+                    ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
+                    : <p>no GPS coordinates found in database</p>}
+                {!isLoading &&
+                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
+                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
+                    <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
+                        Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
+                }
+            </div>
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)
