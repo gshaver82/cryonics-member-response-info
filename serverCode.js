@@ -116,7 +116,7 @@ var self = module.exports = {
                 clearInterval(FBSyncAlertInterval)
             }
             i++;
-        }, 200000);
+        }, 60000);
     },
     twilioOutboundTxt: function (username, txtBody, txtNum, callOrTxt) {
         console.log("twilioOutboundCount", twilioOutboundCount)

@@ -139,7 +139,7 @@ function MemberDash() {
                                                         </div>
                                                         : <p>No active sync alert</p>
                                                     }
-                                                    <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit checkin</p>
+                                                    <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
                                                     {/* <p>Most recent fitbit Check in:
                                                         {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toDateString())} {" "}
                                                     </p>
