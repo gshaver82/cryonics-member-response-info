@@ -37,6 +37,19 @@ const cryonicsSchema = new Schema({
             default: "private",
         }
     ],
+    pubNotes: [
+        {
+            date: {
+                type: Date,
+                required: true,
+            },
+            note: {
+                type: String,
+                required: true,
+                default: "note",
+            }
+        }
+    ],
     checkinDevices: {
         WebsiteCheckIn: {
             WebsiteCheckinRegistered: {
@@ -83,6 +96,11 @@ const cryonicsSchema = new Schema({
             fbDeviceBat: {
                 type: String,
                 required: false,
+            },
+            fbTimeOffset: {
+                type: Number,
+                required: true,
+                default: 0,
             },
             checkinArray: [
                 {
