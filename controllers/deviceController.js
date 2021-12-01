@@ -63,7 +63,7 @@ module.exports = {
             ? watchalert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
 
-        user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+        user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
             ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.syncAlertArray": false } }).exec()
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
 

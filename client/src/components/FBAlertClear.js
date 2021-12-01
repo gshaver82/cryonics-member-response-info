@@ -9,7 +9,7 @@ function ProfileDetails() {
   const { _id } = useParams()
   const [isLoading, setisLoading] = useState(true);
   const [AlertResponse, setAlertResponse] = useState(0);
-  const [syncAlertResponse, setsyncAlertResponse] = useState(0);
+  // const [syncAlertResponse, setsyncAlertResponse] = useState(0);
 
   useEffect(() => {
 
@@ -22,8 +22,8 @@ function ProfileDetails() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log("state AlertResponse 0 for not mod, 1 for mod", AlertResponse)
-  console.log("state syncAlertResponse 0 for not mod, 1 for mod", syncAlertResponse)
+  console.log("AlertResponse, AlertResponse?.watchalert, AlertResponse?.syncAlert", AlertResponse, AlertResponse?.watchalert, AlertResponse?.syncAlert)
+  // console.log("state syncAlertResponse 0 for not mod, 1 for mod", syncAlertResponse)
   return (
 
     <div>
@@ -31,14 +31,14 @@ function ProfileDetails() {
       <p>This page will attempt to clear alerts from either fitbit watch notifications, or fitbit heart rate sync info going dark</p>
       <p>If it hasnt already, the Fitbit watch will automatically resume monitoring
         when it detects heart rate after it sent the alert</p>
-      {AlertResponse === 0
+      {AlertResponse?.watchalert?.nModified === 1
         ?
-        <p>Alert not yet cleared</p>
-        : <p>Alert cleared</p>
+        <p>Alert cleared</p>
+        : <p>Alert not yet cleared</p>
       }
-      {syncAlertResponse === 0
-        ? <p>Alert not yet cleared</p>
-        : <p>Alert cleared</p>
+      {AlertResponse?.syncAlert?.nModified === 1
+        ? <p>Alert cleared</p>
+        : <p>Alert not yet cleared</p>
       }
     </div>
   );
