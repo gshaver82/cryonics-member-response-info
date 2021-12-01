@@ -31,15 +31,24 @@ function ProfileDetails() {
       <p>This page will attempt to clear alerts from either fitbit watch notifications, or fitbit heart rate sync info going dark</p>
       <p>If it hasnt already, the Fitbit watch will automatically resume monitoring
         when it detects heart rate after it sent the alert</p>
-      {AlertResponse?.watchalert?.nModified === 1
-        ?
-        <p>Alert cleared</p>
-        : <p>Alert not yet cleared</p>
+      {
+        isLoading
+          ?
+          <p>Sending commands to clear alerts</p>
+          :
+          <div>
+            {AlertResponse?.watchalert?.nModified === 1
+              ?
+              <p>watchalert cleared</p>
+              : <p>watchalert was not active</p>
+            }
+            {AlertResponse?.syncAlert?.nModified === 1
+              ? <p>syncAlert cleared</p>
+              : <p>syncAlert was not active</p>
+            }
+          </div>
       }
-      {AlertResponse?.syncAlert?.nModified === 1
-        ? <p>Alert cleared</p>
-        : <p>Alert not yet cleared</p>
-      }
+
     </div>
   );
 }
