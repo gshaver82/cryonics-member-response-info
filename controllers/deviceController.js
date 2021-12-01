@@ -5,7 +5,7 @@ module.exports = {
     putDeviceTest: async function (req, res) {
         let update
         let user
-        try {            
+        try {
             console.log("device controller  ~ req.body.user_id", req.body.user_id)
             update = await db.CryonicsModel
                 .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
@@ -25,7 +25,7 @@ module.exports = {
             })
         }
         try {
-            
+
             console.log("device controller  ~ req.body.user_id", req.body.user_id)
             user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
         } catch (err) {
@@ -46,31 +46,29 @@ module.exports = {
         res.json({ update, user })
     },
 
-    putClearFBAlert: function (req, res) {
+    putClearFBAlert: async function (req, res) {
+        let user
         console.log("putClearFBAlert req.params._id", req.params._id)
-        db.CryonicsModel
-            .updateOne({ _id: req.params._id },
-                {
-                    $set: {
-                        "checkinDevices.fitbit.alertArray.0.activeState": false
-                    }
-                }
-            )
-            .then(dbModelDataResult => res.json(dbModelDataResult))
-            .catch(err => res.status(422).json(err));
-    },
-    putClearFBSyncAlert: function (req, res) {
-        console.log("putClearFBSyncAlert req.params._id", req.params._id)
-        db.CryonicsModel
-            .updateOne({ _id: req.params._id },
-                {
-                    $set: {
-                        "checkinDevices.fitbit.syncAlertArray.0.activeState": false
-                    }
-                }
-            )
-            .then(dbModelDataResult => res.json(dbModelDataResult))
-            .catch(err => res.status(422).json(err));
+        try {
+            user = await db.CryonicsModel.findOne({ _id: req.params._id }).exec()
+        } catch (err) {
+            return res.status(400).json({
+                error: 'Error en STATUS2'
+            })
+        }
+        console.log("putClearFBAlert   --------  user.name", user.name)
+        let response = { alert: 0, syncAlert: 0 }
+
+        user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+            ? response.alert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
+            : console.log("not setting alert array to false. either doesnt exist, or is already false")
+
+        user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+            ? response.syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.syncAlertArray": false } }).exec()
+            : console.log("not setting alert array to false. either doesnt exist, or is already false")
+
+        console.log("response", response)
+        res.json(response)
     },
 };
 
