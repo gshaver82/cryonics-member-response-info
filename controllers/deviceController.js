@@ -57,18 +57,19 @@ module.exports = {
             })
         }
         console.log("putClearFBAlert   --------  user.name", user.name)
-        let response = { alert: 0, syncAlert: 0 }
-
+        let watchalert = 0
+        let syncAlert = 0
         user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-            ? response.alert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
+            ? watchalert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
 
         user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-            ? response.syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.syncAlertArray": false } }).exec()
+            ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.syncAlertArray": false } }).exec()
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
 
-        console.log("response", response)
-        return res.json(response)
+        console.log("watchalert", watchalert)
+        console.log("syncAlert", syncAlert)
+        return res.json({ watchalert, syncAlert })
     },
 };
 
