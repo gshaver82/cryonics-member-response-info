@@ -68,7 +68,7 @@ module.exports = {
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
 
         console.log("response", response)
-        res.json(response)
+        return res.json(response)
     },
 };
 
