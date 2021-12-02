@@ -25,9 +25,9 @@ function MemberDash() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-    
-    console.log("fitbit", userList[0]?.user?.checkinDevices?.fitbit, userList[0]?.user?.checkinDevices?.fitbit)
-    console.log("device details", userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceName, userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceBat)
+
+    console.log("fitbit", userList?.user?.checkinDevices?.fitbit, userList[0]?.user?.checkinDevices?.fitbit)
+    console.log("device details", userList?.user?.checkinDevices?.fitbit?.fBDeviceName, userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceBat)
 
     return (
         <>
@@ -132,6 +132,18 @@ function MemberDash() {
                                                 : <p>No active sync alert</p>
                                             }
                                             <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
+                                            {(user?.checkinDevices?.fitbit)
+                                                ? <Battery device="test" batlvl='94' />
+                                                : <p>fitbit</p>
+                                            }
+                                            {(user?.checkinDevices?.fitbit?.fBDeviceBat)
+                                                ? <Battery device="test" batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
+                                                : <p>fBDeviceBat</p>
+                                            }
+                                            {(user?.checkinDevices?.fitbit?.fBDeviceName)
+                                                ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl='94' />
+                                                : <p>fBDeviceName</p>
+                                            }
                                             {(user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat)
                                                 ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
                                                 : <p>Unable to read device details</p>
