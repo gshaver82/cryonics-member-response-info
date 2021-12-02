@@ -25,7 +25,9 @@ function MemberDash() {
             .then(setisLoading(false))
             .catch(err => console.log(err));
     }, []);
-
+    
+    console.log("fitbit", userList[0]?.user?.checkinDevices?.fitbit, userList[0]?.user?.checkinDevices?.fitbit)
+    console.log("device details", userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceName, userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceBat)
 
     return (
         <>
@@ -110,8 +112,7 @@ function MemberDash() {
                                 let FBMinutes = "--"
                                 let FBHours = "--"
                                 let FBDays = "--"
-                                if (user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0].dateCreated) {
-                                    console.log("inside fitbit time sorting thingy")
+                                if (user?.checkinDevices?.fitbit?.fitbitDeviceRegistered && user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated) {
                                     const temptime = Date.now() - (new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime());
                                     FBMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
                                     FBHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
