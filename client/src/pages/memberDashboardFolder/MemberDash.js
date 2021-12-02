@@ -117,8 +117,6 @@ function MemberDash() {
                                     FBHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                     FBDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
                                 }
-                                console.log("fitbit", user?.checkinDevices?.fitbit)
-                                console.log("device details", user?.checkinDevices?.fitbit?.fBDeviceName, user?.checkinDevices?.fitbit?.fBDeviceBat)
                                 return (
                                     <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                         <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
@@ -132,26 +130,10 @@ function MemberDash() {
                                                 : <p>No active sync alert</p>
                                             }
                                             <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
-                                            {(user?.checkinDevices?.fitbit)
-                                                ? <Battery device="test" batlvl='94' />
-                                                : <p>fitbit</p>
-                                            }
-                                            {user?.checkinDevices?.fitbit?.fbDeviceBat
-                                                ? <Battery device="test" batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
-                                                : <p>fBDeviceBat</p>
-                                            }
-                                            {user?.checkinDevices?.fitbit?.fbDeviceName
-                                                ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl='94' />
-                                                : <p>fBDeviceName</p>
-                                            }
-                                            {(user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat)
-                                                ? <div><Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} /></div>
+                                            {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
+                                                ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
                                                 : <p>Unable to read device details</p>
-                                            }
-                                            {(user.checkinDevices.fitbit?.fBDeviceName && user.checkinDevices.fitbit?.fBDeviceBat)
-                                                ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
-                                                : <p>Unable to read device details</p>
-                                            }
+                                            }b
                                         </Link>
                                     </li>
                                 );
