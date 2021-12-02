@@ -83,7 +83,7 @@ function ProfileDetails() {
               {(new Date(user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated).toTimeString())}
             </p>
             {user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat
-              ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
+              ? <Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} />
               : <p>Fitbit device name and battery level not yet loaded</p>
             }
           </div>
