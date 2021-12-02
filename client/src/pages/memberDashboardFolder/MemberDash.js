@@ -26,6 +26,7 @@ function MemberDash() {
             .catch(err => console.log(err));
     }, []);
 
+    console.log("userList", userList)
     console.log("fitbit", userList?.user?.checkinDevices?.fitbit, userList[0]?.user?.checkinDevices?.fitbit)
     console.log("device details", userList?.user?.checkinDevices?.fitbit?.fBDeviceName, userList[0]?.user?.checkinDevices?.fitbit?.fBDeviceBat)
 
@@ -136,15 +137,19 @@ function MemberDash() {
                                                 ? <Battery device="test" batlvl='94' />
                                                 : <p>fitbit</p>
                                             }
-                                            {(user?.checkinDevices?.fitbit?.fBDeviceBat)
+                                            {user?.checkinDevices?.fitbit?.fbDeviceBat
                                                 ? <Battery device="test" batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
                                                 : <p>fBDeviceBat</p>
                                             }
-                                            {(user?.checkinDevices?.fitbit?.fBDeviceName)
+                                            {user?.checkinDevices?.fitbit?.fbDeviceName
                                                 ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl='94' />
                                                 : <p>fBDeviceName</p>
                                             }
-                                            {(user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat)
+                                            {user?.checkinDevices?.fitbit?.fBDeviceName && user?.checkinDevices?.fitbit?.fBDeviceBat
+                                                ? <div><Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} /></div>
+                                                : <p>Unable to read device details</p>
+                                            }
+                                            {(user.checkinDevices.fitbit?.fBDeviceName && user.checkinDevices.fitbit?.fBDeviceBat)
                                                 ? <Battery device={user.checkinDevices.fitbit.fBDeviceName} batlvl={user.checkinDevices.fitbit.fBDeviceBat} />
                                                 : <p>Unable to read device details</p>
                                             }
