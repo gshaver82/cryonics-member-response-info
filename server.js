@@ -127,14 +127,14 @@ const handleGetHeartrate = async (user) => {
 
         try {
             FBProfile = await getFBProfile(authToken)
-            console.log("FBProfile", FBProfile)
+            // console.log("FBProfile", FBProfile)
             FBoffsetFromUTChours = (FBProfile?.user?.offsetFromUTCMillis) / 1000 / 60 / 60
-            console.log("🚀 ~ handleGetHeartrate ~ FBoffsetFromUTChours", FBoffsetFromUTChours)
+            // console.log("🚀 ~ handleGetHeartrate ~ FBoffsetFromUTChours", FBoffsetFromUTChours)
 
             try {
                 if (FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16) {
                     timezoneOffset = FBoffsetFromUTChours
-                    console.log("9999999999999 timezone automated", timezoneOffset)
+                    // console.log("9999999999999 timezone automated", timezoneOffset)
                 } else {
                     console.log("FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16 is not true.... settings -6 default offset for CST")
                     timezoneOffset = -6;
