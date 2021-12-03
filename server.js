@@ -105,6 +105,8 @@ const handleGetHeartrate = async (user) => {
     let fitBitDataJSON = 'starting value'
     let authToken = 'starting value'
     let FBoffsetFromUTChours = 'starting value'
+    let timezoneOffset = 42;
+
     authToken = user.checkinDevices.fitbit.authToken
     if (!authToken || authToken === 'starting value') {
         console.log("!authToken")
@@ -125,7 +127,23 @@ const handleGetHeartrate = async (user) => {
 
         try {
             FBProfile = await getFBProfile(authToken)
-            FBoffsetFromUTChours = FBProfile.offsetFromUTCMillis / 1000 / 60 / 60
+            console.log("FBProfile", FBProfile)
+            FBoffsetFromUTChours = (FBProfile?.user?.offsetFromUTCMillis) / 1000 / 60 / 60
+            console.log("🚀 ~ handleGetHeartrate ~ FBoffsetFromUTChours", FBoffsetFromUTChours)
+
+            try {
+                if (FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16) {
+                    timezoneOffset = FBoffsetFromUTChours
+                    console.log("9999999999999 timezone automated", timezoneOffset)
+                } else {
+                    console.log("FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16 is not true.... settings -6 default offset for CST")
+                    timezoneOffset = -6;
+                }
+            } catch {
+                console.log("no time offset data")
+            }
+
+
         }
         catch {
             console.log("error getting fitbit profile")
@@ -200,22 +218,7 @@ const handleGetHeartrate = async (user) => {
             // console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
 
             let FBcheckinDateCode = new Date();
-            //hardcoding timezone offset for central standard time
 
-
-
-
-            let timezoneOffset = 0;
-            try {
-                timezoneOffset = FBoffsetFromUTChours
-                console.log("9999999999999 timezone automated", timezoneOffset)
-                
-            } catch {
-                console.log("no time offset data")
-            }
-
-            // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
-            //central time zone offset hardcode. please change this later
             FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
 
             // console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
@@ -316,7 +319,6 @@ async function getFBProfile(authToken) {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer'
         });
-        console.log("getFBoffsetFromUTCMillis response", response)
         return response.json(); // parses JSON response into native JavaScript objects
     } else {
         console.log("no auth tokens")
