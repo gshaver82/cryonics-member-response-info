@@ -303,7 +303,7 @@ async function getFitBitDevice(authToken) {
 async function getFBProfile(authToken) {
     if (authToken) {
         //"https://api.fitbit.com/1/user/[user-id]/profile.json"
-        const url = "https://api.fitbit.com/1/user/[user-id]/profile.json"
+        const url = "https://api.fitbit.com/1/user/-/profile.json"
         const response = await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
             mode: 'cors', // no-cors, *cors, same-origin
