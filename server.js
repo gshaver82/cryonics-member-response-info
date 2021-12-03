@@ -53,12 +53,12 @@ async function AlertInterval() {
         FitbitUsers.map(async (user) => {
             console.log("running sync alert checker for ", user.name)
             try {
-                let FBsyncDate =  user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated :0
-                let activeState =  user.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? user.checkinDevices.fitbit.syncAlertArray[0].activeState :false
+                let FBsyncDate = user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated : 0
+                let activeState = user.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? user.checkinDevices.fitbit.syncAlertArray[0].activeState : false
                 const temptime = Date.now() - (new Date(FBsyncDate).getTime());
                 let minutes = Math.floor(temptime / 1000 / 60)
-                let timeSinceLastSyncAlert = Date.now() - (user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date:0)
-                console.log( user.name + "minutes" + minutes+ "activeState" + activeState + "timeSinceLastSyncAlert" + timeSinceLastSyncAlert)
+                let timeSinceLastSyncAlert = Date.now() - (user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date : 0)
+                console.log(user.name + "minutes" + minutes + "activeState" + activeState + "timeSinceLastSyncAlert" + timeSinceLastSyncAlert)
                 if (minutes > 40 &&
                     activeState === false &&
                     (timeSinceLastSyncAlert > 900000)
@@ -104,18 +104,31 @@ const handleGetHeartrate = async (user) => {
     console.log('interval code for ' + user.name + "getting HR date from fitbit")
     let fitBitDataJSON = 'starting value'
     let authToken = 'starting value'
+    let FBoffsetFromUTChours = 'starting value'
     authToken = user.checkinDevices.fitbit.authToken
     if (!authToken || authToken === 'starting value') {
         console.log("!authToken")
         return
     } else {
-        fitBitDataJSON = await getFitBitData(authToken)
+        try {
+            fitBitDataJSON = await getFitBitData(authToken)
+        }
+        catch {
+            console.log("error getting getFitBitData")
+        }
         try {
             fitBitDevice = await getFitBitDevice(authToken)
-            // console.log("fitBitDevice", fitBitDevice)
         }
         catch {
             console.log("error getting fitbit device")
+        }
+
+        try {
+            FBProfile = await getFBProfile(authToken)
+            FBoffsetFromUTChours = FBProfile.offsetFromUTCMillis / 1000 / 60 / 60
+        }
+        catch {
+            console.log("error getting fitbit profile")
         }
     }
     try {
@@ -188,7 +201,19 @@ const handleGetHeartrate = async (user) => {
 
             let FBcheckinDateCode = new Date();
             //hardcoding timezone offset for central standard time
-            const timezoneOffset = -6;
+
+
+
+
+            let timezoneOffset = 0;
+            try {
+                timezoneOffset = FBoffsetFromUTChours
+                console.log("9999999999999 timezone automated", timezoneOffset)
+                
+            } catch {
+                console.log("no time offset data")
+            }
+
             // console.log("let FBcheckinDateCode = new Date()", FBcheckinDateCode)
             //central time zone offset hardcode. please change this later
             FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
@@ -256,6 +281,7 @@ async function getFitBitData(authToken) {
 
 async function getFitBitDevice(authToken) {
     if (authToken) {
+        //"https://api.fitbit.com/1/user/[user-id]/devices.json"
         const url = "https://api.fitbit.com/1/user/-/devices.json"
         const response = await fetch(url, {
             method: 'GET', // *GET, POST, PUT, DELETE, etc.
@@ -269,6 +295,28 @@ async function getFitBitDevice(authToken) {
             redirect: 'follow', // manual, *follow, error
             referrerPolicy: 'no-referrer'
         });
+        return response.json(); // parses JSON response into native JavaScript objects
+    } else {
+        console.log("no auth tokens")
+    }
+}
+async function getFBProfile(authToken) {
+    if (authToken) {
+        //"https://api.fitbit.com/1/user/[user-id]/profile.json"
+        const url = "https://api.fitbit.com/1/user/[user-id]/profile.json"
+        const response = await fetch(url, {
+            method: 'GET', // *GET, POST, PUT, DELETE, etc.
+            mode: 'cors', // no-cors, *cors, same-origin
+            cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+            credentials: 'same-origin', // include, *same-origin, omit
+            headers: {
+                'Content-Type': 'application/json',
+                'authorization': 'Bearer ' + authToken
+            },
+            redirect: 'follow', // manual, *follow, error
+            referrerPolicy: 'no-referrer'
+        });
+        console.log("getFBoffsetFromUTCMillis response", response)
         return response.json(); // parses JSON response into native JavaScript objects
     } else {
         console.log("no auth tokens")
