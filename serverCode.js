@@ -42,7 +42,7 @@ var self = module.exports = {
                             .catch(err => res.status(422).json(err));
                         const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i + 1) +
                             "When the watch detects heart rate again it will begin monitoring again, and will send out more alerts if HR is not detected."
-                            + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line" +
+                            + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
@@ -226,7 +226,7 @@ var self = module.exports = {
             .catch(err => console.log(err));
     },
     putSyncAlert: async function (user) {
-        console.log("$$$$$$$$$$$$$$$putSyncAlert function user", user)
+        console.log("$$$$$$$$$$$$$$$putSyncAlert function user.name", user.name)
         const syncAlertArray =
         {
             date: Date.now(),
