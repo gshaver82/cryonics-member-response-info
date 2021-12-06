@@ -108,8 +108,10 @@ const handleGetHeartrate = async (user) => {
     let timezoneOffset = 42;
 
     authToken = user.checkinDevices.fitbit.authToken
+
+    let fitBitDevice = 0;
     if (!authToken || authToken === 'starting value') {
-        console.log("!authToken")
+        console.log("!authToken for user ", user.name)
         return
     } else {
         try {
@@ -120,6 +122,7 @@ const handleGetHeartrate = async (user) => {
         }
         try {
             fitBitDevice = await getFitBitDevice(authToken)
+            console.log("🚀getFitBitDevice  fitBitDevice", fitBitDevice)
         }
         catch {
             console.log("error getting fitbit device")
@@ -149,12 +152,25 @@ const handleGetHeartrate = async (user) => {
             console.log("error getting fitbit profile")
         }
     }
-    try {
-        serverCode.DBuserFitbitDevice(user.firebaseAuthID, fitBitDevice)
+    console.log("fitbit device logs ", fitBitDevice, fitBitDevice[0]?.deviceVersion, fitBitDevice[0]?.batteryLevel)
+    if (fitBitDevice !== 0 && fitBitDevice[0]?.deviceVersion && fitBitDevice[0]?.batteryLevel) {
+        try {
+            serverCode.DBuserFitbitDevice(user.firebaseAuthID, fitBitDevice)
+        }
+        catch {
+            console.log("storing fitbit device info failed")
+        }
+    } else if (fitBitDevice == 0) {
+        try {
+            console.log("fitBitDevice == 0")
+        }
+        catch {
+            console.log("storing fitbit device info failed")
+        }
+    } else {
+        console.log("ERROR sending fitbit device details, fitbit device has something loaded, but its not valid")
     }
-    catch {
-        console.log("storing fitbit device info failed")
-    }
+
 
 
     if (fitBitDataJSON.success === false) {
@@ -244,9 +260,9 @@ const handleGetHeartrate = async (user) => {
             let newMinutes = Math.floor(temptime / 1000 / 60)
             // console.log("newMinutes", newMinutes)
             if (newMinutes < 25) {
-                console.log(newMinutes + " minutes. since minutes is under 25, NEED TO RESET")
+                console.log(newMinutes + " minutes since sync registered HR. since minutes is under 25, NEED TO RESET")
             } else {
-                console.log(newMinutes + " min since fitbit registered HR.")
+                console.log(newMinutes + " min since fitbit sync registered HR.")
             }
         } catch (error) {
             console.log("fitbit dataset pop failed", error);
