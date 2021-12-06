@@ -171,10 +171,10 @@ var self = module.exports = {
         }, 900000);
     },
     DBuserFitbitDevice: function (firebaseAuthID, fitBitDevice) {
-        console.log(
-            "####DBuserFitbitDevice firebaseAuthID, fitBitDevice[0].deviceVersion, fitBitDevice[0].batteryLevel",
-            firebaseAuthID, fitBitDevice[0].deviceVersion, fitBitDevice[0].batteryLevel
-        )
+        // console.log(
+        //     "####DBuserFitbitDevice firebaseAuthID, fitBitDevice[0].deviceVersion, fitBitDevice[0].batteryLevel",
+        //     firebaseAuthID, fitBitDevice[0].deviceVersion, fitBitDevice[0].batteryLevel
+        // )
         return db.CryonicsModel
             .updateOne({ firebaseAuthID: firebaseAuthID },
                 {

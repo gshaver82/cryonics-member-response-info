@@ -122,7 +122,7 @@ const handleGetHeartrate = async (user) => {
         }
         try {
             fitBitDevice = await getFitBitDevice(authToken)
-            console.log("🚀getFitBitDevice  fitBitDevice", fitBitDevice)
+            // console.log("🚀getFitBitDevice  fitBitDevice", fitBitDevice)
         }
         catch {
             console.log("error getting fitbit device")
