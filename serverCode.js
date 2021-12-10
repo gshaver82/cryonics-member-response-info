@@ -42,7 +42,7 @@ var self = module.exports = {
                             .catch(err => res.status(422).json(err));
 
                             const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
-                            "Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically" +
+                            "Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
 
                         const txtNum = user.alertStage[i].num
