@@ -56,7 +56,7 @@ module.exports = {
                 error: 'Error en STATUS2'
             })
         }
-        console.log("putClearFBAlert   --------  user.name", user.name)
+        console.log("putClearFBAlert   --------  user.name", user?.name)
         let watchalert = 0
         let syncAlert = 0
         user?.checkinDevices?.fitbit?.alertArray[0]?.activeState

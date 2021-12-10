@@ -116,7 +116,7 @@ function MemberDash() {
                                             <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
                                             {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
                                                 ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
-                                                : <p>Unable to read device details</p>
+                                                : <p>Device name and battery level not yet loaded</p>
                                             }
                                         </Link>
                                     </li>
