@@ -82,7 +82,8 @@ module.exports = {
     edit: function (req, res) {
         //if incoming user exists with alert data, but no name, change only alert data
         //else if it has alert data and name, its an edit from profile and change what profile would change
-        if (req.body.signedUpForAlerts && !req.body.name) {
+        // != null allows false to be translated as true for the IF statement
+        if (req.body.signedUpForAlerts != null && !req.body.name) {
             db.CryonicsModel
                 .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
                     { $set: { "signedUpForAlerts": req.body.signedUpForAlerts } },
