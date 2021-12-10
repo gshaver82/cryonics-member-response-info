@@ -20,6 +20,8 @@ function Profile() {
     const [description, setdescription] = useState('');
     const [cryonicsProvider, setcryonicsProvider] = useState('None');
     const [photoURL, setPhotoURL] = useState('');
+    const [signedUpForAlerts, setsignedUpForAlerts] = useState(false);
+    const [dateCreated, setdateCreated] = useState('starting date value');
     const [isEditing, setisEditing] = useState(false);
 
     const [stage1AlertNum, setstage1AlertNum] = useState("none");
@@ -63,9 +65,11 @@ function Profile() {
         setstage5AlertMethod(user.alertStage[4].method)
         setstage6AlertMethod(user.alertStage[5].method)
         setname(user.name)
+        setdateCreated(user.dateCreated)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
         setPhotoURL(user.photoURL)
+        setsignedUpForAlerts(user.signedUpForAlerts)
         setisEditing(true)
     };
 
@@ -84,6 +88,7 @@ function Profile() {
             ((re.test(stage5AlertNum) && stage5AlertNum.length === 10) || stage5AlertNum === "none") &&
             ((re.test(stage6AlertNum) && stage6AlertNum.length === 10) || stage6AlertNum === "none")
         ) {
+
             const editedUser = {
                 firebaseAuthID: firebaseUserID,
                 name: name,
@@ -92,10 +97,7 @@ function Profile() {
                 group: ["private"],
                 cryonicsProvider: cryonicsProvider,
                 photoURL: photoURL,
-                signedUpForAlerts: false,
-                textToUserDatecode: 0,
-                textToEmerContactDatecode: 0,
-                textToAdminDatecode: 0,
+                signedUpForAlerts: signedUpForAlerts,
                 alertStage: [{
                     num: "-1" + stage1AlertNum,
                     method: stage1AlertMethod
@@ -130,6 +132,10 @@ function Profile() {
                         ]
                     },
                 },
+            }
+            //this will put in the date profile was created if that is available from user state. otherwise defaults to date.now
+            if (dateCreated !== 'starting date value') {
+                editedUser.dateCreated = dateCreated
             }
             let foo = await API.edituser(editedUser).catch(error => console.error(error));
             setUser(foo.data)

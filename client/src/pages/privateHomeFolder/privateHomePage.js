@@ -308,7 +308,7 @@ function PrivateHomePage() {
     let days = "Loading..."
 
     if (isLoading === false && user !== "starting user condition" && user) {
-        const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
+        const temptime = Date.now() - (new Date(user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.dateCreated).getTime());
         minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
         hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
         days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
@@ -316,8 +316,8 @@ function PrivateHomePage() {
 
     let GoogleURL = "void";
     if (isLoading === false && user !== "starting user condition" && user) {
-        if (user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]
-            && user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]) {
+        if (user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[0]
+            && user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[1]) {
             GoogleURL = "https://www.google.com/maps/place/" +
                 [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] + "+" +
                 [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
@@ -334,14 +334,14 @@ function PrivateHomePage() {
     } else if (user !== "starting user condition") {
         return (<div>
             <h3>Welcome <span>{user.name}</span></h3>
-            <div className="mb-2">
+            {/* <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
                         this is where you will be able to view all of your active devices,
                         and what their status is according to this server
                     </p>
                 </div>
-            </div>
+            </div> */}
 
             <div className="recipe-card recipe-border-2">
                 <p>

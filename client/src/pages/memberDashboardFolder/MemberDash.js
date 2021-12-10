@@ -33,23 +33,7 @@ function MemberDash() {
             <div className="mb-2">
                 <div className="d-flex justify-content-between">
                     <p>
-                        This is where you will see all the info about your group members.
-                        group functionality not yet added.
-                        Will add options to sort or search.
-                        currently sorts by longest time since webcheckin.
-                    </p>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <p>
-                        will have highlighted section at top of members who have signed up for checkins, and who havent checked in in a while
-                        will have another highlighted section of members in declared emergency state.
-                        should private members get revealed here if they are in declared emergency state?
-                        Can click on each members name to see thier full profile.
-                    </p>
-                </div>
-                <div className="d-flex justify-content-between">
-                    <p>
-                        Can click on each members name to see thier full profile.
+                        click on each members name to see thier full profile.
                     </p>
                 </div>
             </div>

@@ -80,16 +80,42 @@ module.exports = {
     },
 
     edit: function (req, res) {
-        db.CryonicsModel
-            .findOneAndUpdate(
-                { firebaseAuthID: req.body.firebaseAuthID },
-                req.body,
-                {
-                    new: true,
-                    upsert: true
-                })
-            .then(dbModelDataResult => res.json(dbModelDataResult))
-            .catch(err => res.status(422).json(err));
+        //if incoming user exists with alert data, but no name, change only alert data
+        //else if it has alert data and name, its an edit from profile and change what profile would change
+        if (req.body.signedUpForAlerts && !req.body.name) {
+            db.CryonicsModel
+                .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
+                    { $set: { "signedUpForAlerts": req.body.signedUpForAlerts } },
+                    {
+                        new: true,
+                    })
+                .then(dbModelDataResult => res.json(dbModelDataResult))
+                .catch(err => res.status(422).json(err));
+        } else if (req.body.name) {
+            db.CryonicsModel
+                .findOneAndUpdate({ firebaseAuthID: req.body.firebaseAuthID },
+                    {
+                        $set: {
+                            "name": req.body.name,
+                            "dateCreated": req.body.dateCreated,
+                            "description": req.body.description,
+                            "group": req.body.group,
+                            "cryonicsProvider": req.body.cryonicsProvider,
+                            "photoURL": req.body.photoURL,
+                            "signedUpForAlerts": req.body.signedUpForAlerts,
+                            "alertStage": req.body.alertStage,
+                            "checkinDevices": req.body.checkinDevices,
+                        }
+                    },
+                    {
+                        new: true,
+                        upsert: true
+                    })
+                .then(dbModelDataResult => res.json(dbModelDataResult))
+                .catch(err => res.status(422).json(err));
+        } else {
+            console.log("error editing")
+        }
     },
 
     findById: function (req, res) {
