@@ -40,10 +40,11 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-                        const txtBody = "FB watch alert sent for " + user.name + " this is alert number " + (i + 1) +
-                            "When the watch detects heart rate again it will begin monitoring again, and will send out more alerts if HR is not detected."
-                            + " click this link to clear the alert status otherwise alerts will be sent to the next number down the line " +
+
+                            const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
+                            "Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically" +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
+
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
                             self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method)
@@ -94,8 +95,8 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-                        const txtBody = "Fitbit alert " + (i + 1) + " Fitbit data has not been recieved for a while for " + user.name +
-                            "Please sync your fitbit, and click this link to clear the alert status otherwise alerts will be sent to the next number down the line " +
+                        const txtBody = "Fitbit  SYNC alert " + (i + 1) + " for " + user.name.toUpperCase() +
+                            "Please sync your fitbit, or check up on that person. Click the link to send no further alert text/calls for this alert. " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
@@ -145,7 +146,7 @@ var self = module.exports = {
             if (callOrTxt === "call") {
                 client.calls
                     .create({
-                        twiml: '<Response><Say>Minnesota Cryonics alert for ' + username + ' Please check your text message</Say></Response>',
+                        twiml: '<Response><Say>Minnesota Cryonics alert for user ' + username + ' Please check your text message. Minnesota Cryonics alert for user ' + username + ' Please check your text message</Say></Response>',
                         to: txtNum,
                         from: process.env.TWILIO_PHONE_NUMBER
                     })
