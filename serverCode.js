@@ -7,7 +7,7 @@ var self = module.exports = {
         console.log("serverCode startup")
     },
     FBAlertChain: async function (user) {
-        console.log("**************FBAlertChain incoming user data is for user ", user)
+        console.log("**************FBAlertChain incoming user data is for user ", user.name )
         let updatedUser = ''
         let i = 0;
         // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
@@ -42,7 +42,7 @@ var self = module.exports = {
                             .catch(err => res.status(422).json(err));
 
                             const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
-                            "Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically " +
+                            " Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
 
                         const txtNum = user.alertStage[i].num
@@ -96,7 +96,7 @@ var self = module.exports = {
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
                         const txtBody = "Fitbit  SYNC alert " + (i + 1) + " for " + user.name.toUpperCase() +
-                            "Please sync your fitbit, or check up on that person. Click the link to send no further alert text/calls for this alert. " +
+                            " Please sync your fitbit, or check up on that person. Click the link to send no further alert text/calls for this alert. " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {

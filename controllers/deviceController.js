@@ -26,7 +26,7 @@ module.exports = {
         }
         try {
 
-            console.log("device controller  ~ req.body.user_id", req.body.user_id)
+            // console.log("device controller putDeviceTest  ~ req.body.user_id", req.body.user_id)
             user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
         } catch (err) {
             return res.status(400).json({

@@ -58,7 +58,7 @@ async function AlertInterval() {
                 const temptime = Date.now() - (new Date(FBsyncDate).getTime());
                 let minutes = Math.floor(temptime / 1000 / 60)
                 let timeSinceLastSyncAlert = Date.now() - (user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date : 0)
-                console.log(user.name + "minutes" + minutes + "activeState" + activeState + "timeSinceLastSyncAlert" + timeSinceLastSyncAlert)
+                console.log(user.name + " minutes -- " + minutes + " activeState -- " + activeState + " timeSinceLastSyncAlert -- " + timeSinceLastSyncAlert)
                 if (minutes > 40 &&
                     activeState === false &&
                     (timeSinceLastSyncAlert > 900000)
@@ -152,7 +152,7 @@ const handleGetHeartrate = async (user) => {
             console.log("error getting fitbit profile")
         }
     }
-    console.log("fitbit device logs ", fitBitDevice, fitBitDevice[0]?.deviceVersion, fitBitDevice[0]?.batteryLevel)
+    console.log("fitbit device logs ", fitBitDevice[0]?.deviceVersion, fitBitDevice[0]?.batteryLevel)
     if (fitBitDevice !== 0 && fitBitDevice[0]?.deviceVersion && fitBitDevice[0]?.batteryLevel) {
         try {
             serverCode.DBuserFitbitDevice(user.firebaseAuthID, fitBitDevice)

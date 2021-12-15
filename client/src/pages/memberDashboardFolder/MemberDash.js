@@ -61,24 +61,24 @@ function MemberDash() {
                                     //website checkin is guarunteed so no need to error check that?
                                     //fitbit time or other devices is not guarunteed so check if its registered, and if not submit 0 to the max formula
                                     Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated
                                             ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                     >
                                     Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated
                                             ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                 )
                                     return 1;
                                 else if (
                                     Math.max(new Date(a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                        a.checkinDevices.fitbit.fitbitDeviceRegistered && a?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated
                                             ? new Date(a.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                     <
                                     Math.max(new Date(b.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime(),
-                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b.checkinDevices.fitbit.checkinArray[0].dateCreated
+                                        b.checkinDevices.fitbit.fitbitDeviceRegistered && b?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated
                                             ? new Date(b.checkinDevices.fitbit.checkinArray[0].dateCreated).getTime() : 0
                                     )
                                 )
@@ -87,10 +87,10 @@ function MemberDash() {
                             })
                             .map(user => {
                                 //this gets the milliseconds since checkin
-                                const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                let webMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                let webHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                let webDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                // const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
+                                // let webMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
+                                // let webHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
+                                // let webDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
 
                                 let FBMinutes = "--"
                                 let FBHours = "--"
@@ -100,27 +100,39 @@ function MemberDash() {
                                     FBMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
                                     FBHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
                                     FBDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
+                                    return (
+                                        <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
+                                            <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
+                                                <p><strong>NAME: </strong>{user.name}</p>
+                                                {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+                                                    ? <p>active fitbit watch alert!</p>
+                                                    : <p>No active fitbit watch alert</p>
+                                                }
+                                                {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+                                                    ? <p>active sync alert!</p>
+                                                    : <p>No active sync alert</p>
+                                                }
+                                                <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
+                                                {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
+                                                    ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
+                                                    : <p>Device name and battery level not yet loaded</p>
+                                                }
+                                            </Link>
+                                        </li>
+                                    );
+                                } else {
+                                    return (
+                                        <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
+                                            <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
+                                                <p><strong>NAME: </strong>{user.name}</p>
+                                                <p>
+                                                    No active devices detected. Fitbit might not be setup, or has not completed syncing yet. 
+                                                </p>
+                                            </Link>
+                                        </li>
+                                    );
                                 }
-                                return (
-                                    <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
-                                        <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
-                                            <p><strong>NAME: </strong>{user.name}</p>
-                                            {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-                                                ? <p>active fitbit watch alert!</p>
-                                                : <p>No active fitbit watch alert</p>
-                                            }
-                                            {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
-                                                ? <p>active sync alert!</p>
-                                                : <p>No active sync alert</p>
-                                            }
-                                            <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
-                                            {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
-                                                ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
-                                                : <p>Device name and battery level not yet loaded</p>
-                                            }
-                                        </Link>
-                                    </li>
-                                );
+
                             })}
                     </ul>
                 }
