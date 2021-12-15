@@ -72,7 +72,7 @@ function ProfileDetails() {
         <p>
           {(new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).toTimeString())}
         </p> */}
-        {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0].dateCreated
+        {user?.checkinDevices?.fitbit?.fitbitDeviceRegistered && user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated
           ? <div>
             <p>Most recent fitbit Check in:
             </p>
