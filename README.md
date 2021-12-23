@@ -3,11 +3,11 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 # Screenshot
 <br></br>
 <p float="left">
-      <img alt="screenshot /19.png" src="/19.png" width="415" />
-      <img alt="screenshot /15.png" src="/15.png" width="415" />
+      <img alt="screenshot /19.png" src="/19.png" width="273" />
+      <img alt="screenshot /15.png" src="/15.png" width="550" />
       <img alt="screenshot /16.png" src="/16.png" width="830" />
-      <img alt="screenshot /11.png" src="/11.png" width="276" />
-      <img alt="screenshot /17.png" src="/17.png" width="553" />
+      <img alt="screenshot /11.png" src="/11.png" width="270" />
+      <img alt="screenshot /17.png" src="/17.png" width="547" />
 </p>
 
 # Description
