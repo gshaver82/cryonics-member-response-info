@@ -1,12 +1,18 @@
 # Fitbit HeartRate Alert
-Once a user signs up and links to a fitbit device this server will monitor HR and send alerts if HR is lost
+Once a user signs up and links to a fitbit device, this server will monitor heartrate and send alerts if HR is lost
 # Screenshot
 <br></br>
 <p float="left">
-  <img src="/15.png" width="300" />
-  <img src="/16.png" width="300" />
-  <img src="/17.png" width="300" />
-  <img src="/18.png" width="300" />
+  <img alt="screenshot /11.png" src="/11.png" width="400" />
+  <img alt="screenshot /15.png" src="/15.png" width="400" />
+  <img alt="screenshot /16.png" src="/16.png" width="400" />
+  <img alt="screenshot /17.png" src="/17.png" width="400" />
+  <img alt="screenshot /18.png" src="/18.png" width="400" />
+  <img alt="screenshot /19.png" src="/19.png" width="400" />
+
+  <a href="/19.png">
+  <img alt="/19.png" src="/19.png" width="400">
+  </a>
 </p>
 
 # Description
