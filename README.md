@@ -3,15 +3,28 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 # Screenshot
 <br></br>
 <p float="left">
-  <img alt="screenshot /11.png" src="/11.png" width="400" />
-  <img alt="screenshot /15.png" src="/15.png" width="400" />
-  <img alt="screenshot /16.png" src="/16.png" width="400" />
-  <img alt="screenshot /17.png" src="/17.png" width="400" />
-  <img alt="screenshot /18.png" src="/18.png" width="400" />
-  <img alt="screenshot /19.png" src="/19.png" width="400" />
+      <img alt="screenshot /19.png" src="/19.png" width="490" />
+      <img alt="screenshot /15.png" src="/15.png" width="490" />
+      <img alt="screenshot /16.png" src="/16.png" width="980" />
+      <img alt="screenshot /11.png" src="/11.png" width="380" />
+      <img alt="screenshot /17.png" src="/17.png" width="600" />
+
+   
 
   <a href="/19.png">
-  <img alt="/19.png" src="/19.png" width="400">
+  <img alt="/19.png" src="/19.png" width="490">
+  </a>
+  <a href="/15.png">
+  <img alt="/15.png" src="/15.png" width="490">
+  </a>
+  <a href="/16.png">
+  <img alt="/16.png" src="/16.png" width="980">
+  </a>
+  <a href="/11.png">
+  <img alt="/11.png" src="/11.png" width="380">
+  </a>
+  <a href="/17.png">
+  <img alt="/17.png" src="/17.png" width="600">
   </a>
 </p>
 
