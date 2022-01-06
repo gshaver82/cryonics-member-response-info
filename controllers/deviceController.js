@@ -2,61 +2,46 @@ const db = require("../models");
 const serverCode = require("../serverCode");
 
 module.exports = {
-    putDeviceTest: async function (req, res) {
+    putDeviceAlert: async function (req, res) {
         let update
         let user
         try {
-            console.log("device controller  ~ req.body.user_id", req.body.user_id)
-            update = await db.CryonicsModel
-                .updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id },
-                    {
-                        $push: {
-                            "checkinDevices.fitbit.alertArray": {
-                                $each: [req.body.newArrayEntry],
-                                $position: 0,
-                                $slice: 250
-                            }
-                        },
+            console.log("device controller putDeviceAlert ~ req.body.user_id", req.body.user_id)
+            update = await db.CryonicsModel.updateOne({ "checkinDevices.fitbit.user_id": req.body.user_id }, {
+                $push: {
+                    "checkinDevices.fitbit.alertArray": {
+                        $each: [req.body.newArrayEntry],
+                        $position: 0,
+                        $slice: 250
                     }
-                ).exec()
+                },
+            }).exec()
         } catch (err) {
-            return res.status(400).json({
-                error: 'Error en STATUS1'
-            })
+            return res.status(400).json({ error: 'Error finding user to put alert to' })
         }
         try {
-
-            // console.log("device controller putDeviceTest  ~ req.body.user_id", req.body.user_id)
             user = await db.CryonicsModel.findOne({ "checkinDevices.fitbit.user_id": req.body.user_id }).exec()
         } catch (err) {
-            return res.status(400).json({
-                error: 'Error en STATUS2'
-            })
+            return res.status(400).json({ error: 'Error finding updated user' })
         }
-        // console.log("---first and then second DB call", update, user)
-        // console.log("user.signedUpForAlerts", user.signedUpForAlerts)
-        //TODO send over to server code and to interval alerts there??
-        console.log("🚀 ~ user", user)
-        console.log("user.checkinDevices.fitbit.user_id", req.body.user_id)
         if (user.checkinDevices.fitbit.user_id === req.body.user_id) {
             serverCode.FBAlertChain(user);
         } else {
             console.log("user not found or error retrieving user and matching with fitbit user id")
         }
-        res.json({ update, user })
+        // res.json({ update, user })
+        res.json(true)
     },
-
     putClearFBAlert: async function (req, res) {
+        //This gets the user for the ID provided
+        // then if that user has alert and sync array data, it will set the alerts to false.  
         let user = 0
         console.log("putClearFBAlert req.params._id", req.params._id)
         try {
             user = await db.CryonicsModel.findOne({ _id: req.params._id }).exec()
         } catch (err) {
-            return res.status(400).json({
-                error: 'Error en STATUS2'
-            })
+            return res.status(400).json({ error: 'Error finding user to clear FBAlert' })
         }
-        console.log("putClearFBAlert   --------  user.name", user?.name)
         let watchalert = 0
         let syncAlert = 0
         user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
@@ -66,24 +51,7 @@ module.exports = {
         user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
             ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.syncAlertArray.0.activeState": false } }).exec()
             : console.log("not setting alert array to false. either doesnt exist, or is already false")
-
-        console.log("watchalert", watchalert)
-        console.log("syncAlert", syncAlert)
-        return res.json({ watchalert, syncAlert } )
+        return res.json({ watchalert, syncAlert })
     },
-    // putClearFBAlert: function (req, res) {
-    //     console.log("putClearFBAlert req.params._id", req.params._id)
-    //     db.CryonicsModel
-    //         .updateOne({ _id: req.params._id },
-    //             {
-    //                 $set: {
-    //                     "checkinDevices.fitbit.syncAlertArray.$.activeState": false,
-    //                     "checkinDevices.fitbit.alertArray.$.activeState": false,
-    //                 }
-    //             }
-    //         )
-    //         .then(dbModelDataResult => res.json(dbModelDataResult))
-    //         .catch(err => res.status(422).json(err));
-    // },
 };
 

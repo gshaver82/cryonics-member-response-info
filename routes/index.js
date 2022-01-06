@@ -25,6 +25,8 @@ try {
     });
 }
 
+//any incoming routes with /api/* will flow through here. they must pass the auth check. 
+
 function checkAuth(req, res, next) {
     if (req.headers.authorization) {
         admin.auth().verifyIdToken(req.headers.authorization)
@@ -46,6 +48,10 @@ function checkAuth(req, res, next) {
 router.use("/api", checkAuth);
 router.use("/api", apiRoutes);
 
+//any incoming routes with /cApi/* will flow through here. they must pass the semi secret check
+//this is for the fitbit or other devices to post alerts to the server without full login and auth tokens. 
+//if the semi secret is found out, the device controller will still need a matching ID to do anything. 
+
 function checkCompanion(req, res, next) {
     if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET
     ) {
@@ -56,9 +62,6 @@ function checkCompanion(req, res, next) {
         res.status(403).send('Unauthorized companion')
     }
 }
-
 router.use("/cApi", checkCompanion);
 router.use("/cApi", cApiRoutes);
-
-
 module.exports = router;
