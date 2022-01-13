@@ -15,7 +15,7 @@ var self = module.exports = {
         //TODO maybe, in device controller, get the ID of the alert array. 
         //then in here search the array for that ID and work off of that
         //that way if double alerts come in, the link will clear only that one?
-        let FBAlertInterval = setInterval(alertLogic(), 60000);
+        let FBAlertInterval = setInterval(alertLogic, 60000);
         alertLogic()
         async function alertLogic() {
             try {
