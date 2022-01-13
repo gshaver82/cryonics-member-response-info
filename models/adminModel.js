@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
+//when a group is created, the first user will be an admin. 
+//TODO all of this
+
 const adminSchema = new Schema({
     dateCreated: {
         type: Date,
         default: Date.now,
         required: false,
     },
-    name: {
+    groupName: {
         type: String
     },
     admins: [

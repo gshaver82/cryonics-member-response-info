@@ -7,7 +7,7 @@ var self = module.exports = {
         console.log("serverCode startup")
     },
     FBAlertChain: async function (user) {
-        console.log("**************FBAlertChain incoming user data is for user ", user.name )
+        console.log("**************FBAlertChain incoming user data is for user ", user.name)
         let updatedUser = ''
         let i = 0;
         // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
@@ -15,7 +15,9 @@ var self = module.exports = {
         //TODO maybe, in device controller, get the ID of the alert array. 
         //then in here search the array for that ID and work off of that
         //that way if double alerts come in, the link will clear only that one?
-        let FBAlertInterval = setInterval(async function () {
+        let FBAlertInterval = setInterval(alertLogic(), 60000);
+        alertLogic()
+        async function alertLogic() {
             try {
                 console.log("^^^^^^^^FBAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
                 updatedUser = await db.CryonicsModel
@@ -40,11 +42,9 @@ var self = module.exports = {
                                     new: true,
                                 }).lean().exec()
                             .catch(err => res.status(422).json(err));
-
-                            const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
+                        const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
                             " Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id
-
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true || user.alertStage[i].num === "none" || user.alertStage[i].num === "-1none") {
                             self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method)
@@ -53,7 +53,6 @@ var self = module.exports = {
                             console.log(txtNum, txtBody)
                         }
                     }
-
                 } else {
                     console.log("active state not true (or something else), clearing interval")
                     clearInterval(FBAlertInterval)
@@ -64,7 +63,7 @@ var self = module.exports = {
                 clearInterval(FBAlertInterval)
             }
             i++;
-        }, 60000);
+        }
     },
     FBSyncAlertChain: async function (user) {
         console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
