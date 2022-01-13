@@ -3,6 +3,8 @@ const serverCode = require("../serverCode");
 
 module.exports = {
     putDeviceAlert: async function (req, res) {
+        //this will put the alert into the database. 'update' will be the return from the alert n=1 modified etc.
+        //user will be the full user thats returned after the update. that user after the update is then sent to the alert chain
         let update
         let user
         try {

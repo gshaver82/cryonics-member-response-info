@@ -1,3 +1,5 @@
 module.exports = {
-    CryonicsModel: require("./cryonicsModel")
+    CryonicsModel: require("./cryonicsModel"),
+    AdminModel: require("./adminModel"),
+    PhoneBlacklistModel: require("./PhoneBlacklistModel")
 };
