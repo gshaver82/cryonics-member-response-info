@@ -2,6 +2,6 @@ const router = require("express").Router();
 const smsController = require("../../controllers/smsController");
 
 router
-    .route("/:_id")
-    .put(smsController.smsBlacklist)
+    .route("/")
+    .post(smsController.smsBlacklist)
 module.exports = router;

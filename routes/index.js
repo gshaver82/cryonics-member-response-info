@@ -69,11 +69,13 @@ router.use("/cApi", cApiRoutes);
 //any incoming routes with /sms/* will flow through here.  
 
 function smsFunction(req, res, next) {
-        console.log("[SERVER] outer index.js incoming SMS");
-        console.log("^^^^^^^^^^^^^^^^^^ req ", req);
-        
-        console.log("^^^^^^^^^^^^^^^^^^");
-        next()
+    console.log("[SERVER] outer index.js incoming SMS");
+    try {
+        console.log("^^^^^^^^^^^^^^^^^^ req.baseURL ", req.baseURL);
+    } catch {
+        console.log("^^^^^^^^^^^^^^^^^^ invalid req.baseURL")
+    }
+    next()
 }
 router.use("/sms", smsFunction);
 router.use("/sms", smsRoutes);
