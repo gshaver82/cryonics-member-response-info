@@ -15,7 +15,7 @@ module.exports = {
             } else if (incText == 'bye') {
                 twiml.message('Goodbye');
             } else if (incText == 'test') {
-                twiml.message('we think the number you texted us with is ', req.body.From);
+                twiml.message('we think the number you texted us with is '+ req.body.From);
             } else {
                 twiml.message(
                     'No Body param match, Twilio sends this in the request to your server. req.body.Body is ' + incText
