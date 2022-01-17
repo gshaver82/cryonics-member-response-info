@@ -3,5 +3,5 @@ const smsController = require("../../controllers/smsController");
 
 router
     .route("/")
-    .post(smsController.smsBlacklist)
+    .post(smsController.smsIncomingMsg)
 module.exports = router;
