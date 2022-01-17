@@ -11,13 +11,13 @@ module.exports = {
             console.log("####################testing VARIABLES req", req)
             console.log("####################testing VARIABLES req.body, req.body.Body", req.body, req.body.Body)
             const twiml = new MessagingResponse();
-            if (req.body == 'hello') {
+            if (req.body.Body == 'hello') {
                 twiml.message('Hi!');
-            } else if (req.body == 'bye') {
+            } else if (req.body.Body == 'bye') {
                 twiml.message('Goodbye');
             } else {
                 twiml.message(
-                    'No Body param match, Twilio sends this in the request to your server.'
+                    'No Body param match, Twilio sends this in the request to your server. req.body.Body is ' + req.body.Body
                 );
             }
 
