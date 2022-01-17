@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const apiRoutes = require("./api");
 const cApiRoutes = require("./cApi");
+const smsRoutes = require("./sms");
 const admin = require('firebase-admin');
 
 
@@ -64,4 +65,17 @@ function checkCompanion(req, res, next) {
 }
 router.use("/cApi", checkCompanion);
 router.use("/cApi", cApiRoutes);
+
+//any incoming routes with /sms/* will flow through here.  
+
+function smsFunction(req, res, next) {
+        console.log("[SERVER] outer index.js incoming SMS");
+        console.log("^^^^^^^^^^^^^^^^^^ req ", req);
+        
+        console.log("^^^^^^^^^^^^^^^^^^");
+        next()
+}
+router.use("/sms", smsFunction);
+router.use("/sms", smsRoutes);
+
 module.exports = router;
