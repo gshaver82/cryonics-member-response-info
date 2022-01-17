@@ -8,10 +8,12 @@ module.exports = {
         console.log("smsIncomingMsg")
         try {
             console.log("sms controller sending text")
+            console.log("####################testing VARIABLES req", req)
+            console.log("####################testing VARIABLES req.body, req.body.Body", req.body, req.body.Body)
             const twiml = new MessagingResponse();
-            if (req.body.Body == 'hello') {
+            if (req.body == 'hello') {
                 twiml.message('Hi!');
-            } else if (req.body.Body == 'bye') {
+            } else if (req.body == 'bye') {
                 twiml.message('Goodbye');
             } else {
                 twiml.message(
