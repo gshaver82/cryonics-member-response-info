@@ -4,20 +4,21 @@ const MessagingResponse = require('twilio').twiml.MessagingResponse;
 
 module.exports = {
     smsIncomingMsg: async function (req, res) {
-
+        let incText = ''
         console.log("smsIncomingMsg")
         try {
-            console.log("sms controller sending text")
-            console.log("####################testing VARIABLES req", req)
             console.log("####################testing VARIABLES req.body, req.body.Body", req.body, req.body.Body)
+            incText = req.body.Body.toLowerCase();
             const twiml = new MessagingResponse();
-            if (req.body.Body == 'hello') {
+            if (incText == 'hello') {
                 twiml.message('Hi!');
-            } else if (req.body.Body == 'bye') {
+            } else if (incText == 'bye') {
                 twiml.message('Goodbye');
+            } else if (incText == 'test') {
+                twiml.message('we think the number you texted us with is ', req.body.From);
             } else {
                 twiml.message(
-                    'No Body param match, Twilio sends this in the request to your server. req.body.Body is ' + req.body.Body
+                    'No Body param match, Twilio sends this in the request to your server. req.body.Body is ' + incText
                 );
             }
 
