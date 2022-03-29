@@ -261,7 +261,8 @@ function PrivateHomePage() {
             const response = await API.putClearFBAlert(user._id)
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
-            console.log("api response", response)
+            //this console log will expose the put URL. only use for testing purposes
+            // console.log("api response", response)
         } catch (error) {
             console.error(error);
             setisLoading(false)
