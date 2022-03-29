@@ -246,17 +246,27 @@ function PrivateHomePage() {
     const handleAlertsSignUp = async () => {
         console.log("inside handleAlertsSignUp")
         setisLoading(true)
-        const editedUser = {
-            firebaseAuthID: firebaseUserID,
-            signedUpForAlerts: true,
+        try {
+            const editedUser = {
+                firebaseAuthID: firebaseUserID,
+                signedUpForAlerts: true,
+            }
+            await API.edituser(editedUser)
+                .catch(err => console.log(err));
+            await API.getOneUserByFirebaseID(firebaseUserID)
+                .then(res => setUser(res.data))
+                .catch(err => console.log(err));
+            console.log("after  handleAlertsSignUp", user.signedUpForAlerts)
+            console.log("user._id", user._id)
+            const response = await API.putClearFBAlert(user._id)
+                .then(setisLoading(false))
+                .catch(err => console.log(err));
+            console.log("api response", response)
+        } catch (error) {
+            console.error(error);
+            setisLoading(false)
         }
-        await API.edituser(editedUser)
-            .catch(err => console.log(err));
-        await API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-        console.log("after  handleAlertsSignUp", user.signedUpForAlerts)
+
     };
 
     const handleAlertsSignOff = async () => {
@@ -403,21 +413,21 @@ function PrivateHomePage() {
                     : <p>fitbit device not registered</p>
                 }
             </div>
-            <div className="recipe-card recipe-border-2">
+            {/* <div className="recipe-card recipe-border-2">
                 <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
                 <button type="button" onClick={handleputWebcheckIn}>
                     Website Checkin
                 </button>
                 <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
                 <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-                {/* <h3>GPS Coordinates according to browser</h3> */}
+                <h3>GPS Coordinates according to browser</h3>
                 <p>Browser GPS status: {status}</p>
-                {/* {!lat && !lng &&
-                <p>no lat or Longitude</p>
-            }
-            {lat && lng &&
-                <p>Latitude: {lat} Longitude: {lng}</p>
-            } */}
+                {!lat && !lng &&
+                    <p>no lat or Longitude</p>
+                }
+                {lat && lng &&
+                    <p>Latitude: {lat} Longitude: {lng}</p>
+                }
 
                 <p>Database shows:</p>
                 {GoogleURL !== "void"
@@ -429,7 +439,7 @@ function PrivateHomePage() {
                     <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
                         Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
                 }
-            </div>
+            </div> */}
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)
