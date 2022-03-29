@@ -83,12 +83,12 @@ function Profile() {
         setisLoading(true)
         const re = /^\d+$/;
         if (
-            ((re.test(stage1AlertNum) && stage1AlertNum.length === 10) || stage1AlertNum === "none") &&
-            ((re.test(stage2AlertNum) && stage2AlertNum.length === 10) || stage2AlertNum === "none") &&
-            ((re.test(stage3AlertNum) && stage3AlertNum.length === 10) || stage3AlertNum === "none") &&
-            ((re.test(stage4AlertNum) && stage4AlertNum.length === 10) || stage4AlertNum === "none") &&
-            ((re.test(stage5AlertNum) && stage5AlertNum.length === 10) || stage5AlertNum === "none") &&
-            ((re.test(stage6AlertNum) && stage6AlertNum.length === 10) || stage6AlertNum === "none")
+            ((re.test(stage1AlertNum) && stage1AlertNum.length === 10) || stage1AlertNum === "none" || stage1AlertNum === "") &&
+            ((re.test(stage2AlertNum) && stage2AlertNum.length === 10) || stage2AlertNum === "none" || stage2AlertNum === "") &&
+            ((re.test(stage3AlertNum) && stage3AlertNum.length === 10) || stage3AlertNum === "none" || stage3AlertNum === "") &&
+            ((re.test(stage4AlertNum) && stage4AlertNum.length === 10) || stage4AlertNum === "none" || stage4AlertNum === "") &&
+            ((re.test(stage5AlertNum) && stage5AlertNum.length === 10) || stage5AlertNum === "none" || stage5AlertNum === "") &&
+            ((re.test(stage6AlertNum) && stage6AlertNum.length === 10) || stage6AlertNum === "none" || stage6AlertNum === "")
         ) {
 
             const editedUser = {
