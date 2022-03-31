@@ -38,7 +38,49 @@ function Test() {
         var element = document.getElementById(event.target.value);
         element.className = (element.className !== 'displayvisible' ? 'displayvisible' : 'displaynone');
     }
-    //TODO take the individual user and deny access if not a member of admin group
+    const handleAlertsSignUp = async (event) => {
+        console.log("inside handleAlertsSignUp")
+        setisLoading(true)
+        try {
+            let firebaseUserID = event.target.value
+            let UserID = event.target.secondvalue
+            const editedUser = {
+                firebaseAuthID: firebaseUserID,
+                signedUpForAlerts: true,
+            }
+            const response = await API.edituser(editedUser)// eslint-disable-line no-unused-vars
+                .catch(err => console.log(err));
+            const response2 = await API.putClearFBAlert(UserID)// eslint-disable-line no-unused-vars
+                .then(setisLoading(false))
+                .catch(err => console.log(err));
+            const response3 = await API.getuserList()// eslint-disable-line no-unused-vars
+                .then(res => setUsers(res.data))
+                .then(setisLoading(false))
+                .catch(err => console.log(err));
+            //this console log will expose the put URL. only use for testing purposes
+            // console.log("api response", response)
+        } catch (error) {
+            console.error(error);
+            setisLoading(false)
+        }
+    };
+
+    const handleAlertsSignOff = async (event) => {
+        console.log("inside handleAlertsSignOff")
+        setisLoading(true)
+        let firebaseUserID = event.target.value
+        const editedUser = {
+            firebaseAuthID: firebaseUserID,
+            signedUpForAlerts: false,
+        }
+        const response = await API.edituser(editedUser)// eslint-disable-line no-unused-vars
+            .catch(err => console.log(err));
+        const response2 = await API.getuserList()// eslint-disable-line no-unused-vars
+            .then(res => setUsers(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+    };
+
     if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1') {
         return (
             <h3>You are not authorized to access this page</h3>
@@ -58,6 +100,13 @@ function Test() {
                             return (
                                 <li className="list-group-item dashboard-li" key={user._id}>
                                     <p><strong>NAME: </strong>{user.name}</p>
+                                    {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
+                                    <button value={user.firebaseAuthID} onClick={handleAlertsSignUp}>
+                                        sign up
+                                    </button>
+                                    <button value={user.firebaseAuthID} secondvalue={user._id} onClick={handleAlertsSignOff}>
+                                        sign off
+                                    </button>
                                     <button value={user._id} onClick={handleShowCode}>
                                         show/hide DB info
                                     </button>
