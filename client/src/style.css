@@ -459,3 +459,10 @@ input[type=number]::-webkit-inner-spin-button:focus {
     color: var(--MaxBlackOrWhite);
     background-color: var(--MinBlackOrWhite);
 }
+
+.displayvisible {
+    display: visible;
+}
+.displaynone {
+    display: none;
+}

@@ -9,11 +9,9 @@ function Test() {
     const firebaseUserID = firebase.auth().currentUser.uid
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
-    const [user, setUser] = useState("starting user condition");
 
     useEffect(() => {
         API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
             .catch(err => console.log(err));
         API.getuserList()
             .then(res => setUsers(res.data))
@@ -35,9 +33,11 @@ function Test() {
         } else {
             console.log('delete not confirmed')
         }
-        
     }
-
+    const handleShowCode = async (event) => {
+        var element = document.getElementById(event.target.value);
+        element.className = (element.className !== 'displayvisible' ? 'displayvisible' : 'displaynone');
+    }
     //TODO take the individual user and deny access if not a member of admin group
     if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1') {
         return (
@@ -45,10 +45,10 @@ function Test() {
         )
     }
 
+
     return (
         <div>
             <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
-
             <p>mapping through all users here</p>
             {userList &&
                 <ul className="list-group">
@@ -58,8 +58,13 @@ function Test() {
                             return (
                                 <li className="list-group-item dashboard-li" key={user._id}>
                                     <p><strong>NAME: </strong>{user.name}</p>
-
-
+                                    <button value={user._id} onClick={handleShowCode}>
+                                        show/hide DB info
+                                    </button>
+                                    <br></br>
+                                    <pre className="displaynone" id={user._id}>
+                                        <code>{JSON.stringify(user, null, 4)}</code>
+                                    </pre>
                                     <button value={user._id} onClick={handleDeleteClick}>
                                         Delete Profile
                                     </button>
