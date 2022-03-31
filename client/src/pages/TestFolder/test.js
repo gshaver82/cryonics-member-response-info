@@ -42,15 +42,17 @@ function Test() {
         console.log("inside handleAlertsSignUp")
         setisLoading(true)
         try {
-            let firebaseUserID = event.target.value
-            let UserID = event.target.secondvalue
+            let firebaseUserID = event.target.dataset.firebaseid
+            console.log("🚀 ~ handleAlertsSignUp ~ firebaseUserID", firebaseUserID)
+            let userID = event.target.dataset.id
+            console.log("🚀 ----------------~ handleAlertsSignUp ~ UserID", userID)
             const editedUser = {
                 firebaseAuthID: firebaseUserID,
                 signedUpForAlerts: true,
             }
             const response = await API.edituser(editedUser)// eslint-disable-line no-unused-vars
                 .catch(err => console.log(err));
-            const response2 = await API.putClearFBAlert(UserID)// eslint-disable-line no-unused-vars
+            const response2 = await API.putClearFBAlert(userID)// eslint-disable-line no-unused-vars
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
             const response3 = await API.getuserList()// eslint-disable-line no-unused-vars
@@ -68,7 +70,7 @@ function Test() {
     const handleAlertsSignOff = async (event) => {
         console.log("inside handleAlertsSignOff")
         setisLoading(true)
-        let firebaseUserID = event.target.value
+        let firebaseUserID = event.target.dataset.firebaseid
         const editedUser = {
             firebaseAuthID: firebaseUserID,
             signedUpForAlerts: false,
@@ -101,10 +103,10 @@ function Test() {
                                 <li className="list-group-item dashboard-li" key={user._id}>
                                     <p><strong>NAME: </strong>{user.name}</p>
                                     {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
-                                    <button value={user.firebaseAuthID} onClick={handleAlertsSignUp}>
+                                    <button data-firebaseid={user.firebaseAuthID} data-id={user._id} onClick={handleAlertsSignUp}>
                                         sign up
                                     </button>
-                                    <button value={user.firebaseAuthID} secondvalue={user._id} onClick={handleAlertsSignOff}>
+                                    <button data-firebaseid={user.firebaseAuthID} onClick={handleAlertsSignOff}>
                                         sign off
                                     </button>
                                     <button value={user._id} onClick={handleShowCode}>
