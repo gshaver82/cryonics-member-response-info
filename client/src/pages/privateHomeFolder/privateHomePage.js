@@ -104,7 +104,7 @@ function PrivateHomePage() {
 
     const handleGetHeartrate = async () => {
         let fitBitDataJSON = 'starting value'
-        let fitBitDeviceDataJSON = 'starting value'
+        // let fitBitDeviceDataJSON = 'starting value'
         let authTokens = 'starting value'
         authTokens = await API.fitbitGetDBAuthToken(firebaseUserID)
             .then(res => res.data)
@@ -206,41 +206,26 @@ function PrivateHomePage() {
             console.log("no auth tokens")
         }
     }
-    async function getFitBitDeviceData(authTokens) {
-        if (authTokens) {
-            const url = "https://api.fitbit.com/1/user/-/devices.json"
-            const response = await fetch(url, {
-                method: 'GET', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': 'Bearer ' + authTokens.authToken
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer'
-            });
-            return response.json(); // parses JSON response into native JavaScript objects
-        } else {
-            console.log("no auth tokens")
-        }
-    }
-    const handleputWebcheckIn = async () => {
-        setisLoading(true)
-        //sends lat and lng to create a new object for the array. function will default to 0 
-        let newCheckinData = await newCheckinDataFunction(lat, lng);
-        let checkInData = {
-            firebaseAuthID: firebaseUserID,
-            newCheckinData
-        }
-        await API.putWebcheckIn(checkInData)
-            .catch(err => console.log(err));
-        await API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-    };
+    // async function getFitBitDeviceData(authTokens) {
+    //     if (authTokens) {
+    //         const url = "https://api.fitbit.com/1/user/-/devices.json"
+    //         const response = await fetch(url, {
+    //             method: 'GET', // *GET, POST, PUT, DELETE, etc.
+    //             mode: 'cors', // no-cors, *cors, same-origin
+    //             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+    //             credentials: 'same-origin', // include, *same-origin, omit
+    //             headers: {
+    //                 'Content-Type': 'application/json',
+    //                 'authorization': 'Bearer ' + authTokens.authToken
+    //             },
+    //             redirect: 'follow', // manual, *follow, error
+    //             referrerPolicy: 'no-referrer'
+    //         });
+    //         return response.json(); // parses JSON response into native JavaScript objects
+    //     } else {
+    //         console.log("no auth tokens")
+    //     }
+    // }
 
 
     const handleAlertsSignUp = async () => {
@@ -312,28 +297,7 @@ function PrivateHomePage() {
                 setStatus('Unable to retrieve your location');
             });
         }
-    }
-
-    let minutes = "Loading..."
-    let hours = "Loading..."
-    let days = "Loading..."
-
-    if (isLoading === false && user !== "starting user condition" && user) {
-        const temptime = Date.now() - (new Date(user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.dateCreated).getTime());
-        minutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-        hours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-        days = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-    }
-
-    let GoogleURL = "void";
-    if (isLoading === false && user !== "starting user condition" && user) {
-        if (user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[0]
-            && user?.checkinDevices?.WebsiteCheckIn?.checkinArray[0]?.loc?.coordinates[1]) {
-            GoogleURL = "https://www.google.com/maps/place/" +
-                [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]] + "+" +
-                [user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]]
-        }
-    }
+    }    
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -414,33 +378,6 @@ function PrivateHomePage() {
                     : <p>fitbit device not registered</p>
                 }
             </div>
-            {/* <div className="recipe-card recipe-border-2">
-                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-                <button type="button" onClick={handleputWebcheckIn}>
-                    Website Checkin
-                </button>
-                <p>{days} days {hours} hours {minutes} minutes since website checkin</p>
-                <p>Click this button to check in and update your status. Make sure you allow GPS if you want to store your location information</p>
-                <h3>GPS Coordinates according to browser</h3>
-                <p>Browser GPS status: {status}</p>
-                {!lat && !lng &&
-                    <p>no lat or Longitude</p>
-                }
-                {lat && lng &&
-                    <p>Latitude: {lat} Longitude: {lng}</p>
-                }
-
-                <p>Database shows:</p>
-                {GoogleURL !== "void"
-                    ? <a href={GoogleURL} target="_blank" rel="noopener noreferrer">GoogleMaps</a>
-                    : <p>no GPS coordinates found in database</p>}
-                {!isLoading &&
-                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0] &&
-                    user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1] &&
-                    <p>Lat: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[0]}{"    "}
-                        Long: {user.checkinDevices.WebsiteCheckIn.checkinArray[0].loc.coordinates[1]}{"    "}</p>
-                }
-            </div> */}
         </div>)
     } else {
         return (<h3>Loading Profile....</h3>)

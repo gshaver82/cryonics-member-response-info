@@ -43,8 +43,11 @@ serverCode.startup();
 
 serverCode.fifteenMin();
 const fetch = require("node-fetch");
-DBcalls();
-AlertInterval();
+console.log("🚀 ~ process.env.NODE_ENV", process.env.NODE_ENV)
+if (process.env.NODE_ENV === "production") {
+    DBcalls();
+    AlertInterval();
+}
 
 //alert interval this checks sync data only
 async function AlertInterval() {
