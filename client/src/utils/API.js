@@ -58,7 +58,6 @@ export default {
         return authorize.get("/api/checkin");
     },
     putClearFBAlert: function (_id) {
-        console.log("[API] ~ putClearFBAlert ")
         return noAuth.put("/capi/ClearFBAlert/" + _id, 0, {
             headers: {
                 'semisecret': "vegetable"

@@ -39,13 +39,10 @@ function Test() {
         element.className = (element.className !== 'displayvisible' ? 'displayvisible' : 'displaynone');
     }
     const handleAlertsSignUp = async (event) => {
-        console.log("inside handleAlertsSignUp")
         setisLoading(true)
         try {
             let firebaseUserID = event.target.dataset.firebaseid
-            console.log("🚀 ~ handleAlertsSignUp ~ firebaseUserID", firebaseUserID)
             let userID = event.target.dataset.id
-            console.log("🚀 ----------------~ handleAlertsSignUp ~ UserID", userID)
             const editedUser = {
                 firebaseAuthID: firebaseUserID,
                 signedUpForAlerts: true,
