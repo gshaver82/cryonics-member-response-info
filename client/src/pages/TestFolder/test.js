@@ -22,7 +22,7 @@ function Test() {
 
 
     const handleDeleteClick = async (event) => {
-        if (window.confirm("Are you sure you want to delete this user?") === true) {
+        if (window.prompt("Please enter the passcode to delete this user", "????") === "the passcode") {
             setisLoading(true)
             const deletedUser_id = event.target.value;
             await API.deleteUser(deletedUser_id)
@@ -100,12 +100,14 @@ function Test() {
                                 <li className="list-group-item dashboard-li" key={user._id}>
                                     <p><strong>NAME: </strong>{user.name}</p>
                                     {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
-                                    <button data-firebaseid={user.firebaseAuthID} data-id={user._id} onClick={handleAlertsSignUp}>
-                                        sign up
-                                    </button>
-                                    <button data-firebaseid={user.firebaseAuthID} onClick={handleAlertsSignOff}>
-                                        sign off
-                                    </button>
+                                    <p>
+                                        <button data-firebaseid={user.firebaseAuthID} data-id={user._id} onClick={handleAlertsSignUp}>
+                                            Alerts ON
+                                        </button>
+                                        <button data-firebaseid={user.firebaseAuthID} onClick={handleAlertsSignOff}>
+                                            Alerts OFF
+                                        </button>
+                                    </p>
                                     <button value={user._id} onClick={handleShowCode}>
                                         show/hide DB info
                                     </button>
@@ -113,6 +115,7 @@ function Test() {
                                     <pre className="displaynone" id={user._id}>
                                         <code>{JSON.stringify(user, null, 4)}</code>
                                     </pre>
+                                    <br></br>
                                     <button value={user._id} onClick={handleDeleteClick}>
                                         Delete Profile
                                     </button>

@@ -56,7 +56,7 @@ function NavTabs() {
           to="/privateHomePage"
           className={location.pathname === "/privateHomePage" ? "nav-link active" : "nav-link"}
         >
-          Device Control Panel
+          Control Panel
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -64,7 +64,7 @@ function NavTabs() {
           to="/memberDashboard"
           className={location.pathname === "/memberDashboard" ? "nav-link active" : "nav-link"}
         >
-          Member Dashboard
+          Member List
         </Link>
       </li>
       <li className="nav-item display-4">
@@ -75,14 +75,14 @@ function NavTabs() {
           Profile
         </Link>
       </li>
-      <li className="nav-item display-4">
+      {/* <li className="nav-item display-4">
         <Link
           to="/ClockfaceCards"
           className={location.pathname === "/ClockfaceCards" ? "nav-link active" : "nav-link"}
         >
           FB Clockface
         </Link>
-      </li>
+      </li> */}
       {/* hardcode admin auth ids here */}
       {firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'
         ? <li className="nav-item display-4">

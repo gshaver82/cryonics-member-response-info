@@ -3,6 +3,7 @@ import firebaseEnvConfigs from '../../firebase';
 // import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const firebase = firebaseEnvConfigs.firebase_;
 
@@ -297,7 +298,7 @@ function PrivateHomePage() {
                 setStatus('Unable to retrieve your location');
             });
         }
-    }    
+    }
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -334,7 +335,17 @@ function PrivateHomePage() {
                 </button>
 
             </div>
+
             <div className="recipe-card recipe-border-2">
+                <div>
+                    <p>Link to fitbit step by step walkthrough 
+                        <Link
+                            to="/ClockfaceCards"
+                        >
+                            HERE
+                        </Link>
+                    </p>
+                </div>
                 <div className="recipe-card recipe-border-2">
                     <p>
                         click here to go to fitbit, log in and register your fitbit with this website.
