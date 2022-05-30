@@ -33,26 +33,23 @@ export default {
     putFitBitManualCheckin: function (FBcheckinDateCode) {
         return authorize.put("/api/fitbit/fitbitCheckin", FBcheckinDateCode);
     },
-    currentStatusNote: function (currentStatusNoteObjectForDB) {
-        return authorize.put("/api/users/note", currentStatusNoteObjectForDB);
-    },
     getuserList: function () {
-        return authorize.get("/api/users/edit");
-    },
-    // adduser: function (newUser) {
-    //     return authorize.put("/api/users", newUser);
-    // },
-    edituser: function (editedUser) {
-        return authorize.put("/api/users/edit", editedUser);
+        return authorize.get("/api/users/");
     },
     getOneUser: function (_id) {
         return authorize.get("/api/users/" + _id);
     },
-    getOneUserByFirebaseID: function (firebaseUserID) {
-        return authorize.get("/api/users/getOneUserByFirebaseID/" + firebaseUserID);
-    },
     deleteUser: function (_id) {
         return authorize.delete("/api/users/" + _id);
+    },
+    currentStatusNote: function (currentStatusNoteObjectForDB) {
+        return authorize.put("/api/users/note", currentStatusNoteObjectForDB);
+    },
+    edituser: function (editedUser) {
+        return authorize.put("/api/users/edit", editedUser);
+    },
+    getOneUserByFirebaseID: function (firebaseUserID) {
+        return authorize.get("/api/users/getOneUserByFirebaseID/" + firebaseUserID);
     },
     putWebcheckIn: function (checkInData) {
         return authorize.put("/api/checkin", checkInData);
