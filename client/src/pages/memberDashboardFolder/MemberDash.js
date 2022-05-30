@@ -104,10 +104,19 @@ function MemberDash() {
                                         <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                             <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                 <p><strong>NAME: </strong>{user.name}</p>
-                                                {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-                                                    ? <p>active fitbit watch alert!</p>
-                                                    : <p>No active fitbit watch alert</p>
-                                                }
+                                                <p>
+                                                    {user?.signedUpForAlerts
+                                                        ? "Alerts enabled"
+                                                        : "Alerts disabled"
+                                                    }
+                                                </p>
+                                                <p>
+                                                    {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+                                                        ? "active fitbit watch alert!"
+                                                        : "No active fitbit watch alert"
+                                                    }
+                                                </p>
+
                                                 {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
                                                     ? <p>active sync alert!</p>
                                                     : <p>No active sync alert</p>
@@ -126,7 +135,7 @@ function MemberDash() {
                                             <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                 <p><strong>NAME: </strong>{user.name}</p>
                                                 <p>
-                                                    No active devices detected. Fitbit might not be setup, or has not completed syncing yet. 
+                                                    No active devices detected. Fitbit might not be setup, or has not completed syncing yet.
                                                 </p>
                                             </Link>
                                         </li>
