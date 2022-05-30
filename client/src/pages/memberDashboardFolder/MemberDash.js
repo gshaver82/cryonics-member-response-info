@@ -108,11 +108,11 @@ function MemberDash() {
                                                     ? <p>active fitbit watch alert!</p>
                                                     : <p>No active fitbit watch alert</p>
                                                 }
-                                                {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+                                                {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
                                                     ? <p>active sync alert!</p>
                                                     : <p>No active sync alert</p>
                                                 }
-                                                <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
+                                                <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p> */}
                                                 {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
                                                     ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
                                                     : <p>Device name and battery level not yet loaded</p>
