@@ -22,11 +22,11 @@ function Battery(prop) {
       {/* <i class="fa fa-battery-empty font-20px fa-battery-filling" aria-hidden="true">
         <span id="result" style="width:calc(10% * 0.73)"></span>
       </i> */}
-      Fitbit {device}
+      
       <i className="fa fa-battery-empty font-50px fa-battery-filling" aria-hidden="true">
         <span className="font-20px" style={btnStyle} >{batlvl} </span>
       </i>
-
+      Fitbit {device}
       {/* <i class="fa fa-battery-empty font-70px fa-battery-filling" aria-hidden="true">
         <span id="result3" style="width:calc(10% * 0.73)"></span>
       </i> */}
