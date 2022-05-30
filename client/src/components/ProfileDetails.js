@@ -2,13 +2,14 @@ import { useParams } from "react-router-dom";
 import React, { useState, useEffect } from 'react';
 import API from "../utils/API";
 import Battery from "../components/Battery";
+import firebaseEnvConfigs from '../firebase';
+const firebase = firebaseEnvConfigs.firebase_;
 
 function ProfileDetails() {
+  const firebaseUserID = firebase.auth().currentUser.uid
   const { _id } = useParams()
-
   const [user, setUser] = useState(false);
   const [isLoading, setisLoading] = useState(true);
-
   useEffect(() => {
     API.getOneUser(_id)
       .then(res => setUser(res.data))
@@ -57,6 +58,17 @@ function ProfileDetails() {
             <p>active sync alert!</p>
           </div>
           : <p>No active sync alert</p>
+        }
+        {
+              firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1' || firebaseUserID === 'qmi94401phZ4ilt65euoIAkywOd2' || 
+              firebaseUserID === '7WLLgcr40wODAjQ7UBql1MyPOCG3' || firebaseUserID === '7BEeB2CuTsMByHLzqbvqQ5ZIyIx1'
+              ?
+              user?.pubNotes?.length > 0 ?
+                <div><p>most recent note is:  {user.pubNotes[0].date}</p>
+                    <h4>{user.pubNotes[0].note} </h4> </div> :
+                <p>No notes yet.</p>
+              :<p>Not authorized to view notes, contact admin</p>
+            
         }
         <p>description: {user?.description}</p>
         <p>cryonicsProvider: {user?.cryonicsProvider}</p>
