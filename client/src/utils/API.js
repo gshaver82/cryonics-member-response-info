@@ -33,8 +33,11 @@ export default {
     putFitBitManualCheckin: function (FBcheckinDateCode) {
         return authorize.put("/api/fitbit/fitbitCheckin", FBcheckinDateCode);
     },
+    currentStatusNote: function (currentStatusNoteObjectForDB) {
+        return authorize.put("/api/users/note", currentStatusNoteObjectForDB);
+    },
     getuserList: function () {
-        return authorize.get("/api/users");
+        return authorize.get("/api/users/edit");
     },
     // adduser: function (newUser) {
     //     return authorize.put("/api/users", newUser);

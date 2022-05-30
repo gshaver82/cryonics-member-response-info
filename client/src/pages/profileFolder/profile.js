@@ -18,6 +18,7 @@ function Profile() {
     const [isLoading, setisLoading] = useState(true);
     const [name, setname] = useState('');
     const [description, setdescription] = useState('');
+    const [currentStatusNote, setcurrentStatusNote] = useState('');
     const [cryonicsProvider, setcryonicsProvider] = useState('None');
     const [photoURL, setPhotoURL] = useState('');
     const [signedUpForAlerts, setsignedUpForAlerts] = useState(false);
@@ -77,6 +78,20 @@ function Profile() {
 
     const handleEditCancelProfile = () => {
         window.location.reload();
+    };
+    const handlesetcurrentStatusNote = () => {
+        console.log("sending note")
+        let currentStatusNoteObjectForDB = {
+            firebaseAuthID: firebaseUserID,
+            currentStatusNote
+        }
+        API.currentStatusNote(currentStatusNoteObjectForDB)
+            .then(console.log("datecode sent to DB", currentStatusNoteObjectForDB))
+            .catch(err => console.log(err));
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
     };
     const handleSaveProfile = async (e) => {
         // e.preventDefault();
@@ -197,7 +212,8 @@ function Profile() {
                     <br></br>
                     <div>
                         <p>use format "6125550101"</p>
-                        <label>stage1Alert:</label>
+                        <p>Recommended for first number to TEXT your phone that is linked to the watch. Then, CALL that same number. This way you can cancel any false alerts. </p>
+                        <label>First Number:</label>
                         <input
                             type="text"
                             required
@@ -210,10 +226,10 @@ function Profile() {
                             onChange={(e) => setstage1AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
-                        <label>stage2Alert:</label>
+                        <label>2nd Number:</label>
                         <input
                             type="text"
                             required
@@ -226,10 +242,10 @@ function Profile() {
                             onChange={(e) => setstage2AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
-                        <label>stage3Alert:</label>
+                        <label>3rd Number:</label>
                         <input
                             type="text"
                             required
@@ -242,10 +258,10 @@ function Profile() {
                             onChange={(e) => setstage3AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
-                        <label>stage4Alert:</label>
+                        <label>4th Number:</label>
                         <input
                             type="text"
                             required
@@ -258,10 +274,10 @@ function Profile() {
                             onChange={(e) => setstage4AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
-                        <label>stage5Alert:</label>
+                        <label>5th Number:</label>
                         <input
                             type="text"
                             required
@@ -274,10 +290,10 @@ function Profile() {
                             onChange={(e) => setstage5AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
-                        <label>stage6Alert:</label>
+                        <label>6th Number:</label>
                         <input
                             type="text"
                             required
@@ -290,7 +306,7 @@ function Profile() {
                             onChange={(e) => setstage6AlertMethod(e.target.value)}
                         >
                             <option value="txt">Text</option>
-                            <option value="call">Phone call</option>
+                            <option value="call">Call and Text</option>
                         </select>
                         <br></br>
                     </div>
@@ -323,8 +339,6 @@ function Profile() {
                     </input>
                     <br></br>
                     <img src={photoURL} alt="photoURL" width="100" height="100"></img>
-                    <br></br>
-                    <p>upload files here??</p>
                     <button onClick={handleSaveProfile} className="btn btn-info">Save Profile</button>
                 </form>
             </div>
@@ -332,27 +346,45 @@ function Profile() {
     } else if (!isEditing) {
         return (
             <div>
+                <div>
+                    {/* notes here */}
+                    {user?.pubNotes?.length > 0 ?
+                        <div><p>Your most recent note is:  {user.pubNotes[0].date}</p>
+                            <h4>{user.pubNotes[0].note} </h4> </div> :
+                        <p>No notes yet.</p>}
+                    <p>
+                        Change or add a description of your location. If an alert is sent out for you, only GPS will be automatically attached. Make a note here for apartment number, or hotel number for faster response.
+                    </p>
+                    <textarea
+                        value={currentStatusNote}
+                        onChange={(e) => setcurrentStatusNote(e.target.value)}
+                    ></textarea>
+                    <button onClick={handlesetcurrentStatusNote} className="btn btn-info">
+                        {" "}Save Note{" "}
+                    </button>
+                </div>
                 <button onClick={handleEditProfile} className="btn btn-info">
                     {" "}Edit Profile{" "}
                 </button>
                 <p>username is:  <span>{user.name}</span></p>
-                {user.alertStage[0] ? user.alertStage
+                {
+                    user.alertStage[0] ? user.alertStage
 
-                    .map((obj, index) => {
-                        return (
-                            <div>
-                                <p> {index} alertnum: {obj.num.slice(2)} alertmethod: {obj.method}</p>
-                            </div>
-                        )
-                    })
-                    : <p>no alert stages found</p>
+                        .map((obj, index) => {
+                            return (
+                                <div>
+                                    <p> {index} alertnum: {obj.num.slice(2)} alertmethod: {obj.method}</p>
+                                </div>
+                            )
+                        })
+                        : <p>no alert stages found</p>
                 }
                 <p>description: {user.description}</p>
                 <p>group is:  {user.group}</p>
                 <p>cryonicsProvider: {user.cryonicsProvider}</p>
                 <p>Picture:  <span><img src={user.photoURL} alt="photoURL" ></img></span></p>
                 <p>uploaded file link here:</p>
-            </div>
+            </div >
         )
     }
     else {

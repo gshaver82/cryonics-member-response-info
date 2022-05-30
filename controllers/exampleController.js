@@ -1,6 +1,25 @@
 const db = require("../models");
 
 module.exports = {
+    currentStatusNote: function (req, res) {
+        console.log("🚀 ~ currentStatusNote")
+        
+        console.log(req.body.firebaseAuthID , req.body.currentStatusNote)
+        db.CryonicsModel
+            .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
+                {
+                    $push: {
+                        "pubNotes": {
+                            $each: [{note:req.body.currentStatusNote}],
+                            $position: 0,
+                            $slice: 25
+                        }
+                    },
+                }
+            )
+            .then(dbModelDataResult => res.json(dbModelDataResult))
+            .catch(err => res.status(422).json(err));
+    },
     fitbitGetAuthToken: function (req, res) {
         db.CryonicsModel
             .findOne({ firebaseAuthID: req.params.firebaseAuthID })

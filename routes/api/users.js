@@ -14,6 +14,9 @@ router.route("/")
     router.route("/edit")
     .put(exampleController.edit)
 
+    router.route("/note")
+    .put(exampleController.currentStatusNote)
+
     router.route("/getOneUserByFirebaseID/:firebaseUserID")
     .get(exampleController.findByFirebaseId)
     
