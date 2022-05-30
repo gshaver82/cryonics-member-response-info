@@ -321,12 +321,12 @@ function PrivateHomePage() {
 
             <div className="recipe-card recipe-border-2">
                 <p>
-                    This server will monitor your heart rate devices. If the server does not detect a heartrate it will send out text and phone alerts to your numbers
+                    Your device will monitor your heart rate. if it does not detect a heartrate it will send and alert to this server and then send out text and phone alerts to the numbers in your profile
                 </p>
                 <p>
                     if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
                 </p>
-                {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
+                {user.signedUpForAlerts ? <p><b>Alert txt/phone active</b></p> : <p><b>Alert txt/phone NOT active</b></p>}
                 <button onClick={handleAlertsSignUp}>
                     Alerts ON
                 </button>
