@@ -108,6 +108,10 @@ function Test() {
                                             Alerts OFF
                                         </button>
                                     </p>
+                                    {user?.pubNotes?.length > 0 ?
+                                        <div><p>most recent note is:  {user.pubNotes[0].date}</p>
+                                            <h4>{user.pubNotes[0].note} </h4> </div> :
+                                        <p>No notes yet.</p>}
                                     <button value={user._id} onClick={handleShowCode}>
                                         show/hide DB info
                                     </button>

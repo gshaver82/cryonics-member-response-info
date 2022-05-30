@@ -355,6 +355,9 @@ function Profile() {
                     <p>
                         Change or add a description of your location. If an alert is sent out for you, only GPS will be automatically attached. Make a note here for apartment number, or hotel number for faster response.
                     </p>
+                    <p>
+                        This can also be used to add in emergency contacts such as roommates, or significant others, who can check up on you if an alert is generated and you are not responding. 
+                    </p>
                     <textarea
                         value={currentStatusNote}
                         onChange={(e) => setcurrentStatusNote(e.target.value)}
