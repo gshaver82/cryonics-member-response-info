@@ -84,7 +84,7 @@ function NavTabs() {
         </Link>
       </li> */}
       {/* hardcode admin auth ids here */}
-      {firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1'
+      {firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1' || firebaseUserID === "Cr0yqDpvgAcVcV2ijZlHBAcSKZf1"
         ? <li className="nav-item display-4">
           <Link
             to="/test"

@@ -61,7 +61,8 @@ function ProfileDetails() {
         }
         {
               firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1' || firebaseUserID === 'qmi94401phZ4ilt65euoIAkywOd2' || 
-              firebaseUserID === '7WLLgcr40wODAjQ7UBql1MyPOCG3' || firebaseUserID === '7BEeB2CuTsMByHLzqbvqQ5ZIyIx1'
+              firebaseUserID === '7WLLgcr40wODAjQ7UBql1MyPOCG3' || firebaseUserID === '7BEeB2CuTsMByHLzqbvqQ5ZIyIx1' ||
+              firebaseUserID === "Cr0yqDpvgAcVcV2ijZlHBAcSKZf1"
               ?
               user?.pubNotes?.length > 0 ?
                 <div><p>most recent note is:  {user.pubNotes[0].date}</p>

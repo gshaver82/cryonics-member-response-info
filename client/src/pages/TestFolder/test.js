@@ -80,7 +80,7 @@ function Test() {
             .catch(err => console.log(err));
     };
 
-    if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1') {
+    if (firebaseUserID !== 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1' || firebaseUserID !== "Cr0yqDpvgAcVcV2ijZlHBAcSKZf1") {
         return (
             <h3>You are not authorized to access this page</h3>
         )
