@@ -41,13 +41,13 @@ const serverCode = require("./serverCode");
 serverCode.startup();
 
 
-serverCode.fifteenMin();
+// serverCode.fifteenMin();
 const fetch = require("node-fetch");
 console.log("🚀 ~ process.env.NODE_ENV", process.env.NODE_ENV)
 if (process.env.NODE_ENV === "production") {
     DBcalls();
     AlertInterval();
-    mainInterval = setInterval(async function () {
+    mainInterval = setTimeout(async function () {
         serverCode.testcall()
     }, 15000);
 }
