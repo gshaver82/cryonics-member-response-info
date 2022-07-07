@@ -6,6 +6,9 @@ var self = module.exports = {
     startup: function () {
         console.log("serverCode startup")
     },
+    testcall: function () {
+        console.log("testcall startup")
+    },
     FBAlertChain: async function (user) {
         console.log("**************FBAlertChain incoming user data is for user ", user.name)
         let updatedUser = ''

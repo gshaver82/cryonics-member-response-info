@@ -47,6 +47,9 @@ console.log("🚀 ~ process.env.NODE_ENV", process.env.NODE_ENV)
 if (process.env.NODE_ENV === "production") {
     DBcalls();
     AlertInterval();
+    mainInterval = setInterval(async function () {
+        serverCode.testcall()
+    }, 15000);
 }
 
 //alert interval this checks sync data only
