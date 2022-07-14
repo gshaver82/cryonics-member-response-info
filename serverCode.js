@@ -12,7 +12,7 @@ var self = module.exports = {
             let txtBody = "test call should be coming through"
             let txtNum = process.env.PHONE
             let callOrTxt = "call"
-            let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/IDHERE' method='POST'>" + 
+            let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/IDHERE' method='GET'>" + 
             "<Say>Please enter your account number,followed by the pound sign</Say></Gather>" + 
             "<Say>We didn't receive any input. Goodbye!</Say></Response>"
 
