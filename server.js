@@ -38,7 +38,7 @@ app.listen(PORT, function () {
 });
 
 const serverCode = require("./serverCode");
-serverCode.startup();
+// serverCode.startup();
 
 
 // serverCode.fifteenMin();

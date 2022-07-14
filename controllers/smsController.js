@@ -27,6 +27,14 @@ module.exports = {
         } catch (err) {
             return res.status(400).json({ error: 'Error sending text' })
         }
+    },
+    resToOUtboundCall: async function (req, res) {
+        console.log("resToOUtboundCall")
+        try {
+            console.log("####################testing VARIABLES req.body, req.body.Body", req.body, req.body.Body)
+        } catch (err) {
+            return res.status(400).json({ error: 'Error sending text' })
+        }
     }
 };
 

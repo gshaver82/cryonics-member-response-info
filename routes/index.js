@@ -69,7 +69,7 @@ router.use("/cApi", cApiRoutes);
 //any incoming routes with /sms/* will flow through here.  
 
 function smsFunction(req, res, next) {
-    console.log("[SERVER] outer index.js incoming SMS");
+    console.log("[SERVER] outer index.js incoming SMS or voice call info");
     next()
 }
 router.use("/sms", smsFunction);
