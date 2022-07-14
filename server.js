@@ -49,7 +49,7 @@ if (process.env.NODE_ENV === "production") {
     AlertInterval();
     mainInterval = setTimeout(async function () {
         serverCode.testcall()
-    }, 15000);
+    }, 25000);
 }
 
 //alert interval this checks sync data only
