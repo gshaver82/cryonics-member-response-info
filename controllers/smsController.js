@@ -31,8 +31,10 @@ module.exports = {
     resToOUtboundCall: async function (req, res) {
         console.log("resToOUtboundCall")
         try {
-            console.log("####################testing VARIABLES req.body, req.body.Body", req.body, req.body.Body)
+            console.log("response to phone call is req.params._id", req.params._id)
+            return res.status(200).json({ ID: req.params._id })
         } catch (err) {
+            console.log("ERROR!! ", err)
             return res.status(400).json({ error: 'Error sending text' })
         }
     }
