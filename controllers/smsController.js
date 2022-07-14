@@ -31,8 +31,9 @@ module.exports = {
     resToOUtboundCall: async function (req, res) {
         console.log("resToOUtboundCall")
         try {
-            console.log("response to phone call is req.query, req.query.Digits", req.query, req.query.Digits)
-            return res.status(200).send("<Response><Say>You entered something</Say></Response>");
+            console.log("----------response to phone call is req.query, req.query.Digits--------", req.query)
+            console.log("----------response to phone call is req.query.Digits----------",  req.query.Digits)
+            return res.status(200).send("<Response><Say>You entered the number " + req.query.Digits + " </Say></Response>");
         } catch (err) {
             console.log("ERROR!! ", err)
             return res.status(400).json({ error: 'Error sending text' })
