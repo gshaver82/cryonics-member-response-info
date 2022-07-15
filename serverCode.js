@@ -60,7 +60,7 @@ var self = module.exports = {
         }
     },
     FBSyncAlertChain: async function (user) {
-        console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
+        // console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
         // let updatedUser = ''
         // let i = 0;
         // let FBSyncAlertInterval = setInterval(async function () {
@@ -118,7 +118,7 @@ var self = module.exports = {
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
         let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/" + user._id + "' method='GET'>" +
-            "<Say>An alert has been generated for " + user.name + " Press 1 to clear this alert</Say></Gather>" +
+            "<Say>An alert has been generated for " + user.name + " Press any number to clear this alert</Say></Gather>" +
             "<Say>We didn't receive any input. The next number in line will be called with this alert. </Say></Response>"
         console.log("twiml", twiml)
         if (twilioOutboundCount > 79) {
