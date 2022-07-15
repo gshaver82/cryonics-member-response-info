@@ -48,7 +48,11 @@ if (process.env.NODE_ENV === "production") {
     DBcalls();
     AlertInterval();
     mainInterval = setTimeout(async function () {
-        serverCode.testcall()
+        let user = {
+            name : "gene test",
+            firebaseAuthID: "Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1"
+        }
+        serverCode.FBAlertChain(user)
     }, 25000);
 }
 

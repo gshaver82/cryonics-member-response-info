@@ -4,67 +4,11 @@ let twilioOutboundCount = 0;
 var self = module.exports = {
     // startup: function () {
     //     console.log("serverCode startup")
-    // },
-    testcall: function () {
-        //  https://cryonics-member-response-info.herokuapp.com/sms
-        console.log("testcall startup")
-            let username = 'testuser'
-            let txtBody = "test call should be coming through"
-            let txtNum = process.env.PHONE
-            let callOrTxt = "call"
-            let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/' method='GET'>" + 
-            "<Say>Please enter your account number,followed by the pound sign</Say></Gather>" + 
-            "<Say>We didn't receive any input. Goodbye!</Say></Response>"
-
-            console.log("twilioOutboundCount", twilioOutboundCount)
-            const accountSid = process.env.TWILIO_ACCOUNT_SID;
-            const authToken = process.env.TWILIO_AUTH_TOKEN;
-            const client = require('twilio')(accountSid, authToken);
-            //send me a text if lots of texts have been sent out in one day
-            if (twilioOutboundCount > 79) {
-                client.messages
-                    .create({
-                        body: "twilioOutboundCount is " + twilioOutboundCount,
-                        from: process.env.TWILIO_PHONE_NUMBER,
-                        to: process.env.PHONE
-                    })
-                    .then(message => console.log(message.sid));
-            }
-            if (twilioOutboundCount < 120) {
-                client.messages
-                    .create({
-                        body: txtBody,
-                        from: process.env.TWILIO_PHONE_NUMBER,
-                        to: txtNum
-                    })
-                    .then(message => console.log(message.sid));
-                console.log(txtBody, "---server text message sent--- " + txtNum)
-    
-                if (callOrTxt === "call") {
-                    client.calls
-                        .create({
-                            twiml: twiml,
-                            to: txtNum,
-                            from: process.env.TWILIO_PHONE_NUMBER
-                        })
-                        .then(call => console.log(call.sid));
-                    console.log("---server phone out sent---", txtNum)
-                    twilioOutboundCount++
-                }
-                twilioOutboundCount++
-            } else {
-                console.log('twillio outbound count is too high for the day')
-            }
-    },
+    // }, 
     FBAlertChain: async function (user) {
         console.log("**************FBAlertChain incoming user data is for user ", user.name)
         let updatedUser = ''
         let i = 0;
-        // TODO declare interval outside this function so that it can be cleared in the case of multiple alerts
-        //FIX possible duplicate intervals running. 
-        //TODO maybe, in device controller, get the ID of the alert array. 
-        //then in here search the array for that ID and work off of that
-        //that way if double alerts come in, the link will clear only that one?
         let FBAlertInterval = setInterval(alertLogic, 60000);
         alertLogic()
         async function alertLogic() {
@@ -73,30 +17,31 @@ var self = module.exports = {
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
-                // console.log("updatedUser", updatedUser)
                 if (i >= user.alertStage.length) {
                     console.log("i >= user.alertStage.length, clearing interval")
                     clearInterval(FBAlertInterval)
                 } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
-                    // console.log(i, " Index---alert array and alert stage IF",
-                    //     updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
-                    //     updatedUser.alertStage[i])
                     if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] && updatedUser.alertStage[i]) {
                         updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now()
                         temp = await db.CryonicsModel
                             .findOneAndUpdate(
                                 { firebaseAuthID: updatedUser.firebaseAuthID },
                                 updatedUser,
-                                {
-                                    new: true,
-                                }).lean().exec()
+                                { new: true, }).lean().exec()
                             .catch(err => res.status(422).json(err));
+
+                        let lat = user.checkinDevices.fitbit.alertArray[0].lat ? user.checkinDevices.fitbit.alertArray[0].lat : 0
+                        let long = user.checkinDevices.fitbit.alertArray[0].long ? user.checkinDevices.fitbit.alertArray[0].long : 0
+                        let googleMapsURL = " "
+                        if (lat !== 0 && long !== 0) { googleMapsURL = "https://www.google.com/maps/place/" + lat + "+" + long + " " }
                         const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
-                            " Please check your fitbit watch, or check up on that person. Click the link to send no further alert text/calls for this alert. When the watch detects HR again, it will resume monitoring automatically " +
+                            googleMapsURL +
+                            "Please check your watch, or check up on that person. " +
+                            "Click the link to clear this alert. " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id + " Reply STOP to unsubscribe"
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true && txtNum != "none" && txtNum != "-1none" && txtNum != "" && txtNum != "-1") {
-                            self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method)
+                            self.twilioOutboundTxt(user, txtBody, txtNum, user.alertStage[i].method)
                         } else {
                             console.log("alerts triggered, but not sent because signedUpForAlerts == false or invalid phone number in profile")
                             console.log("txtNum, txtBody", txtNum, txtBody)
@@ -167,11 +112,15 @@ var self = module.exports = {
         //     i++;
         // }, 60000);
     },
-    twilioOutboundTxt: function (username, txtBody, txtNum, callOrTxt) {
+    twilioOutboundTxt: function (user, txtBody, txtNum, callOrTxt) {
         console.log("twilioOutboundCount", twilioOutboundCount)
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
+        let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/" + user.firebaseAuthID + "' method='GET'>" +
+            "<Say>An alert has been generated for " + user.name + " Press 1 to clear this alert</Say></Gather>" +
+            "<Say>We didn't receive any input. The next number in line will be called with this alert. </Say></Response>"
+        console.log("twiml", twiml)
         if (twilioOutboundCount > 79) {
             client.messages
                 .create({
@@ -194,7 +143,7 @@ var self = module.exports = {
             if (callOrTxt === "call") {
                 client.calls
                     .create({
-                        twiml: '<Response><Say>Minnesota Cryonics alert for user ' + username + ' Please check your text message. Minnesota Cryonics alert for user ' + username + ' Please check your text message</Say></Response>',
+                        twiml: twiml,
                         to: txtNum,
                         from: process.env.TWILIO_PHONE_NUMBER
                     })
