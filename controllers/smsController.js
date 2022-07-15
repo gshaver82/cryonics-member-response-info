@@ -1,6 +1,7 @@
 const db = require("../models");
 // const serverCode = require("../serverCode");
 const MessagingResponse = require('twilio').twiml.MessagingResponse;
+const deviceController = require("./deviceController");
 
 module.exports = {
     smsIncomingMsg: async function (req, res) {
@@ -34,10 +35,12 @@ module.exports = {
             console.log("----------response to phone call is req.params--------", req.params)
             console.log("----------response to phone call is req.query--------", req.query)
             console.log("----------response to phone call is req.query.Digits----------",  req.query.Digits)
+            // "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + req.params.id
+            deviceController.putClearFBAlert(req,res)
             return res.status(200).send("<Response><Say>You entered the number " + req.query.Digits + " </Say></Response>");
         } catch (err) {
             console.log("ERROR!! ", err)
-            return res.status(400).json({ error: 'Error sending text' })
+            return res.status(400).send("<Response><Say>Error clearing your alert</Say></Response>");
         }
     }
 };

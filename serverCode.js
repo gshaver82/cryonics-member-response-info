@@ -13,10 +13,10 @@ var self = module.exports = {
         alertLogic()
         async function alertLogic() {
             try {
-                console.log("^^^^^^^^FBAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
                 updatedUser = await db.CryonicsModel
                     .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
                     .catch(err => res.status(422).json(err));
+                console.log("^^^^^^^^FBAlertInterval " + i + " index " + updatedUser.alertStage.length + " user.alertStage.length ")
                 if (i >= user.alertStage.length) {
                     console.log("i >= user.alertStage.length, clearing interval")
                     clearInterval(FBAlertInterval)
@@ -34,7 +34,7 @@ var self = module.exports = {
                         let long = user.checkinDevices.fitbit.alertArray[0].long ? user.checkinDevices.fitbit.alertArray[0].long : 0
                         let googleMapsURL = " "
                         if (lat !== 0 && long !== 0) { googleMapsURL = "https://www.google.com/maps/place/" + lat + "+" + long + " " }
-                        const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() +
+                        const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() + " " +
                             googleMapsURL +
                             "Please check your watch, or check up on that person. " +
                             "Click the link to clear this alert. " +
@@ -117,7 +117,7 @@ var self = module.exports = {
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
         const authToken = process.env.TWILIO_AUTH_TOKEN;
         const client = require('twilio')(accountSid, authToken);
-        let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/" + user.firebaseAuthID + "' method='GET'>" +
+        let twiml = "<Response><Gather action='https://cryonics-member-response-info.herokuapp.com/sms/" + user._id + "' method='GET'>" +
             "<Say>An alert has been generated for " + user.name + " Press 1 to clear this alert</Say></Gather>" +
             "<Say>We didn't receive any input. The next number in line will be called with this alert. </Say></Response>"
         console.log("twiml", twiml)
