@@ -36,7 +36,22 @@ module.exports = {
             console.log("----------response to phone call is req.query--------", req.query)
             console.log("----------response to phone call is req.query.Digits----------",  req.query.Digits)
             // "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + req.params.id
-            deviceController.putClearFBAlert(req,res)
+            let user = 0
+            console.log("resToOUtboundCall req.params._id", req.params._id)
+            try {
+                user = await db.CryonicsModel.findOne({ _id: req.params._id }).exec()
+            } catch (err) {
+                return res.status(400).json({ error: 'Error finding user to clear FBAlert' })
+            }
+            let watchalert = 0
+            let syncAlert = 0
+            user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+                ? watchalert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
+                : console.log("not setting alert array to false. either doesnt exist, or is already false")
+    
+            user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+                ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.params._id }, { $set: { "checkinDevices.fitbit.syncAlertArray.0.activeState": false } }).exec()
+                : console.log("not setting alert array to false. either doesnt exist, or is already false")
             return res.status(200).send("<Response><Say>You entered the number " + req.query.Digits + " </Say></Response>");
         } catch (err) {
             console.log("ERROR!! ", err)
