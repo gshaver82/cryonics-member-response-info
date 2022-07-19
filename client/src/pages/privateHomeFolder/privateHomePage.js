@@ -17,9 +17,9 @@ function PrivateHomePage() {
     //across the screen as the web page waits for the DB to respond
     const [user, setUser] = useState("starting user condition");
     const [isLoading, setisLoading] = useState(true);
-    const [lat, setLat] = useState(null);
-    const [lng, setLng] = useState(null);
-    const [status, setStatus] = useState(null);
+    // const [lat, setLat] = useState(null);
+    // const [lng, setLng] = useState(null);
+    // const [status, setStatus] = useState(null);
     let history = useHistory();
     const [userList, setUsers] = useState([]);
     const [fitbitObject, setfitbitObject] = useState(false);
@@ -28,7 +28,7 @@ function PrivateHomePage() {
     const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
 
     useEffect(() => {
-        geolocator()
+        // geolocator()
         API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
@@ -40,14 +40,10 @@ function PrivateHomePage() {
         startupcode();
     }, []);
     function startupcode() {
-        //----------
-        //this block creates the fitbit URL for the login link
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
         let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
-        //this should be test or privateHomePage
         let fitbitURLredirect_uriNavPage = "privateHomePage";
         let fitbitURLredirect_uri = ""
-
         window.location.hostname === "localhost"
             ? fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%3A3000%2F" + fitbitURLredirect_uriNavPage
             : fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%2F" + fitbitURLredirect_uriNavPage
@@ -55,7 +51,6 @@ function PrivateHomePage() {
         let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
         let fitbitURLexpires_in = "expires_in=604800"
         setfitbitFULLURL(basefitbitURL + fitbitURLclientid + "&redirect_uri=" + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in);
-        //----------
         if (window.location.search.substring(0, 6) === "?code=") {
             fitbitGetAuthToken(fitbitURLredirect_uri)
         }
@@ -96,15 +91,16 @@ function PrivateHomePage() {
                 },
             }
         }
-        console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB", fitbitObjectForDB)
+        // console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB")
         API.putFitBitTokens(fitbitObjectForDB)
-            .then(console.log("tokens sent to DB", fitbitObjectForDB))
+            // .then(console.log("tokens sent to DB"))
             .then(history.push("/privateHomePage"))
             .catch(err => console.log(err));
     }
 
     const handleGetHeartrate = async () => {
         let fitBitDataJSON = 'starting value'
+        let fitBitDeviceDataJSON = 'starting value'
         // let fitBitDeviceDataJSON = 'starting value'
         let authTokens = 'starting value'
         authTokens = await API.fitbitGetDBAuthToken(firebaseUserID)
@@ -114,10 +110,10 @@ function PrivateHomePage() {
             console.log("!authtokens")
             return
         } else {
-            console.log("🚀 ~ handleGetHeartrate ~ authTokens", authTokens)
             fitBitDataJSON = await getFitBitData(authTokens)
-            // fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
+            fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
         }
+        console.log(fitBitDeviceDataJSON)
 
         if (!fitBitDataJSON) {
             console.log("!fitBitDataJSON")
@@ -207,29 +203,29 @@ function PrivateHomePage() {
             console.log("no auth tokens")
         }
     }
-    // async function getFitBitDeviceData(authTokens) {
-    //     if (authTokens) {
-    //         const url = "https://api.fitbit.com/1/user/-/devices.json"
-    //         const response = await fetch(url, {
-    //             method: 'GET', // *GET, POST, PUT, DELETE, etc.
-    //             mode: 'cors', // no-cors, *cors, same-origin
-    //             cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-    //             credentials: 'same-origin', // include, *same-origin, omit
-    //             headers: {
-    //                 'Content-Type': 'application/json',
-    //                 'authorization': 'Bearer ' + authTokens.authToken
-    //             },
-    //             redirect: 'follow', // manual, *follow, error
-    //             referrerPolicy: 'no-referrer'
-    //         });
-    //         return response.json(); // parses JSON response into native JavaScript objects
-    //     } else {
-    //         console.log("no auth tokens")
-    //     }
-    // }
+    async function getFitBitDeviceData(authTokens) {
+        if (authTokens) {
+            const url = "https://api.fitbit.com/1/user/-/devices.json"
+            const response = await fetch(url, {
+                method: 'GET', // *GET, POST, PUT, DELETE, etc.
+                mode: 'cors', // no-cors, *cors, same-origin
+                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
+                credentials: 'same-origin', // include, *same-origin, omit
+                headers: {
+                    'Content-Type': 'application/json',
+                    'authorization': 'Bearer ' + authTokens.authToken
+                },
+                redirect: 'follow', // manual, *follow, error
+                referrerPolicy: 'no-referrer'
+            });
+            return response.json(); // parses JSON response into native JavaScript objects
+        } else {
+            console.log("no auth tokens")
+        }
+    }
 
 
-    const handleAlertsSignUp = async () => {
+    const handleAlertsOn = async () => {
         console.log("inside handleAlertsSignUp")
         setisLoading(true)
         try {
@@ -253,10 +249,20 @@ function PrivateHomePage() {
             console.error(error);
             setisLoading(false)
         }
-
     };
-
-    const handleAlertsSignOff = async () => {
+    // async function newCheckinDataFunction(lat = 0, lng = 0) {
+    // //defaults to 0 if lat and long are not detected
+    // console.log("🚀 ~ newCheckinDataFunction ~ lat", lat)
+    //     let newCheckinData = {
+    //         dateCreated: Date.now(),
+    //         loc: {
+    //             type: "Point",
+    //             coordinates: [lat, lng],
+    //         }
+    //     }
+    //     return newCheckinData
+    // }
+    const handleAlertsOff = async () => {
         console.log("inside handleAlertsSignOff")
         setisLoading(true)
         const editedUser = {
@@ -272,33 +278,17 @@ function PrivateHomePage() {
 
         console.log("after  handleAlertsSignOff", user.signedUpForAlerts)
     };
-    //defaults to 0 if lat and long are not detected
-    async function newCheckinDataFunction(lat = 0, lng = 0) {
-        // console.log("🚀 ~ newCheckinDataFunction ~ lat", lat)
-        let newCheckinData = {
-            dateCreated: Date.now(),
-            loc: {
-                type: "Point",
-                coordinates: [lat, lng],
-            }
-        }
-        return newCheckinData
-    }
 
-    function geolocator() {
-        if (!navigator.geolocation) {
-            setStatus('Geolocation is not supported by your browser');
-        } else {
-            setStatus('Locating...');
-            navigator.geolocation.getCurrentPosition((position) => {
-                setStatus(null);
-                setLat(position.coords.latitude);
-                setLng(position.coords.longitude);
-            }, () => {
-                setStatus('Unable to retrieve your location');
-            });
-        }
-    }
+    // function geolocator() {if (!navigator.geolocation) {
+    //         setStatus('Geolocation is not supported by your browser');
+    //     } else {
+    //         setStatus('Locating...');
+    //         navigator.geolocation.getCurrentPosition((position) => {
+    //             setStatus(null);
+    //             setLat(position.coords.latitude);
+    //             setLng(position.coords.longitude);
+    //         }, () => {setStatus('Unable to retrieve your location');});
+    //     }}
 
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
@@ -310,15 +300,6 @@ function PrivateHomePage() {
     } else if (user !== "starting user condition") {
         return (<div>
             <h3>Welcome <span>{user.name}</span></h3>
-            {/* <div className="mb-2">
-                <div className="d-flex justify-content-between">
-                    <p>
-                        this is where you will be able to view all of your active devices,
-                        and what their status is according to this server
-                    </p>
-                </div>
-            </div> */}
-
             <div className="recipe-card recipe-border-2">
                 <p>
                     Your device will monitor your heart rate. if it does not detect a heartrate it will send and alert to this server and then send out text and phone alerts to the numbers in your profile
@@ -327,10 +308,10 @@ function PrivateHomePage() {
                     if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
                 </p>
                 {user.signedUpForAlerts ? <p><b>Alert txt/phone active</b></p> : <p><b>Alert txt/phone NOT active</b></p>}
-                <button onClick={handleAlertsSignUp}>
+                <button onClick={handleAlertsOn}>
                     Alerts ON
                 </button>
-                <button onClick={handleAlertsSignOff}>
+                <button onClick={handleAlertsOff}>
                     Alerts OFF
                 </button>
 
@@ -338,7 +319,7 @@ function PrivateHomePage() {
 
             <div className="recipe-card recipe-border-2">
                 <div>
-                    <p>Link to fitbit step by step walkthrough 
+                    <p>Link to fitbit step by step walkthrough
                         <Link
                             to="/ClockfaceCards"
                         >
@@ -353,8 +334,6 @@ function PrivateHomePage() {
                     {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
                 </div>
                 <div className="recipe-card recipe-border-2">
-                    {/* <p>Fitbit object is {fitbitObject && <span> valid and user id is: {fitbitObject.user_id}</span>}
-                    {!fitbitObject && <span> not valid</span>}</p> */}
                     <p>
                         click here to manually check with fitbit for the most recent heart rate timestamp.
                         Please note that the server will automatically be doing this every 10-15 minutes for registered devices
@@ -362,17 +341,6 @@ function PrivateHomePage() {
                     <button onClick={handleGetHeartrate}>
                         Get most recent heart rate and sign up for alerts
                     </button>
-                    {/* <p>generic Data from fitbit
-                    {fitbitUserHRDataResponse &&
-                        <span> is loaded and your resting heart rate is:
-                            {fitbitUserHRDataResponse}</span>}
-                    {!fitbitUserHRDataResponse && <span> has not yet loaded</span>}</p> */}
-
-                    {/* <p>Fitbit Intra day data
-                    {fitbitNewestTime &&
-                        <span> is loaded and your most recent time according to the fitbit server is:
-                            {fitbitNewestTime}</span>}
-                    {!fitbitNewestTime && <span> has not yet loaded</span>}</p> */}
                 </div>
 
                 {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
