@@ -72,7 +72,7 @@ module.exports = {
             }
         )
         .then(dbModelDataResult => res.json(dbModelDataResult))
-        .catch(err => console.log(err));
+        .catch(err => res.status(422).json(err));
     },
     putWebcheckIn: function (req, res) {
         db.CryonicsModel
