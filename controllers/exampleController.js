@@ -61,19 +61,19 @@ module.exports = {
             .then(dbModelDataResult => res.json(dbModelDataResult))
             .catch(err => res.status(422).json(err));
     },
-    putFitBitManualDeviceCheckin: function (req, res) {
-        console.log("🚀 ~ putFitBitManualCheckin req.body", req.body)
-        db.CryonicsModel
-        .updateOne({ firebaseAuthID: firebaseAuthID },
-            {
-                $set: {
-                    "fbDeviceName": req.body.deviceVersion, "fbDeviceBat": req.body.batteryLevel
-                }
-            }
-        )
-        .then(dbModelDataResult => res.json(dbModelDataResult))
-        .catch(err => res.status(422).json(err));
-    },
+    // putFitBitManualDeviceCheckin: function (req, res) {
+    //     console.log("🚀 ~ putFitBitManualCheckin req.body", req.body)
+    //     db.CryonicsModel
+    //     .updateOne({ firebaseAuthID: firebaseAuthID },
+    //         {
+    //             $set: {
+    //                 "fbDeviceName": req.body.deviceVersion, "fbDeviceBat": req.body.batteryLevel
+    //             }
+    //         }
+    //     )
+    //     .then(dbModelDataResult => res.json(dbModelDataResult))
+    //     .catch(err => res.status(422).json(err));
+    // },
     putWebcheckIn: function (req, res) {
         db.CryonicsModel
             .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
