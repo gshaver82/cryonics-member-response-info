@@ -32,6 +32,9 @@ export default {
     },
     putFitBitManualCheckin: function (FBcheckinDateCode) {
         return authorize.put("/api/fitbit/fitbitCheckin", FBcheckinDateCode);
+    },    
+    putFitBitDeviceManualCheckin: function (fitBitDevice) {
+        return authorize.put("/api/fitbit/fitbitCheckin/device", fitBitDevice);
     },
     getuserList: function () {
         return authorize.get("/api/users/");

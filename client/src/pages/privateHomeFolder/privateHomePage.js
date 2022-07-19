@@ -113,7 +113,6 @@ function PrivateHomePage() {
             fitBitDataJSON = await getFitBitData(authTokens)
             fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
         }
-        console.log(fitBitDeviceDataJSON[0])
 
         if (!fitBitDataJSON) {
             console.log("!fitBitDataJSON")
@@ -153,6 +152,12 @@ function PrivateHomePage() {
                 API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                     // .then(console.log("datecode sent to DB"))
                     .catch(err => console.log(err));
+
+                API.putFitBitDeviceManualCheckin(fitBitDeviceDataJSON[0])
+                    .then(console.log("fitbit device data sent to DB", fitBitDeviceDataJSON[0]))
+                    .catch(err => console.log(err));
+
+
                 API.getOneUserByFirebaseID(firebaseUserID)
                     .then(res => setUser(res.data))
                     .then(setisLoading(false))
@@ -275,12 +280,7 @@ function PrivateHomePage() {
         return (<div>
             <h3>Welcome <span>{user.name}</span></h3>
             <div className="recipe-card recipe-border-2">
-                <p>
-                    Your device will monitor your heart rate. if it does not detect a heartrate it will send and alert to this server and then send out text and phone alerts to the numbers in your profile
-                </p>
-                <p>
-                    if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
-                </p>
+
                 {user.signedUpForAlerts ? <p><b>Alert txt/phone active</b></p> : <p><b>Alert txt/phone NOT active</b></p>}
                 <button onClick={handleAlertsOn}>
                     Alerts ON
@@ -288,15 +288,38 @@ function PrivateHomePage() {
                 <button onClick={handleAlertsOff}>
                     Alerts OFF
                 </button>
-
+                <p>
+                    Your device will monitor your heart rate. if it does not detect a heartrate it will send and alert to this server and then send out text and phone alerts to the numbers in your profile
+                </p>
+                <p>
+                    if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
+                </p>
             </div>
 
             <div className="recipe-card recipe-border-2">
                 <div>
+                    <b>FITBIT</b>
+                    {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
+                        ? <div>
+                            <p>Latest Fitbit reading:
+                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
+                            </p>
+                            <p>
+                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
+                            </p>
+                        </div>
+                        : <p>fitbit device not registered</p>
+                    }
+
+                    {user.checkinDevices?.fitbit?.fbDeviceName && user.checkinDevices?.fitbit?.fbDeviceBat
+                        ? <p>
+                            Fitbit {user.checkinDevices.fitbit.fbDeviceName} Battery {user.checkinDevices.fitbit.fbDeviceBat}%
+                        </p>
+                        : <p>fitbit device not registered</p>
+                    }
+
                     <p>Link to fitbit step by step walkthrough
-                        <Link
-                            to="/ClockfaceCards"
-                        >
+                        <Link to="/ClockfaceCards">
                             HERE
                         </Link>
                     </p>
@@ -317,24 +340,7 @@ function PrivateHomePage() {
                     </button>
                 </div>
 
-                {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
-                    ? <div>
-                        <p>Latest Fitbit reading:
-                            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
-                        </p>
-                        <p>
-                            {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
-                        </p>
-                    </div>
-                    : <p>fitbit device not registered</p>
-                }
 
-                {user.checkinDevices?.fitbit?.fbDeviceName && user.checkinDevices?.fitbit?.fbDeviceBat
-                    ? <p>
-                        Fitbit {user.checkinDevices.fitbit.fbDeviceName} Battery {user.checkinDevices.fitbit.fbDeviceBat}%
-                    </p>
-                    : <p>fitbit device not registered</p>
-                }
 
 
 
