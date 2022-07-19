@@ -71,6 +71,7 @@ module.exports = {
                 }
             }
         )
+        .then(dbModelDataResult => res.json(dbModelDataResult))
         .catch(err => console.log(err));
     },
     putWebcheckIn: function (req, res) {
