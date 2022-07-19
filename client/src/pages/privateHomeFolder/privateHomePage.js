@@ -152,7 +152,7 @@ function PrivateHomePage() {
                 API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                     // .then(console.log("datecode sent to DB"))
                     .catch(err => console.log(err));
-
+                    fitBitDeviceDataJSON[0].firebaseAuthID=firebaseUserID
                 API.putFitBitDeviceManualCheckin(fitBitDeviceDataJSON[0])
                     .then(console.log("fitbit device data sent to DB", fitBitDeviceDataJSON[0]))
                     .then(res => console.log(res))
