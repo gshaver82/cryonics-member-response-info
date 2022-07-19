@@ -21,11 +21,11 @@ function PrivateHomePage() {
     // const [lng, setLng] = useState(null);
     // const [status, setStatus] = useState(null);
     let history = useHistory();
-    const [userList, setUsers] = useState([]);
-    const [fitbitObject, setfitbitObject] = useState(false);
+    // const [userList, setUsers] = useState([]);
+    // const [fitbitObject, setfitbitObject] = useState(false);
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
-    const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
-    const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
+    // const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
+    // const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
 
     useEffect(() => {
         // geolocator()
@@ -79,7 +79,7 @@ function PrivateHomePage() {
                 console.error('Error:', error);
             });
         //fitbitdata is stored fitbitobject for display on webpage
-        setfitbitObject(fitbitData)
+        // setfitbitObject(fitbitData)
         const fitbitObjectForDB = {
             firebaseAuthID: firebaseUserID,
             checkinDevices: {
@@ -121,15 +121,13 @@ function PrivateHomePage() {
         } else if (fitBitDataJSON.success === false) {
             console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
             return
-        } else {
-            console.log("no errors")
         }
 
         fitBitDataJSON = JSON.stringify(fitBitDataJSON);
         fitBitDataJSON = fitBitDataJSON.replaceAll('-', '');
         fitBitDataJSON = JSON.parse(fitBitDataJSON);
-        const heartRate = fitBitDataJSON.activitiesheart[0].value.restingHeartRate;
-        setfitbitUserHRDataResponse(heartRate)
+        // const heartRate = fitBitDataJSON.activitiesheart[0].value.restingHeartRate;
+        // setfitbitUserHRDataResponse(heartRate)
 
         //getting the most recent time from the fitbitdatajson
         //if the current days entry does not exist then skip
@@ -141,35 +139,21 @@ function PrivateHomePage() {
                 console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
                 YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
                 YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
-                setfitbitNewestTime(YoungestFitbitHR)
-
+                // setfitbitNewestTime(YoungestFitbitHR)
                 //convert to current date code
                 //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
-                const CurrentDate = new Date();
-                console.log("🚀 ~ handleGetHeartrate ~ CurrentDate", CurrentDate)
                 let hours = YoungestFitbitHR.slice(0, 2)
-                console.log("🚀 ~ handleGetHeartrate ~ hours", hours)
                 let minutes = YoungestFitbitHR.slice(2, 4)
-                console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
                 const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
-                console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
-                //then putfitbit checkin
-                const newArrayEntry =
-                {
-                    dateCreated: FBcheckinDateCode
-                }
+                const newArrayEntry = { dateCreated: FBcheckinDateCode }
                 let fitbitCheckinObjectForDB = {
                     firebaseAuthID: firebaseUserID,
                     newArrayEntry
                 }
-                console.log("🚀 ~ handleGetHeartrate ~ fitbitCheckinObjectForDB", fitbitCheckinObjectForDB)
                 //TODO fitBitDeviceDataJSON send that to upload the battery info
                 API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
                     .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
                     .catch(err => console.log(err));
-                // API.putFitBitManualDeviceCheckin(fitBitDeviceDataJSON)
-                //     .then(console.log("ManualDeviceCheckin", fitBitDeviceDataJSON))
-                //     .catch(err => console.log(err));
                 API.getOneUserByFirebaseID(firebaseUserID)
                     .then(res => setUser(res.data))
                     .then(setisLoading(false))
@@ -177,8 +161,6 @@ function PrivateHomePage() {
             } catch (error) {
                 setisLoading(false)
                 console.log("fitbit dataset pop failed", error);
-                // expected output: ReferenceError: nonExistentFunction is not defined
-                // Note - error messages will vary depending on browser
             }
         }
     }
@@ -224,9 +206,7 @@ function PrivateHomePage() {
         }
     }
 
-
     const handleAlertsOn = async () => {
-        console.log("inside handleAlertsSignUp")
         setisLoading(true)
         try {
             const editedUser = {
@@ -238,8 +218,6 @@ function PrivateHomePage() {
             await API.getOneUserByFirebaseID(firebaseUserID)
                 .then(res => setUser(res.data))
                 .catch(err => console.log(err));
-            console.log("after  handleAlertsSignUp", user.signedUpForAlerts)
-            console.log("user._id", user._id)
             const response = await API.putClearFBAlert(user._id)
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
@@ -263,7 +241,6 @@ function PrivateHomePage() {
     //     return newCheckinData
     // }
     const handleAlertsOff = async () => {
-        console.log("inside handleAlertsSignOff")
         setisLoading(true)
         const editedUser = {
             firebaseAuthID: firebaseUserID,
@@ -275,8 +252,6 @@ function PrivateHomePage() {
             .then(res => setUser(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
-
-        console.log("after  handleAlertsSignOff", user.signedUpForAlerts)
     };
 
     // function geolocator() {if (!navigator.geolocation) {
