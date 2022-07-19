@@ -113,7 +113,7 @@ function PrivateHomePage() {
             fitBitDataJSON = await getFitBitData(authTokens)
             fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
         }
-        console.log(fitBitDeviceDataJSON)
+        console.log(fitBitDeviceDataJSON[0])
 
         if (!fitBitDataJSON) {
             console.log("!fitBitDataJSON")
@@ -136,7 +136,6 @@ function PrivateHomePage() {
             try {
                 let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
                 YoungestFitbitHR = YoungestFitbitHR.time;
-                console.log("🚀 TIME ~ handleGetHeartrate ~ YoungestFitbitHR", YoungestFitbitHR)
                 YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
                 YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
                 // setfitbitNewestTime(YoungestFitbitHR)
@@ -152,7 +151,7 @@ function PrivateHomePage() {
                 }
                 //TODO fitBitDeviceDataJSON send that to upload the battery info
                 API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
-                    .then(console.log("datecode sent to DB", fitbitCheckinObjectForDB))
+                    // .then(console.log("datecode sent to DB"))
                     .catch(err => console.log(err));
                 API.getOneUserByFirebaseID(firebaseUserID)
                     .then(res => setUser(res.data))
@@ -320,9 +319,7 @@ function PrivateHomePage() {
 
                 {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
                     ? <div>
-                        <p>Most recent fitbit Check in:
-                        </p>
-                        <p>
+                        <p>Latest Fitbit reading:
                             {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
                         </p>
                         <p>
@@ -331,6 +328,16 @@ function PrivateHomePage() {
                     </div>
                     : <p>fitbit device not registered</p>
                 }
+
+                {user.checkinDevices?.fitbit?.fbDeviceName && user.checkinDevices?.fitbit?.fbDeviceBat
+                    ? <p>
+                        Fitbit {user.checkinDevices.fitbit.fbDeviceName} Battery {user.checkinDevices.fitbit.fbDeviceBat}%
+                    </p>
+                    : <p>fitbit device not registered</p>
+                }
+
+
+
             </div>
         </div>)
     } else {
