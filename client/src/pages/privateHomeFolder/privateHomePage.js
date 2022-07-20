@@ -269,9 +269,8 @@ function PrivateHomePage() {
 
     const handleWebClearFBAlert = async () => {
         setisLoading(true)
-        let mongoUserId = user._id
-        console.log("🚀 ~ handleWebClearFBAlert ~ user", user)
-        console.log("🚀 ~ handleWebClearFBAlert ~ mongoUserId", mongoUserId)
+        let mongoUserId = {_id: user._id}
+        console.log("🚀 ~ handleWebClearFBAlert ~ user._id", mongoUserId)
         const response = await API.putWebClearFBAlert(mongoUserId)
             .then(res => setAlertResponse(res.data))
             .then(res => console.log("🚀 ~ handleWebClearFBAlert ~ response",res))
