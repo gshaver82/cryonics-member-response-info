@@ -162,21 +162,25 @@ module.exports = {
         //This gets the user for the ID provided
         // then if that user has alert and sync array data, it will set the alerts to false.  
         let user = 0
-        console.log("WebClearFBAlert req.params._id", req.body._id)
+        console.log("WebClearFBAlert req.body", req.body)
+        console.log("WebClearFBAlert req.body._id", req.body._id)
+        let watchalert = 0
+        let syncAlert = 0
         try {
             user = await db.CryonicsModel.findOne({ _id: req.body._id }).exec()
+            console.log("user", user)
+            user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
+                ? watchalert = await db.CryonicsModel.updateOne({ _id: req.body._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
+                : console.log("not setting alert array to false. either doesnt exist, or is already false")
+
+            user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
+                ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.body._id }, { $set: { "checkinDevices.fitbit.syncAlertArray.0.activeState": false } }).exec()
+                : console.log("not setting alert array to false. either doesnt exist, or is already false")
         } catch (err) {
             return res.status(400).json({ error: 'Error finding user to clear FBAlert' })
         }
-        let watchalert = 0
-        let syncAlert = 0
-        user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-            ? watchalert = await db.CryonicsModel.updateOne({ _id: req.body._id }, { $set: { "checkinDevices.fitbit.alertArray.0.activeState": false } }).exec()
-            : console.log("not setting alert array to false. either doesnt exist, or is already false")
 
-        user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
-            ? syncAlert = await db.CryonicsModel.updateOne({ _id: req.body._id }, { $set: { "checkinDevices.fitbit.syncAlertArray.0.activeState": false } }).exec()
-            : console.log("not setting alert array to false. either doesnt exist, or is already false")
+
         return res.json({ watchalert, syncAlert })
     },
 
