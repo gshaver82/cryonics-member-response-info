@@ -93,7 +93,7 @@ function Test() {
                                 return (
                                     <li className="list-group-item dashboard-li" key={user._id}>
                                         <p><strong>NAME: </strong>{user.name}</p>
-                                        {user.signedUpForAlerts ? <p>Alert txt/phone active</p> : <p>Alert txt/phone NOT active</p>}
+                                        {user.signedUpForAlerts ? <p><b>Text/Phone alerts ON</b></p> : <p><b>Text/Phone alerts OFF</b></p>}
                                         <p>
                                             <button data-firebaseid={user.firebaseAuthID} data-id={user._id} onClick={handleAlertsSignUp}>
                                                 Alerts ON
