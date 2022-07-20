@@ -17,8 +17,6 @@ function ProfileDetails() {
       .then(res => setAlertResponse(res.data))
       .then(setisLoading(false))
       .catch(err => console.log(err));
-    console.log("api response", response)
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

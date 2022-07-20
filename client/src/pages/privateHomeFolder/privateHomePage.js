@@ -26,6 +26,7 @@ function PrivateHomePage() {
     const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
     // const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
     // const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
+    const [AlertResponse, setAlertResponse] = useState("init");
 
     useEffect(() => {
         // geolocator()
@@ -265,6 +266,24 @@ function PrivateHomePage() {
     //         }, () => {setStatus('Unable to retrieve your location');});
     //     }}
 
+
+    const handleWebClearFBAlert = async () => {
+        setisLoading(true)
+        const response = await API.putWebClearFBAlert(user._id)
+            .then(res => setAlertResponse(res.data))
+            .catch(err => console.log(err));
+        await API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
+        console.log("🚀 ~ handleWebClearFBAlert ~ response", response)
+        console.log("timer")
+        let alertResponseTimer = setTimeout(async function () {
+            console.log("timeroff")
+            setAlertResponse("init")
+        }, 5000);
+    };
+
     if (isLoading) {
         return (<h3>Loading Profile....</h3>)
     }
@@ -276,6 +295,36 @@ function PrivateHomePage() {
         return (<div>
             <h3>Welcome <span>{user.name}</span></h3>
             <div className="recipe-card recipe-border-2">
+                {
+                    //if no alert "no active alert" if there is an alert, clear alert button. when response comes back display response
+                    AlertResponse !== "init" ?
+                        <div>
+                            {AlertResponse?.watchalert?.nModified === 1
+                                ?
+                                <p>watchalert cleared</p>
+                                : <p>watchalert was not active</p>
+                            }
+                            {AlertResponse?.syncAlert?.nModified === 1
+                                ? <p>syncAlert cleared</p>
+                                : <p>syncAlert was not active</p>
+                            }
+                        </div>
+                        :
+                        <div>
+                            {
+                                user.checkinDevices?.fitbit?.alertArray[0]?.activeState ?
+                                    <div>
+                                        <p>alert active</p>
+                                        <button onClick={handleWebClearFBAlert}>
+                                            Clear Alert
+                                        </button>
+                                    </div>
+                                    :
+                                    <p>No active alert</p>
+                            }
+                        </div>
+                }
+
 
                 {user.signedUpForAlerts ? <p><b>Alert txt/phone active</b></p> : <p><b>Alert txt/phone NOT active</b></p>}
                 <button onClick={handleAlertsOn}>
