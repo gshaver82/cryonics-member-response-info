@@ -162,8 +162,6 @@ module.exports = {
         //This gets the user for the ID provided
         // then if that user has alert and sync array data, it will set the alerts to false.  
         let user = 0
-        console.log("WebClearFBAlert req.body", req.body)
-        console.log("WebClearFBAlert req.body._id", req.body._id)
         let watchalert = 0
         let syncAlert = 0
         try {
@@ -179,8 +177,6 @@ module.exports = {
         } catch (err) {
             return res.status(400).json({ error: 'Error finding user to clear FBAlert' })
         }
-
-
         return res.json({ watchalert, syncAlert })
     },
 

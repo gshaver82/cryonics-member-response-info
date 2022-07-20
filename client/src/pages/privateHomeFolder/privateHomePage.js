@@ -270,18 +270,14 @@ function PrivateHomePage() {
     const handleWebClearFBAlert = async () => {
         setisLoading(true)
         let mongoUserId = {_id: user._id}
-        console.log("🚀 ~ handleWebClearFBAlert ~ user._id", mongoUserId)
         const response = await API.putWebClearFBAlert(mongoUserId)
             .then(res => setAlertResponse(res.data))
-            .then(res => console.log("🚀 ~ handleWebClearFBAlert ~ response",res))
             .catch(err => console.log(err));
         await API.getOneUserByFirebaseID(firebaseUserID)
             .then(res => setUser(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
-        console.log("timer")
         let alertResponseTimer = setTimeout(async function () {
-            console.log("timeroff")
             setAlertResponse("init")
         }, 5000);
     };
