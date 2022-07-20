@@ -68,6 +68,6 @@ export default {
         });
     },    
     putWebClearFBAlert: function (_id) {
-        return authorize.put("/api/fitbit/WebClearFBAlert" + _id);
+        return authorize.put("/api/fitbit/WebClearFBAlert", _id);
     },
 };

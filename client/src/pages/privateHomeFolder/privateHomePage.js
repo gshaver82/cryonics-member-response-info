@@ -326,7 +326,7 @@ function PrivateHomePage() {
                 }
 
 
-                {user.signedUpForAlerts ? <p><b>Alert txt/phone active</b></p> : <p><b>Alert txt/phone NOT active</b></p>}
+                {user.signedUpForAlerts ? <p><b>Text/Phone alerts ON</b></p> : <p><b>Text/Phone alerts OFF</b></p>}
                 <button onClick={handleAlertsOn}>
                     Alerts ON
                 </button>
@@ -346,10 +346,8 @@ function PrivateHomePage() {
                     <b>FITBIT</b>
                     {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
                         ? <div>
-                            <p>Latest Fitbit reading:
+                            <p>Latest Fitbit reading: 
                                 {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
-                            </p>
-                            <p>
                                 {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                             </p>
                         </div>
