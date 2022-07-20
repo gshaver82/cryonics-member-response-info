@@ -64,7 +64,7 @@ module.exports = {
     putFitBitDeviceManualCheckin: function (req, res) {
         console.log("🚀 ~ putFitBitManualCheckin req.body", req.body)
         db.CryonicsModel
-        .updateOne({ firebaseAuthID: firebaseAuthID },
+        .updateOne({ firebaseAuthID: req.body.firebaseAuthID },
             {
                 $set: {
                     "fbDeviceName": req.body.deviceVersion, "fbDeviceBat": req.body.batteryLevel
