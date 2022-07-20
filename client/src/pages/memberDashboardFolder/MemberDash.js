@@ -49,8 +49,8 @@ function MemberDash() {
                                 //(some people may want shorter warning periods that others?)
                                 //TODO create another section for those that opt out of checkins 
                                 //and just want to use the site for information
-                                .filter(user => user.name !== 'Initialized user name' && user?.checkinDevices?.fitbit?.fitbitDeviceRegistered 
-                                && user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true)
+                                .filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered && 
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true)
                                 // a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated 
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
@@ -146,6 +146,7 @@ function MemberDash() {
                         </ul>
                     }
                 </div>
+                <h3>Users with alerts disabled</h3>
                 <div>
                     {userList &&
                         <ul className="list-group">
@@ -157,8 +158,8 @@ function MemberDash() {
                                 //(some people may want shorter warning periods that others?)
                                 //TODO create another section for those that opt out of checkins 
                                 //and just want to use the site for information
-                                .filter(user => user.name !== 'Initialized user name' && user?.checkinDevices?.fitbit?.fitbitDeviceRegistered 
-                                && user?.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false)
+                                .filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered && 
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false)
                                 // a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated 
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
