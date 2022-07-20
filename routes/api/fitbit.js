@@ -4,7 +4,7 @@ const exampleController = require("../../controllers/exampleController");
 //matches with /api/fitbit route
 router.route("/")
     .put(exampleController.putFitBitTokens)
-router.route("/WebClearFBAlert")
+router.route("/WebClearFBAlert/")
     .put(exampleController.WebClearFBAlert)
 router.route("/fitbitCheckin/")
     .put(exampleController.putFitBitManualCheckin)
