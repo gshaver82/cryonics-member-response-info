@@ -46,56 +46,48 @@ const fetch = require("node-fetch");
 console.log("🚀 ~ process.env.NODE_ENV", process.env.NODE_ENV)
 if (process.env.NODE_ENV === "production") {
     DBcalls();
-    AlertInterval();
-    mainInterval = setTimeout(async function () {
-        let user = {
-            name : "gene test",
-            firebaseAuthID: "Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1"
-        }
-        serverCode.FBAlertChain(user)
-    }, 25000);
+    // AlertInterval();
 }
 
 //alert interval this checks sync data only
-async function AlertInterval() {
-    mainInterval = setInterval(async function () {
-        const FitbitUsers = await serverCode.DBFindFitbitUsers();
-        FitbitUsers.map(async (user) => {
-            console.log("running sync alert checker for ", user.name)
-            try {
-                let FBsyncDate = user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated : 0
-                let activeState = user.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? user.checkinDevices.fitbit.syncAlertArray[0].activeState : false
-                const temptime = Date.now() - (new Date(FBsyncDate).getTime());
-                let minutes = Math.floor(temptime / 1000 / 60)
-                let timeSinceLastSyncAlert = Date.now() - (user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date : 0)
-                console.log(user.name + " minutes -- " + minutes + " activeState -- " + activeState + " timeSinceLastSyncAlert -- " + timeSinceLastSyncAlert)
-                if (minutes > 40 &&
-                    activeState === false &&
-                    (timeSinceLastSyncAlert > 900000)
-                ) {
-                    console.log("putting sync alert")
-                    serverCode.putSyncAlert(user);
-                } else if (minutes > 40) {
-                    console.log("NOT putSyncAlert. minutes > 40 but not puting sync alert, active state is true, or time since last sync alert is ", timeSinceLastSyncAlert)
-                } else {
-                    console.log("Completed sync alert checker for " + user.name + "minutes" + minutes)
-                }
+// async function AlertInterval() {
+//     mainInterval = setInterval(async function () {
+//         const FitbitUsers = await serverCode.DBFindFitbitUsers();
+//         FitbitUsers.map(async (user) => {
+//             // console.log("running sync alert checker for ", user.name)
+//             try {
+//                 let FBsyncDate = user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated ? user.checkinDevices.fitbit.checkinArray[0].dateCreated : 0
+//                 let activeState = user.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? user.checkinDevices.fitbit.syncAlertArray[0].activeState : false
+//                 const temptime = Date.now() - (new Date(FBsyncDate).getTime());
+//                 let minutes = Math.floor(temptime / 1000 / 60)
+//                 let timeSinceLastSyncAlert = Date.now() - (user?.checkinDevices?.fitbit?.syncAlertArray[0]?.date ? user.checkinDevices.fitbit.syncAlertArray[0].date : 0)
+//                 // console.log(user.name + " minutes -- " + minutes + " activeState -- " + activeState + " timeSinceLastSyncAlert -- " + timeSinceLastSyncAlert)
+//                 if (minutes > 40 &&
+//                     activeState === false &&
+//                     (timeSinceLastSyncAlert > 900000)
+//                 ) {
+//                     // console.log("putting sync alert")
+//                     serverCode.putSyncAlert(user);
+//                 } else if (minutes > 40) {
+//                     // console.log("NOT putSyncAlert. minutes > 40 but not puting sync alert, active state is true, or time since last sync alert is ", timeSinceLastSyncAlert)
+//                 } else {
+//                     // console.log("Completed sync alert checker for " + user.name + "minutes" + minutes)
+//                 }
 
 
-            } catch {
-                console.log("AlertInterval failed for " + user.name + " maybe no sync data yet?")
-            }
-        });
-        //30 seconds 30000
-        // 2 minutes 120000
-        //10 minutes 600000
-        //15 minutes 900000
-    }, 180000);
-}
+//             } catch {
+//                 console.log("AlertInterval failed for " + user.name + " maybe no sync data yet?")
+//             }
+//         });
+//         //30 seconds 30000
+//         // 2 minutes 120000
+//         //10 minutes 600000
+//         //15 minutes 900000
+//     }, 180000);
+// }
 
 async function DBcalls() {
     mainInterval = setInterval(async function () {
-        console.log("inside main interval");
         //find fitbit users who have also signed up for alerts
         const FitbitUsers = await serverCode.DBFindFitbitUsers();
         // console.log("inside DBcalls, getting FitbitUsers", FitbitUsers)
@@ -107,62 +99,49 @@ async function DBcalls() {
         //2 minutes 120000
         //10 minutes 600000
         //15 minutes 900000
-    }, 600000);
+    }, 900000);
 }
 
 const handleGetHeartrate = async (user) => {
-    console.log('interval code for ' + user.name + "getting HR date from fitbit")
+    console.log(user.name + ' starting interval code, getting HR date from fitbit')
     let fitBitDataJSON = 'starting value'
     let authToken = 'starting value'
     let FBoffsetFromUTChours = 'starting value'
     let timezoneOffset = 42;
-
     authToken = user.checkinDevices.fitbit.authToken
-
     let fitBitDevice = 0;
     if (!authToken || authToken === 'starting value') {
         console.log("!authToken for user ", user.name)
         return
     } else {
-        try {
-            fitBitDataJSON = await getFitBitData(authToken)
-        }
-        catch {
-            console.log("error getting getFitBitData")
-        }
+        try { fitBitDataJSON = await getFitBitData(authToken) }
+        catch { console.log("error getting getFitBitData") }
         try {
             fitBitDevice = await getFitBitDevice(authToken)
             // console.log("🚀getFitBitDevice  fitBitDevice", fitBitDevice)
         }
-        catch {
-            console.log("error getting fitbit device")
-        }
+        catch { console.log("error getting fitbit device") }
 
         try {
             FBProfile = await getFBProfile(authToken)
             // console.log("FBProfile", FBProfile)
             FBoffsetFromUTChours = (FBProfile?.user?.offsetFromUTCMillis) / 1000 / 60 / 60
             // console.log("🚀 ~ handleGetHeartrate ~ FBoffsetFromUTChours", FBoffsetFromUTChours)
-
             try {
                 if (FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16) {
                     timezoneOffset = FBoffsetFromUTChours
-                    // console.log("9999999999999 timezone automated", timezoneOffset)
                 } else {
-                    console.log("FBoffsetFromUTChours > -16 && FBoffsetFromUTChours < 16 is not true.... settings -6 default offset for CST")
+                    console.log("FBoffsetFromUTChours is outside reasonable range.... setting to -6 default offset for CST")
                     timezoneOffset = -6;
                 }
             } catch {
                 console.log("no time offset data")
             }
-
-
         }
         catch {
             console.log("error getting fitbit profile")
         }
     }
-    console.log("fitbit device logs ", fitBitDevice[0]?.deviceVersion, fitBitDevice[0]?.batteryLevel)
     if (fitBitDevice !== 0 && fitBitDevice[0]?.deviceVersion && fitBitDevice[0]?.batteryLevel) {
         try {
             serverCode.DBuserFitbitDevice(user.firebaseAuthID, fitBitDevice)
@@ -170,25 +149,12 @@ const handleGetHeartrate = async (user) => {
         catch {
             console.log("storing fitbit device info failed")
         }
-    } else if (fitBitDevice == 0) {
-        try {
-            console.log("fitBitDevice == 0")
-        }
-        catch {
-            console.log("storing fitbit device info failed")
-        }
-    } else {
-        console.log("ERROR sending fitbit device details, fitbit device has something loaded, but its not valid")
-    }
-
-
+    } else if (fitBitDevice == 0) { console.log("fitBitDevice == 0") }
+    else {console.log("ERROR sending fitbit device details, fitbit device has something loaded, but its not valid")}
 
     if (fitBitDataJSON.success === false) {
-        console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
         if (fitBitDataJSON.errors[0].errorType === "expired_token") {
-            console.log("!!!!!!!!!!expired_token for ", user.name)
             const fitbitRefreshTokenResponse = await getFitBitRefreshTokens(user.checkinDevices.fitbit.refreshToken)
-            console.log("fitbitRefreshTokenResponse", fitbitRefreshTokenResponse)
             const fitbitObjectForDB = {
                 firebaseAuthID: user.firebaseAuthID,
                 checkinDevices: {
@@ -199,23 +165,15 @@ const handleGetHeartrate = async (user) => {
                     },
                 }
             }
-            console.log("serverjs putting in new refreshed tokens fitbitObjectForDB", fitbitObjectForDB)
             serverCode.putFitBitTokens(fitbitObjectForDB)
                 .catch(err => console.log(err));
-
             fitBitDataJSON = await getFitBitData(authToken)
             if (fitBitDataJSON.success === false) {
-                console.log("!!!!!!!!!!!failed to get refreshed token for ", user.name)
-                console.log("fitBitDataJSON", fitBitDataJSON)
+                console.log("!!!!!!!!!!!CRITICAL error failed to get new refresh token for " + user.name + " fitBitDataJSON ", fitBitDataJSON)
                 return 1
-            } else {
-                console.log("no errors retrieving refreshed fitbit data for ", user.name)
             }
         }
-    } else {
-        console.log("no errors retrieving fitbit data for ", user.name)
     }
-
     fitBitDataJSON = JSON.stringify(fitBitDataJSON);
     fitBitDataJSON = fitBitDataJSON.replace(/-/g, '');
     fitBitDataJSON = JSON.parse(fitBitDataJSON);
@@ -224,7 +182,7 @@ const handleGetHeartrate = async (user) => {
     //if the current days entry does not exist then skip
 
     if (fitBitDataJSON.activitiesheartintraday.dataset && fitBitDataJSON.activitiesheartintraday.dataset.length === 0) {
-        console.log(user.name, "no dataset data found. user hasnt logged data for that time period, device doesnt support intraday, or just after midnight")
+        console.log(user.name + "no dataset data found. user hasnt logged data for that time period, device doesnt support intraday, or just after midnight")
         return 1
     } else if (fitBitDataJSON.activitiesheartintraday.dataset) {
         try {
@@ -242,22 +200,14 @@ const handleGetHeartrate = async (user) => {
             // console.log("🚀 ~ handleGetHeartrate ~ minutes", minutes)
             // const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
             // console.log("🚀 ~ handleGetHeartrate ~ FBcheckinDateCode", FBcheckinDateCode)
-
             let FBcheckinDateCode = new Date();
-
             FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() + timezoneOffset);
-
             // console.log("FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - 5);", FBcheckinDateCode)
-
             FBcheckinDateCode.setUTCHours(hours, minutes, '00');
             // console.log("FBcheckinDateCode.setUTCHours(hours, minutes, '00')", FBcheckinDateCode)
-
             FBcheckinDateCode.setUTCHours(FBcheckinDateCode.getUTCHours() - timezoneOffset);
 
-            const newArrayEntry =
-            {
-                dateCreated: FBcheckinDateCode
-            }
+            const newArrayEntry ={dateCreated: FBcheckinDateCode}
             let fitbitCheckinObjectForDB = {
                 firebaseAuthID: user.firebaseAuthID,
                 newArrayEntry
@@ -269,11 +219,11 @@ const handleGetHeartrate = async (user) => {
             const temptime = Date.now() - (new Date(FBcheckinDateCode).getTime());
             let newMinutes = Math.floor(temptime / 1000 / 60)
             // console.log("newMinutes", newMinutes)
-            if (newMinutes < 25) {
-                console.log(newMinutes + " minutes since sync registered HR. since minutes is under 25, NEED TO RESET")
-            } else {
-                console.log(newMinutes + " min since fitbit sync registered HR.")
-            }
+            // if (newMinutes < 25) {
+            //     console.log(newMinutes + " minutes since sync registered HR. since minutes is under 25, NEED TO RESET")
+            // } else {
+            //     console.log(newMinutes + " min since fitbit sync registered HR.")
+            // }
         } catch (error) {
             console.log("fitbit dataset pop failed", error);
             return 1
@@ -283,7 +233,7 @@ const handleGetHeartrate = async (user) => {
         console.log("fitBitDataJSON.activitiesheartintraday.dataset does not exist")
         return 1
     }
-    console.log('interval code complete for ', user.name)
+    console.log(user.name +' interval code complete')
     return 0
 }
 

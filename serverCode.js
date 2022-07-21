@@ -59,59 +59,59 @@ var self = module.exports = {
             i++;
         }
     },
-    FBSyncAlertChain: async function (user) {
-        // console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
-        // let updatedUser = ''
-        // let i = 0;
-        // let FBSyncAlertInterval = setInterval(async function () {
-        //     try {
-        //         console.log("^^^^^^^^FBSyncAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
-        //         updatedUser = await db.CryonicsModel
-        //             .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
-        //             .catch(err => res.status(422).json(err));
-        //         // console.log("updatedUser", updatedUser)
-        //         if (i >= user.alertStage.length) {
-        //             console.log("i >= user.alertStage.length, clearing interval")
-        //             clearInterval(FBSyncAlertInterval)
-        //         } else if (updatedUser.checkinDevices.fitbit.syncAlertArray[0].activeState === true) {
-        //             // console.log(i, " Index---alert array and alert stage IF",
-        //             //     updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
-        //             //     updatedUser.alertStage[i])
-        //             if (!updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] &&
-        //                 updatedUser.alertStage[i]) {
-        //                 updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] = Date.now()
-        //                 temp = await db.CryonicsModel
-        //                     .findOneAndUpdate(
-        //                         { firebaseAuthID: updatedUser.firebaseAuthID },
-        //                         updatedUser,
-        //                         {
-        //                             new: true,
-        //                         }).lean().exec()
-        //                     .catch(err => res.status(422).json(err));
-        //                 const txtBody = "Fitbit  SYNC alert " + (i + 1) + " for " + user.name.toUpperCase() +
-        //                     " Please sync your fitbit, or check up on that person. Click the link to send no further alert text/calls for this alert. " +
-        //                     "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id + " Reply STOP to unsubscribe"
-        //                 const txtNum = user.alertStage[i].num
-        //                 if (updatedUser.signedUpForAlerts === true && txtNum != "none" && txtNum != "-1none" && txtNum != "" && txtNum != "-1") {
-        //                     self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method || "txt")
-        //                 } else {
-        //                     console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false or number is none")
-        //                     console.log(txtNum, txtBody)
-        //                 }
-        //             }
+    // FBSyncAlertChain: async function (user) {
+    //     console.log("@@@@@@@@FBSyncAlertChain incoming user data is for user ", user)
+    //     let updatedUser = ''
+    //     let i = 0;
+    //     let FBSyncAlertInterval = setInterval(async function () {
+    //         try {
+    //             console.log("^^^^^^^^FBSyncAlertInterval " + i + " index " + user.alertStage.length + " user.alertStage.length ")
+    //             updatedUser = await db.CryonicsModel
+    //                 .findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec()
+    //                 .catch(err => res.status(422).json(err));
+    //             // console.log("updatedUser", updatedUser)
+    //             if (i >= user.alertStage.length) {
+    //                 console.log("i >= user.alertStage.length, clearing interval")
+    //                 clearInterval(FBSyncAlertInterval)
+    //             } else if (updatedUser.checkinDevices.fitbit.syncAlertArray[0].activeState === true) {
+    //                 // console.log(i, " Index---alert array and alert stage IF",
+    //                 //     updatedUser.checkinDevices.fitbit.alertArray[0].stage[i],
+    //                 //     updatedUser.alertStage[i])
+    //                 if (!updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] &&
+    //                     updatedUser.alertStage[i]) {
+    //                     updatedUser.checkinDevices.fitbit.syncAlertArray[0].stage[i] = Date.now()
+    //                     temp = await db.CryonicsModel
+    //                         .findOneAndUpdate(
+    //                             { firebaseAuthID: updatedUser.firebaseAuthID },
+    //                             updatedUser,
+    //                             {
+    //                                 new: true,
+    //                             }).lean().exec()
+    //                         .catch(err => res.status(422).json(err));
+    //                     const txtBody = "Fitbit  SYNC alert " + (i + 1) + " for " + user.name.toUpperCase() +
+    //                         " Please sync your fitbit, or check up on that person. Click the link to send no further alert text/calls for this alert. " +
+    //                         "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id + " Reply STOP to unsubscribe"
+    //                     const txtNum = user.alertStage[i].num
+    //                     if (updatedUser.signedUpForAlerts === true && txtNum != "none" && txtNum != "-1none" && txtNum != "" && txtNum != "-1") {
+    //                         self.twilioOutboundTxt(user.name, txtBody, txtNum, user.alertStage[i].method || "txt")
+    //                     } else {
+    //                         console.log("FBSyncAlertInterval alerts triggered, but not sent because signedUpForAlerts == false or number is none")
+    //                         console.log(txtNum, txtBody)
+    //                     }
+    //                 }
 
-        //         } else {
-        //             console.log("FBSyncAlertInterval active state not true (or something else), clearing interval")
-        //             clearInterval(FBSyncAlertInterval)
-        //         }
-        //     } catch (error) {
-        //         console.error(error);
-        //         console.log("FBSyncAlertInterval try catch error. Clearing interval")
-        //         clearInterval(FBSyncAlertInterval)
-        //     }
-        //     i++;
-        // }, 60000);
-    },
+    //             } else {
+    //                 console.log("FBSyncAlertInterval active state not true (or something else), clearing interval")
+    //                 clearInterval(FBSyncAlertInterval)
+    //             }
+    //         } catch (error) {
+    //             console.error(error);
+    //             console.log("FBSyncAlertInterval try catch error. Clearing interval")
+    //             clearInterval(FBSyncAlertInterval)
+    //         }
+    //         i++;
+    //     }, 60000);
+    // },
     twilioOutboundTxt: function (user, txtBody, txtNum, callOrTxt) {
         console.log("twilioOutboundCount", twilioOutboundCount)
         const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -223,30 +223,30 @@ var self = module.exports = {
             )
             .catch(err => console.log(err));
     },
-    putSyncAlert: async function (user) {
-        console.log("$$$$$$$$$$$$$$$putSyncAlert function user.name", user.name)
-        const syncAlertArray =
-        {
-            date: Date.now(),
-            activeState: true,
-            stage: []
-        }
-        try {
-            update = await db.CryonicsModel
-                .updateOne({ firebaseAuthID: user.firebaseAuthID },
-                    {
-                        $push: {
-                            "checkinDevices.fitbit.syncAlertArray": {
-                                $each: [syncAlertArray],
-                                $position: 0,
-                                $slice: 250
-                            }
-                        },
-                    }
-                ).exec()
-        } catch (err) {
-            console.log("ERROR putSyncAlert")
-        }
-        self.FBSyncAlertChain(user);
-    },
+    // putSyncAlert: async function (user) {
+    //     console.log("$$$$$$$$$$$$$$$putSyncAlert function user.name", user.name)
+    //     const syncAlertArray =
+    //     {
+    //         date: Date.now(),
+    //         activeState: true,
+    //         stage: []
+    //     }
+    //     try {
+    //         update = await db.CryonicsModel
+    //             .updateOne({ firebaseAuthID: user.firebaseAuthID },
+    //                 {
+    //                     $push: {
+    //                         "checkinDevices.fitbit.syncAlertArray": {
+    //                             $each: [syncAlertArray],
+    //                             $position: 0,
+    //                             $slice: 250
+    //                         }
+    //                     },
+    //                 }
+    //             ).exec()
+    //     } catch (err) {
+    //         console.log("ERROR putSyncAlert")
+    //     }
+    //     self.FBSyncAlertChain(user);
+    // },
 };
