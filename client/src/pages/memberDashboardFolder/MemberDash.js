@@ -55,6 +55,7 @@ function MemberDash() {
 
     const handleGroupButton = async (e) => {
         console.log("group", e.target.textContent)
+        console.log('user stuff',LoggedInUser._id , userList)
         if (LoggedInUser.group.includes(e.target.textContent) || e.target.textContent === 'public') {
             setGroup(e.target.textContent)
         }
@@ -63,10 +64,31 @@ function MemberDash() {
 
     return (
         <>
-            <div className="mb-2">
+            {/* <div className="mb-2">
                 <div className="d-flex justify-content-between">
                 </div>
+            </div> */}
+            <div className="dropdown">
+                <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select Group
+                </button>
+                <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {LoggedInUser.group &&
+                        <div>
+                            <div className="dropdown-item" onClick={handleGroupButton} key="public" >public</div>
+                            {LoggedInUser.group
+                                .filter(groupfilter => groupfilter !== 'public')
+                                .map(mappedgroup => {
+                                    return (
+                                        <div className="dropdown-item" onClick={handleGroupButton} key={mappedgroup} >{mappedgroup}</div>
+                                    )
+                                })
+                            }
+                        </div>
+                    }
+                </div>
             </div>
+
             <div>
                 {/* if isLoading or userList is false, then the data following && will not be displayed */}
                 {
@@ -75,36 +97,14 @@ function MemberDash() {
                         : <h3>Showing all {group} group users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
                 }
 
-
-                <div class="dropdown">
-                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Select Group
-                    </button>
-                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        {LoggedInUser.group &&
-                            <div>                                
-                                <div class="dropdown-item" onClick={handleGroupButton} key="public" >public</div>
-                                {LoggedInUser.group
-                                .filter(groupfilter => groupfilter !== 'public')
-                                .map(mappedgroup => {
-                                    return (
-                                        <div class="dropdown-item" onClick={handleGroupButton} key={mappedgroup} >{mappedgroup}</div>
-                                    )
-                                })
-                                }
-                            </div>
-                        }
-                    </div>
-                </div>
-
-
-
                 <span>click on each members name to see thier full profile.</span>
                 <div>
                     {userList &&
                         <ul className="list-group">
+                            {/* so this filters by users with fitbit devices and selects people according to the group selected. IF PRIVATE only show the user matching the logged in user */}
                             {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
-                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true && user.group.includes(group) === true)
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true && user.group.includes(group) === true
+                                && !(group !== 'private' && user._id  !== LoggedInUser._id))
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
@@ -182,7 +182,8 @@ function MemberDash() {
                     {userList &&
                         <ul className="list-group">
                             {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
-                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false && user.group.includes(group) === true)
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false && user.group.includes(group) === true
+                                && !(group !== 'private' && user._id  !== LoggedInUser._id))
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
