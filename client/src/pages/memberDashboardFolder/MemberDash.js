@@ -104,7 +104,12 @@ function MemberDash() {
                             {/* so this filters by users with fitbit devices and selects people according to the group selected. IF PRIVATE only show the user matching the logged in user */}
                             {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
                                 user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true && user.group.includes(group) === true
-                                && !(group !== 'private' && user._id  !== LoggedInUser._id))
+                                && (
+                                    (group === 'private' && user._id  === LoggedInUser._id)
+                                    ||
+                                    (group !== 'private')
+                                    )
+                                    )
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
@@ -183,7 +188,12 @@ function MemberDash() {
                         <ul className="list-group">
                             {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
                                 user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false && user.group.includes(group) === true
-                                && !(group !== 'private' && user._id  !== LoggedInUser._id))
+                                && (
+                                    (group === 'private' && user._id  === LoggedInUser._id)
+                                    ||
+                                    (group !== 'private')
+                                    )
+                                    )
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
