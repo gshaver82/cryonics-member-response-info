@@ -37,7 +37,7 @@ var self = module.exports = {
                         const txtBody = "Fitbit  WATCH alert " + (i + 1) + " for " + user.name.toUpperCase() + " " +
                             googleMapsURL +
                             "Please check your watch, or check up on that person. " +
-                            "Click the link to clear this alert. " +
+                            "Click here to CLEAR THIS ALERT. " +
                             "https://cryonics-member-response-info.herokuapp.com/FBAlertClear/" + user._id + " Reply STOP to unsubscribe"
                         const txtNum = user.alertStage[i].num
                         if (updatedUser.signedUpForAlerts === true && txtNum != "none" && txtNum != "-1none" && txtNum != "" && txtNum != "-1") {

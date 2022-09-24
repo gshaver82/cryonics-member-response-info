@@ -39,6 +39,8 @@ function PrivateHomePage() {
 
     useEffect(() => {
         startupcode();
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     function startupcode() {
         let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
@@ -219,6 +221,8 @@ function PrivateHomePage() {
             await API.getOneUserByFirebaseID(firebaseUserID)
                 .then(res => setUser(res.data))
                 .catch(err => console.log(err));
+
+            // eslint-disable-next-line react-hooks/exhaustive-deps
             const response = await API.putClearFBAlert(user._id)
                 .then(setisLoading(false))
                 .catch(err => console.log(err));
@@ -269,7 +273,7 @@ function PrivateHomePage() {
 
     const handleWebClearFBAlert = async () => {
         setisLoading(true)
-        let mongoUserId = {_id: user._id}
+        let mongoUserId = { _id: user._id }
         const response = await API.putWebClearFBAlert(mongoUserId)
             .then(res => setAlertResponse(res.data))
             .catch(err => console.log(err));
@@ -344,7 +348,7 @@ function PrivateHomePage() {
                     <b>FITBIT</b>
                     {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
                         ? <div>
-                            <p>Latest Fitbit reading: 
+                            <p>Latest Fitbit reading:
                                 {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
                                 {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
                             </p>

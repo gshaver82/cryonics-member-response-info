@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from "react-router-dom";
-// import firebaseEnvConfigs from '../../firebase';
+import firebaseEnvConfigs from '../../firebase';
 // import { Link } from 'react-router-dom';
 import API from "../../utils/API";
 import Battery from "./../../components/Battery";
 
-// const firebase = firebaseEnvConfigs.firebase_;
+const firebase = firebaseEnvConfigs.firebase_;
 
 function MemberDash() {
+    const firebaseUserID = firebase.auth().currentUser.uid
 
     // const firebaseUserID = firebase.auth().currentUser.uid
     //userList is the array of objects that this webpage will map through and display 
@@ -15,17 +16,49 @@ function MemberDash() {
 
     const [userList, setUsers] = useState([]);
     const [isLoading, setisLoading] = useState(true);
+    const [LoggedInUser, setUser] = useState("starting user condition");
+    const [group, setGroup] = useState("private");
 
     //use effect that runs once to pull the complete user list.  the  .[] at the end means
     // empty dependancy so it will only run ONCE after initial rerender
     //if there was something in there then the use effect runs any time that something runs.
+    function setstartgroup() {
+        // console.log("startgroup", LoggedInUser)
+        //doing this to find out of the user is member of any created group.
+        if (LoggedInUser !== "starting user condition") {
+            const result = LoggedInUser?.group?.filter(group => group !== 'public' && group !== 'private' && group !== 'admin');
+            if (result.length > 0) {
+                setGroup(result[0])
+            } else if (result.includes("public")) {
+                setGroup("public")
+            } else {
+                setGroup("private")
+            }
+        }
+    }
+
     useEffect(() => {
+        API.getOneUserByFirebaseID(firebaseUserID)
+            .then(res => setUser(res.data))
+            .then(setisLoading(false))
+            .catch(err => console.log(err));
         API.getuserList()
             .then(res => setUsers(res.data))
             .then(setisLoading(false))
             .catch(err => console.log(err));
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+    useEffect(() => {
+        setstartgroup()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [LoggedInUser]);
 
+    const handleGroupButton = async (e) => {
+        console.log("group", e.target.textContent)
+        if (LoggedInUser.group.includes(e.target.textContent) || e.target.textContent === 'public') {
+            setGroup(e.target.textContent)
+        }
+    };
 
 
     return (
@@ -36,22 +69,42 @@ function MemberDash() {
             </div>
             <div>
                 {/* if isLoading or userList is false, then the data following && will not be displayed */}
-                <h3>Showing all users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                {
+                    group === "private"
+                        ? <h3>Private group selected, just showing your information{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                        : <h3>Showing all {group} group users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                }
+
+
+                <div class="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Select Group
+                    </button>
+                    <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                        {LoggedInUser.group &&
+                            <div>                                
+                                <div class="dropdown-item" onClick={handleGroupButton} key="public" >public</div>
+                                {LoggedInUser.group
+                                .filter(groupfilter => groupfilter !== 'public')
+                                .map(mappedgroup => {
+                                    return (
+                                        <div class="dropdown-item" onClick={handleGroupButton} key={mappedgroup} >{mappedgroup}</div>
+                                    )
+                                })
+                                }
+                            </div>
+                        }
+                    </div>
+                </div>
+
+
+
                 <span>click on each members name to see thier full profile.</span>
                 <div>
                     {userList &&
                         <ul className="list-group">
-                            {userList
-                                //this will sort by website checkin date. putting the oldest at the top
-                                //to verify this sort works, change to < and you should see newest at top.
-                                //this should work because ISO dates can be compared lexicographically
-                                //TODO create a highlighted section of longest checkin 
-                                //(some people may want shorter warning periods that others?)
-                                //TODO create another section for those that opt out of checkins 
-                                //and just want to use the site for information
-                                .filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered && 
-                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true)
-                                // a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated 
+                            {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true && user.group.includes(group) === true)
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
@@ -86,12 +139,6 @@ function MemberDash() {
                                     else { return 0 }
                                 })
                                 .map(user => {
-                                    //this gets the milliseconds since checkin
-                                    // const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                    // let webMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                    // let webHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                    // let webDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-
                                     let FBMinutes = "--"
                                     let FBHours = "--"
                                     let FBDays = "--"
@@ -104,23 +151,9 @@ function MemberDash() {
                                             <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                                 <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                     <p><strong>NAME: </strong>{user.name}</p>
-                                                    <p>
-                                                        {user?.signedUpForAlerts
-                                                            ? "Alerts enabled"
-                                                            : "Alerts disabled"
-                                                        }
-                                                    </p>
-                                                    <p>
-                                                        {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-                                                            ? "active fitbit watch alert!"
-                                                            : "No active fitbit watch alert"
-                                                        }
-                                                    </p>
-
-                                                    {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
-                                                    ? <p>active sync alert!</p>
-                                                    : <p>No active sync alert</p>
-                                                } */}
+                                                    <p>{user?.signedUpForAlerts ? "Alerts enabled" : "Alerts disabled"}</p>
+                                                    <p>{user?.checkinDevices?.fitbit?.alertArray[0]?.activeState ? "active fitbit watch alert!" : "No active fitbit watch alert"}</p>
+                                                    {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? <p>active sync alert!</p>: <p>No active sync alert</p>} */}
                                                     <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
                                                     {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
                                                         ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
@@ -134,9 +167,7 @@ function MemberDash() {
                                             <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                                 <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                     <p><strong>NAME: </strong>{user.name}</p>
-                                                    <p>
-                                                        No active devices detected. Fitbit might not be setup, or has not completed syncing yet.
-                                                    </p>
+                                                    <p>No active devices detected. Fitbit might not be setup, or has not completed syncing yet.</p>
                                                 </Link>
                                             </li>
                                         );
@@ -150,17 +181,8 @@ function MemberDash() {
                 <div>
                     {userList &&
                         <ul className="list-group">
-                            {userList
-                                //this will sort by website checkin date. putting the oldest at the top
-                                //to verify this sort works, change to < and you should see newest at top.
-                                //this should work because ISO dates can be compared lexicographically
-                                //TODO create a highlighted section of longest checkin 
-                                //(some people may want shorter warning periods that others?)
-                                //TODO create another section for those that opt out of checkins 
-                                //and just want to use the site for information
-                                .filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered && 
-                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false)
-                                // a.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated 
+                            {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
+                                user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false && user.group.includes(group) === true)
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
@@ -195,12 +217,6 @@ function MemberDash() {
                                     else { return 0 }
                                 })
                                 .map(user => {
-                                    //this gets the milliseconds since checkin
-                                    // const temptime = Date.now() - (new Date(user.checkinDevices.WebsiteCheckIn.checkinArray[0].dateCreated).getTime());
-                                    // let webMinutes = Math.floor(temptime / 1000 / 60 % 60) < 0 ? 0 : Math.floor(temptime / 1000 / 60 % 60);
-                                    // let webHours = Math.floor(temptime / 1000 / 60 / 60 % 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 % 24);
-                                    // let webDays = Math.floor(temptime / 1000 / 60 / 60 / 24) < 0 ? 0 : Math.floor(temptime / 1000 / 60 / 60 / 24);
-
                                     let FBMinutes = "--"
                                     let FBHours = "--"
                                     let FBDays = "--"
@@ -213,23 +229,9 @@ function MemberDash() {
                                             <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                                 <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                     <p><strong>NAME: </strong>{user.name}</p>
-                                                    <p>
-                                                        {user?.signedUpForAlerts
-                                                            ? "Alerts enabled"
-                                                            : "Alerts disabled"
-                                                        }
-                                                    </p>
-                                                    <p>
-                                                        {user?.checkinDevices?.fitbit?.alertArray[0]?.activeState
-                                                            ? "active fitbit watch alert!"
-                                                            : "No active fitbit watch alert"
-                                                        }
-                                                    </p>
-
-                                                    {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState
-                                                    ? <p>active sync alert!</p>
-                                                    : <p>No active sync alert</p>
-                                                } */}
+                                                    <p>{user?.signedUpForAlerts ? "Alerts enabled" : "Alerts disabled"}</p>
+                                                    <p>{user?.checkinDevices?.fitbit?.alertArray[0]?.activeState ? "active fitbit watch alert!" : "No active fitbit watch alert"}</p>
+                                                    {/* {user?.checkinDevices?.fitbit?.syncAlertArray[0]?.activeState ? <p>active sync alert!</p>: <p>No active sync alert</p>} */}
                                                     <p>{FBDays} d {FBHours} h {FBMinutes} min since fitbit sync checkin</p>
                                                     {(user?.checkinDevices?.fitbit?.fbDeviceName && user?.checkinDevices?.fitbit?.fbDeviceBat)
                                                         ? <div><Battery device={user.checkinDevices.fitbit.fbDeviceName} batlvl={user.checkinDevices.fitbit.fbDeviceBat} /></div>
@@ -243,9 +245,7 @@ function MemberDash() {
                                             <li className="list-group-item list-group-item-action dashboard-li" key={user._id}>
                                                 <Link className="dashboard-li" to={`MemberDashboard/${user._id}`}>
                                                     <p><strong>NAME: </strong>{user.name}</p>
-                                                    <p>
-                                                        No active devices detected. Fitbit might not be setup, or has not completed syncing yet.
-                                                    </p>
+                                                    <p>No active devices detected. Fitbit might not be setup, or has not completed syncing yet.</p>
                                                 </Link>
                                             </li>
                                         );
