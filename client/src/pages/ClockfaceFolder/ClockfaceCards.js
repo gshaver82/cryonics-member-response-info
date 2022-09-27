@@ -73,14 +73,27 @@ function PortfolioPage() {
     return (
 
         <>
+            <div className="container">
+
+                <div className="row justify-content-center recipe-border-2">
+                    <div className="col justify-content-center">
+                        <p>The updated clockface looks like this: </p>
+                        <img className="img-responsive frontimg" src='./images/clockface_screenshot.png' alt="clockface screenshot" ></img>
+                    </div>
+                    <div className="col justify-content-center">
+                        <p>use this QR code on the phone that you will be using that has the fitbit app, or click <a href="https://gallery.fitbit.com/details/6b988099-f55c-4862-9d5d-99fc804760d2">here</a></p>
+                        <img className="img-responsive frontimg" src='./images/clockFaceLinkQRCode.png' alt="clock Face Link QRCode" ></img>
+                    </div>
+                </div>
+            </div>
+            <h1>Fitbit clockface Setup walkthrough</h1>
             <div className="clockfaceStyles">
-                <p>Fitbit clockface Setup walkthrough</p>
                 {descriptions
                     .map((description, index) => (
                         <div className="card2">
                             <div className="content">
                                 <div className="projecttitle">
-                                    <strong>Step {index +1}</strong>
+                                    <strong>Step {index + 1}</strong>
                                 </div>
                                 <br />
                                 <div className="descriptions">{descriptions[index]}</div>

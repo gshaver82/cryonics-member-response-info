@@ -466,3 +466,12 @@ input[type=number]::-webkit-inner-spin-button:focus {
 .displaynone {
     display: none;
 }
+.test{
+    background-color: red;
+}
+.frontimg{
+    min-width: 100px;
+    max-width: 400px;
+    width: 100%;
+    height: auto;
+}
