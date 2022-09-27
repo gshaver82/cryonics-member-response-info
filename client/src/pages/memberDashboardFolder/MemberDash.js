@@ -61,7 +61,6 @@ function MemberDash() {
         }
     };
 
-
     return (
         <>
             {/* <div className="mb-2">
@@ -189,7 +188,8 @@ function MemberDash() {
                         </ul>
                     }
                 </div>
-                {group !== 'admin' ?? <h3>Users with alerts disabled</h3>}
+                {(group !== "admin" && group !== "private") && <h3>Users with alerts disabled</h3>}
+
                 <div>
                     {userList &&
                         <ul className="list-group">
