@@ -92,9 +92,16 @@ function MemberDash() {
             <div>
                 {/* if isLoading or userList is false, then the data following && will not be displayed */}
                 {
-                    group === "private"
-                        ? <h3>Private group selected, just showing your information{isLoading && <span>please wait, loading the data now.</span>}</h3>
-                        : <h3>Showing all {group} group users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                    group === "private" &&
+                    <h3>Private group selected, just showing your information{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                }
+                {
+                    group === "admin" &&
+                    <h3>admin selected, showing all users{isLoading && <span>please wait, loading the data now.</span>}</h3>
+                }
+                {
+                    (group !== "private" && group !== "admin") &&
+                        <h3>Showing all {group} group users here{isLoading && <span>please wait, loading the data now.</span>}</h3>
                 }
 
                 <span>click on each members name to see thier full profile.</span>
@@ -102,14 +109,14 @@ function MemberDash() {
                     {userList &&
                         <ul className="list-group">
                             {/* so this filters by users with fitbit devices and selects people according to the group selected. IF PRIVATE only show the user matching the logged in user */}
-                            {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
+                            {userList.filter(user => (user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
                                 user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === true && user.group.includes(group) === true
                                 && (
-                                    (group === 'private' && user._id  === LoggedInUser._id)
+                                    (group === 'private' && user._id === LoggedInUser._id)
                                     ||
                                     (group !== 'private')
-                                    )
-                                    )
+                                )) || (user.name !== 'Initialized user name' && LoggedInUser.group.includes("admin") === true && group === "admin")
+                            )
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts
@@ -189,11 +196,11 @@ function MemberDash() {
                             {userList.filter(user => user.name !== 'Initialized user name' && user.checkinDevices?.fitbit?.fitbitDeviceRegistered &&
                                 user.checkinDevices?.fitbit?.checkinArray[0]?.dateCreated && user.signedUpForAlerts === false && user.group.includes(group) === true
                                 && (
-                                    (group === 'private' && user._id  === LoggedInUser._id)
+                                    (group === 'private' && user._id === LoggedInUser._id)
                                     ||
                                     (group !== 'private')
-                                    )
-                                    )
+                                )
+                            )
                                 .sort(function (a, b) {
                                     //this will sort each user and put the user with the longest time since checkin at top. 
                                     //TODO sort by signed up for alerts field and map another time for people not wanting alerts

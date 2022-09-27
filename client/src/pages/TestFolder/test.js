@@ -83,8 +83,7 @@ function Test() {
     if (firebaseUserID === 'Ysgu9k3nXVTmBPWY2T6cZ0w7Jpw1' || firebaseUserID === "Cr0yqDpvgAcVcV2ijZlHBAcSKZf1") {
         return (
             <div>
-                <h1>TESTING PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
-                <p>mapping through all users here</p>
+                <h1>ADMIN PAGE{isLoading && <span>please wait, loading the data now.</span>}</h1>
                 {userList &&
                     <ul className="list-group">
                         {userList
