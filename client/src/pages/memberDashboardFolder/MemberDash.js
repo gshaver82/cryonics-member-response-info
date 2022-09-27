@@ -189,7 +189,7 @@ function MemberDash() {
                         </ul>
                     }
                 </div>
-                <h3>Users with alerts disabled</h3>
+                {group !== 'admin' ?? <h3>Users with alerts disabled</h3>}
                 <div>
                     {userList &&
                         <ul className="list-group">
