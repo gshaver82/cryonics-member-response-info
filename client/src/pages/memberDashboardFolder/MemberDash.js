@@ -54,8 +54,8 @@ function MemberDash() {
     }, [LoggedInUser]);
 
     const handleGroupButton = async (e) => {
-        console.log("group", e.target.textContent)
-        console.log('user stuff',LoggedInUser._id , userList)
+        // console.log("group", e.target.textContent)
+        // console.log('user stuff',LoggedInUser._id , userList)
         if (LoggedInUser.group.includes(e.target.textContent) || e.target.textContent === 'public') {
             setGroup(e.target.textContent)
         }

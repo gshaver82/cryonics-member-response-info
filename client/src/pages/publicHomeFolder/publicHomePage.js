@@ -18,7 +18,7 @@ function PublicHomePage() {
                 <section className="d-flex justify-content-center my-4">
                     {!!currentUser ? (
                         <>
-                            <Link to="/privateHomePage" className="btn-secondary rb-btn mr-4">private Home Page</Link> 
+                            <Link to="/privateHomePage" className="btn-secondary rb-btn mr-4">Control Panel</Link> 
                             <button className="rb-btn btn-info" onClick={() => app.auth().signOut()}>Sign Out</button>
                         </>
                         ) : (
