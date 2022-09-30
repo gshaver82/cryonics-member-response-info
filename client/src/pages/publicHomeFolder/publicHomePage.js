@@ -37,7 +37,7 @@ function PublicHomePage() {
                         <p>
                             The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
                             If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
-                            and can be paused manually as well.
+                            and can be paused manually as well. Accuracy is pretty good, but not perfect... see future plans below. 
                         </p>
                         <a href="/clockfacecards" class="btn btn-primary">Setup</a>
 
@@ -74,17 +74,16 @@ function PublicHomePage() {
                         </h2>
                         <p>
                             Future plans are centered around improving accuracy. Currently I am relying on these devices to tell me when there is no heart rate detected.
-                            False positives and false negatives are a problem. With motion detection I expect the false positive alert to happen once a year or less with proper use.
-                            False negatives are much harder to test. All reflective PPG sensors have a tendency to try their best to show a heart rate. 
-                            These devices arent coded for end of life scenarios, they are coded for fitness and health reasons. people will expect a heart rate to be displayed at all times.
+                            With motion detection I expect a false positive alert to happen once a year or less with proper use.
+                            False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy. 
                         </p>
                         <p>
-                            The way these devices try to get a signal at all costs is to "turn up the volume" on the signal. by amplifying the gain it is hoped that the device will get a signal.
+                            The way these devices try to get a signal at all costs is to "turn up the volume" on the signal.
                             What can then happen is that the device will "turn up the volume" so much that the background signal noise gets interpreted as a heartrate signal.
                             I will get the raw PPG heart rate signal data from the sensor and look for a heart rate in the same manner, but without allowing too much signal amplification.
                             This might result in false positives when the user is exercising or otherwise in motion that results in poor signal quality. 
                             In this case the motion detection will prevent the false positive.
-                            While sleeping, motion detection wont be in place, but the lack of motion means the PPG HR sensor will have a good signal. 
+                            While sleeping, motion detection wont be applicable, but the lack of motion means the PPG HR sensor will have a good signal. 
                         </p>
                     </div>
                     <div className="col-auto ">
