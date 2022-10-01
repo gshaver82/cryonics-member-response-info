@@ -10,7 +10,7 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 
 # Monitor your heartrate and motion.
 <p>  
-      <img float="left" alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png" max-width="336px"/>
+      <img float="left" alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png"/>
       The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
       If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
       and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
@@ -20,7 +20,7 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 # Automatically send out alerts to those you choose.
 
 
-<img alt="alertText2.png" src="/zgithubScreenshots/alertText2.png" width="547" />
+<img alt="alertText2.png" src="/zgithubScreenshots/alertText2.png"  />
 The alert generated from your watch will go to your phone.
 Your phone will then attempt to get a GPS location and then send the alert via internet to this website.
 This server will then text or call the numbers you put in your profile.
@@ -30,7 +30,7 @@ You can clear an alert by clicking the link in the text message, or by pressing 
 
 # Future plans.
 
-<img alt="rawPPG.png" src="/zgithubScreenshots/rawPPG.png" width="547" />
+<img alt="rawPPG.png" src="/zgithubScreenshots/rawPPG.png"  />
 Future plans are centered around improving accuracy. Currently I am relying on these devices to tell me when there is no heart rate detected.
 With motion detection I expect a false positive alert to happen once a year or less with proper use.
 False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy.
