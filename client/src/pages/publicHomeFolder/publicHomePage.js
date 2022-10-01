@@ -16,6 +16,8 @@ function PublicHomePage() {
                     <p className="divider font-script">Public Home page</p>
                 </section>
                 <section className="d-flex justify-content-center my-4">
+
+
                     {!!currentUser ? (
                         <>
                             <Link to="/privateHomePage" className="btn-secondary rb-btn mr-4">Control Panel</Link>
@@ -37,9 +39,9 @@ function PublicHomePage() {
                         <p>
                             The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
                             If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
-                            and can be paused manually as well. Accuracy is pretty good, but not perfect... see future plans below. 
+                            and can be paused manually as well. Accuracy is pretty good, but not perfect... see future plans below.
                         </p>
-                        <a href="/clockfacecards" class="btn btn-primary">Setup</a>
+                        <a href="/clockfacecards" class="btn btn-primary">Setup instructions</a>
 
                     </div>
                     <div className="col-auto ">
@@ -61,7 +63,7 @@ function PublicHomePage() {
                             This server will then text or call the numbers you put in your profile.
                             It will start with the first number, and then 60 seconds later, the next number and so on.
                             It is recommended to have the system text you first, then call you. After that it should be setup to call your emergency contacts.
-                            You can clear an alert by clicking the link in the text message, or by pressing 1 during the automated phone call. 
+                            You can clear an alert by clicking the link in the text message, or by pressing 1 during the automated phone call.
 
                         </p>
                     </div>
@@ -75,15 +77,15 @@ function PublicHomePage() {
                         <p>
                             Future plans are centered around improving accuracy. Currently I am relying on these devices to tell me when there is no heart rate detected.
                             With motion detection I expect a false positive alert to happen once a year or less with proper use.
-                            False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy. 
+                            False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy.
                         </p>
                         <p>
                             The way these devices try to get a signal at all costs is to "turn up the volume" on the signal.
                             What can then happen is that the device will "turn up the volume" so much that the background signal noise gets interpreted as a heartrate signal.
                             I will get the raw PPG heart rate signal data from the sensor and look for a heart rate in the same manner, but without allowing too much signal amplification.
-                            This might result in false positives when the user is exercising or otherwise in motion that results in poor signal quality. 
+                            This might result in false positives when the user is exercising or otherwise in motion that results in poor signal quality.
                             In this case the motion detection will prevent the false positive.
-                            While sleeping, motion detection wont be applicable, but the lack of motion means the PPG HR sensor will have a good signal. 
+                            While sleeping, motion detection wont be applicable, but the lack of motion means the PPG HR sensor will have a good signal.
                         </p>
                     </div>
                     <div className="col-auto ">
