@@ -20,7 +20,8 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 # Automatically send out alerts to those you choose.
 
 
-<img alt="alertText2.png" src="/zgithubScreenshots/alertText2.png"  />
+<!-- <img alt="alertText2.png" src="/zgithubScreenshots/alertText2.png"  /> -->
+![alertText2](/zgithubScreenshots/alertText2.png)
 The alert generated from your watch will go to your phone.
 Your phone will then attempt to get a GPS location and then send the alert via internet to this website.
 This server will then text or call the numbers you put in your profile.
@@ -30,7 +31,7 @@ You can clear an alert by clicking the link in the text message, or by pressing 
 
 # Future plans.
 
-<img alt="rawPPG.png" src="/zgithubScreenshots/rawPPG.png"  />
+<img alt="rawPPG.png" src="/zgithubScreenshots/rawPPG.jpg"  />
 Future plans are centered around improving accuracy. Currently I am relying on these devices to tell me when there is no heart rate detected.
 With motion detection I expect a false positive alert to happen once a year or less with proper use.
 False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy.
