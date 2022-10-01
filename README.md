@@ -9,12 +9,10 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 </p>
 
 # Monitor your heartrate and motion.
-<p>  
-      <img float="left" alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png"/>
-      The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
-      If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
-      and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
-</p>
+<!-- <img float="left" alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png"/> -->
+<img align="left" alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png">
+The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion. If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging, and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
+<!-- ![clockface_screenshot](/zgithubScreenshots/clockface_screenshot.png) -->
 
 
 # Automatically send out alerts to those you choose.
