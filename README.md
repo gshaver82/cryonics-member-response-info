@@ -10,21 +10,21 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 
 # Monitor your heartrate and motion.
 
-<p><img align="left" alt="clockface_screenshot" src="/zgithubScreenshots/clockface_screenshot.png">
+<div><img align="left" alt="clockface_screenshot" src="/zgithubScreenshots/clockface_screenshot.png">
 The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion. If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging, and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
-</p>
-
+</div>
+<br/>
 # Automatically send out alerts to those you choose.
 
 
-<img align="left" alt="alertText2" src="/zgithubScreenshots/alertText2.png">
+<div><img align="left" alt="alertText2" src="/zgithubScreenshots/alertText2.png">
 The alert generated from your watch will go to your phone.
 Your phone will then attempt to get a GPS location and then send the alert via internet to this website.
 This server will then text or call the numbers you put in your profile.
 It will start with the first number, and then 60 seconds later, the next number and so on.
 It is recommended to have the system text you first, then call you. After that it should be setup to call your emergency contacts.
 You can clear an alert by clicking the link in the text message, or by pressing 1 during the automated phone call.
-<br></br>
+</div>
 
 # Future plans.
 
