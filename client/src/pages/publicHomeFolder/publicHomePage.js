@@ -39,7 +39,7 @@ function PublicHomePage() {
                         <p>
                             The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
                             If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
-                            and can be paused manually as well. Accuracy is pretty good, but not perfect... see future plans below.
+                            and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
                         </p>
                         <a href="/clockfacecards" class="btn btn-primary">Setup instructions</a>
 

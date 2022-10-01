@@ -3,19 +3,45 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 # Screenshot
 <br></br>
 <p float="left">
-      <img alt="screenshot 19.png" src="/zgithubScreenshots/19.png" width="273" />
-      <img alt="screenshot 15.png" src="/zgithubScreenshots/15.png" width="550" />
-      <img alt="screenshot 16.png" src="/zgithubScreenshots/16.png" width="830" />
-      <img alt="screenshot 11.png" src="/zgithubScreenshots/11.png" width="270" />
-      <img alt="screenshot 17.png" src="/zgithubScreenshots/17.png" width="547" />
+      <img alt="19.png" src="/zgithubScreenshots/19.png" width="273" />
+      <!-- <img alt="screenshot 16.png" src="/zgithubScreenshots/16.png" width="830" /> -->
+      <img alt="17.png" src="/zgithubScreenshots/17.png" width="547" />
+      <img alt="clockFaceLinkQRCode.png" src="/zgithubScreenshots/clockFaceLinkQRCode.png" width="547" />
 </p>
 
-# Description
-This site will keep a database of users, and check their alert status. if a user has an alert, the server will text/call the numbers in their profile, waiting 1 minute in between notifications. the alert status can be canceled by clicking the link in the text. 
+# Monitor your heartrate and motion.
+<img alt="clockface_screenshot.png" src="/zgithubScreenshots/clockface_screenshot.png" width="547" />
+The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion.
+If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging,
+and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
 
-This is also designed to work with a custom built fitbit clockface app. that clockface will monitor HR and immediately start the alert chain process upon loss of HR signal. 
+# Automatically send out alerts to those you choose.
+
+<img alt="alertText2.png" src="/zgithubScreenshots/alertText2.png" width="547" />
+The alert generated from your watch will go to your phone.
+Your phone will then attempt to get a GPS location and then send the alert via internet to this website.
+This server will then text or call the numbers you put in your profile.
+It will start with the first number, and then 60 seconds later, the next number and so on.
+It is recommended to have the system text you first, then call you. After that it should be setup to call your emergency contacts.
+You can clear an alert by clicking the link in the text message, or by pressing 1 during the automated phone call.
+
+# Future plans.
+
+<img alt="rawPPG.png" src="/zgithubScreenshots/rawPPG.png" width="547" />
+Future plans are centered around improving accuracy. Currently I am relying on these devices to tell me when there is no heart rate detected.
+With motion detection I expect a false positive alert to happen once a year or less with proper use.
+False negatives are much harder to test. All reflective PPG sensors are coded to prioritize returning a heart rate value quickly at the expense of accuracy.
+
+The way these devices try to get a signal at all costs is to "turn up the volume" on the signal.
+What can then happen is that the device will "turn up the volume" so much that the background signal noise gets interpreted as a heartrate signal.
+I will get the raw PPG heart rate signal data from the sensor and look for a heart rate in the same manner, but without allowing too much signal amplification.
+This might result in false positives when the user is exercising or otherwise in motion that results in poor signal quality.
+In this case the motion detection will prevent the false positive.
+While sleeping, motion detection wont be applicable, but the lack of motion means the PPG HR sensor will have a good signal.
+
 # link to deployed app
 <a href='https://cryonics-member-response-info.herokuapp.com/publicHomePage'>Deployed site </a>
+link to setup instructions will be on the public home page
 
 # License
 All rights reserved. Contact me for usage. 
