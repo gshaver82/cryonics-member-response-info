@@ -1,11 +1,6 @@
 # Fitbit HeartRate Alert
 Once a user signs up and links to a fitbit device, this server will monitor heartrate and send alerts if HR is lost
-# Screenshot
-<p float="left">
-      <img alt="19.png" src="/zgithubScreenshots/19.png" width="273" />
-      <!-- <img alt="screenshot 16.png" src="/zgithubScreenshots/16.png" width="830" /> -->
-      <img alt="17.png" src="/zgithubScreenshots/17.png" width="547" />
-</p>
+
 
 # Monitor your heartrate and motion.
 
@@ -47,6 +42,13 @@ While sleeping, motion detection wont be applicable, but the lack of motion mean
 # link to deployed app
 <a href='https://cryonics-member-response-info.herokuapp.com/publicHomePage'>Deployed site </a>
 link to setup instructions will be on the public home page
+
+# Screenshot
+<p float="left">
+      <img alt="19.png" src="/zgithubScreenshots/19.png" width="273" />
+      <!-- <img alt="screenshot 16.png" src="/zgithubScreenshots/16.png" width="830" /> -->
+      <img alt="17.png" src="/zgithubScreenshots/17.png" width="547" />
+</p>
 
 # License
 All rights reserved. Contact me for usage. 
