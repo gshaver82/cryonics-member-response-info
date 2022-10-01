@@ -1,7 +1,6 @@
 # Fitbit HeartRate Alert
 Once a user signs up and links to a fitbit device, this server will monitor heartrate and send alerts if HR is lost
 # Screenshot
-<br></br>
 <p float="left">
       <img alt="19.png" src="/zgithubScreenshots/19.png" width="273" />
       <!-- <img alt="screenshot 16.png" src="/zgithubScreenshots/16.png" width="830" /> -->
@@ -14,6 +13,9 @@ Once a user signs up and links to a fitbit device, this server will monitor hear
 The watch or other device will monitor your heart rate. if no heart rate is detected, it will check the accelerometers for motion. If there is no HR or motion detected for 20 seconds it will send out alerts. Monitoring will be automatically paused while charging, and can be paused manually as well. Currently only working on fitbit sense. Accuracy is pretty good, but not perfect... see future plans below.
 </p>
 
+<br></br>
+<br></br>
+<br></br>
 <br></br>
 
 # Automatically send out alerts to those you choose.
