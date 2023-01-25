@@ -121,16 +121,16 @@ var self = module.exports = {
             "<Say>An alert has been generated for " + user.name + " Press any number to clear this alert</Say></Gather>" +
             "<Say>We didn't receive any input. The next number in line will be called with this alert. </Say></Response>"
         console.log("twiml", twiml)
-        if (twilioOutboundCount > 79) {
+        if (twilioOutboundCount == 90 || twilioOutboundCount == 150 || twilioOutboundCount == 160 || twilioOutboundCount == 170) {
             client.messages
                 .create({
-                    body: "twilioOutboundCount is " + twilioOutboundCount,
+                    body: "twilioOutboundCount is " + twilioOutboundCount + " texts/calls will stop going out at 170",
                     from: process.env.TWILIO_PHONE_NUMBER,
                     to: process.env.PHONE
                 })
                 .then(message => console.log(message.sid));
         }
-        if (twilioOutboundCount < 120) {
+        if (twilioOutboundCount < 170) {
             client.messages
                 .create({
                     body: txtBody,
