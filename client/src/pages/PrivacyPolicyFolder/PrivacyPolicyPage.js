@@ -46,7 +46,8 @@ function PrivacyPolicy() {
             <p>We may update this Privacy Policy from time to time. We will notify you of any changes by posting the updated Policy on the App. It is your responsibility to review this Policy periodically for any changes.</p>
 
             <p>By using the AutoHeartWatch App, you consent to the terms of this Privacy Policy.</p>
-
+            <h2>Contact us</h2>
+            <p>You may contact me at geneshaver at the location of gmail</p>
         </div>
     );
 }
