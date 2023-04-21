@@ -15,6 +15,7 @@ function PrivacyPolicy() {
                 <li>Device Information: We may collect information about your device, such as the device type, operating system, and unique device identifiers.</li>
                 <li>Location Information: With your permission, we collect GPS location data to provide location-based services and share your location with your emergency contacts when necessary.</li>
                 <li>Usage Information: We may collect information about your usage of the App, including alarm times, interactions with the App, and your response to notifications.</li>
+                <li>Contact List: We will upload your selected contacts to our server for purposes of contacting your emergency contacts when you have not responded to the alarms you set</li>
             </ol>
 
             <h2>How We Use Your Information</h2>
