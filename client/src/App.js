@@ -16,6 +16,7 @@ import Toggle from "./quickstartComponents/DarkMode/Toggler";
 import { GlobalStyles } from "./quickstartComponents/DarkMode/GlobalStyles";
 import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
 import TOSPage from "./pages/TOSFolder/TOSPage";
+import AppPage from "./pages/AppFolder/AppPage";
 import AlcorPage from "./pages/AlcorFolder/AlcorPage";
 import CIPage from "./pages/CIFolder/CIPage";
 import ClockfaceCards from "./pages/ClockfaceFolder/ClockfaceCards";
@@ -46,6 +47,7 @@ function App() {
                                     <PrivateRoute path="/test" component={test} />
                                     <Route exact path="/publicHomePage" component={publicHomePage} />
                                     <Route exact path="/TOSPage" component={TOSPage} />
+                                    <Route exact path="/App" component={AppPage} />
                                     <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
                                     <Route exact path="/Login" component={Login} />
                                     <Route exact path="/AlcorPage" component={AlcorPage} />
