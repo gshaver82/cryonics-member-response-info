@@ -8,6 +8,7 @@ import { AuthProvider } from "./quickstartComponents/Auth";
 import PrivateRoute from "./quickstartComponents/PrivateRoute";
 import secondPage from "./pages/secondFolder/secondPage";
 import publicHomePage from "./pages/publicHomeFolder/publicHomePage";
+import AutoheartwatchSignup from "./pages/publicHomeFolder/AutoheartwatchSignup";
 import "./cssBattery.css";
 import "./style.css";
 import { ThemeProvider } from "styled-components";
@@ -54,6 +55,7 @@ function App() {
                                     <Route exact path="/CIPage" component={CIPage} />
                                     <Route exact path="/ClockfaceCards" component={ClockfaceCards} />
                                     <PrivateRoute exact path="/secondPage" component={secondPage} />
+                                    <Route exact path="/AutoheartwatchSignup" component={AutoheartwatchSignup} />
                                     <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
                                     <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
                                     <Route exact path="/FBAlertClear/:_id" component={FBAlertClear} />
