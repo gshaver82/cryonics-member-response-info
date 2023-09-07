@@ -49,13 +49,13 @@ function App() {
                                     <Route exact path="/publicHomePage" component={publicHomePage} />
                                     <Route exact path="/TOSPage" component={TOSPage} />
                                     <Route exact path="/App" component={AppPage} />
-                                    <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
+                                    <Route exact path="PrivacyPolicyPage" component={PrivacyPolicyPage} />
+                                    <Route exact path="AutoheartwatchSignup" component={AutoheartwatchSignup} />
                                     <Route exact path="/Login" component={Login} />
                                     <Route exact path="/AlcorPage" component={AlcorPage} />
                                     <Route exact path="/CIPage" component={CIPage} />
                                     <Route exact path="/ClockfaceCards" component={ClockfaceCards} />
                                     <PrivateRoute exact path="/secondPage" component={secondPage} />
-                                    <Route exact path="/AutoheartwatchSignup" component={AutoheartwatchSignup} />
                                     <PrivateRoute exact path="/privateHomePage" component={privateHomePage} />
                                     <PrivateRoute exact path="/MemberDashboard/:_id" component={ProfileDetails} />
                                     <Route exact path="/FBAlertClear/:_id" component={FBAlertClear} />
