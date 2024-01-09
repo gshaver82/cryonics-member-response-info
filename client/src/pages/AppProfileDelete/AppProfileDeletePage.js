@@ -3,12 +3,14 @@ import API from "../../utils/API";
 
 async function AppProfileDelete() {
     useEffect(() => {
+        console.log("use effect AppProfileDelete")
         handleDelReq()
     }, []);
 
     async function handleDelReq() {
         try {
             const delRequest = { number: 4561 };
+            console.log("🚀 ~ handleDelReq ~ delRequest:", delRequest)
             const response = await API.appProfileDelete(delRequest)
             console.log("🚀 ~ AppProfileDelete ~ response:", response)
         } catch (error) {

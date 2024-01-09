@@ -68,11 +68,8 @@ export default {
         });
     },        
     appProfileDelete: function (delRequest) {
-        return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", delRequest,{
-            headers: {
-                'semisecret': "delectable"
-            }
-        });
+        console.log("🚀 ~ inside api file delRequest:", delRequest)
+        return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", delRequest);
     },    
     putWebClearFBAlert: function (mongoUserId) {
         return authorize.put("/api/fitbit/WebClearFBAlert", mongoUserId);
