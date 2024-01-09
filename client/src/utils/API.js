@@ -32,7 +32,7 @@ export default {
     },
     putFitBitManualCheckin: function (FBcheckinDateCode) {
         return authorize.put("/api/fitbit/fitbitCheckin", FBcheckinDateCode);
-    },    
+    },
     putFitBitDeviceManualCheckin: function (fitBitDevice) {
         return authorize.put("/api/fitbit/fitbitCheckin/device", fitBitDevice);
     },
@@ -66,11 +66,11 @@ export default {
                 'semisecret': "vegetable"
             }
         });
-    },        
+    },
     appProfileDelete: function (delRequest) {
-        console.log("🚀 ~ inside api file delRequest:", delRequest)
+        console.log("🚀 ~ inside api file delRequest:", delRequest);
         return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", delRequest);
-    },    
+    },
     putWebClearFBAlert: function (mongoUserId) {
         return authorize.put("/api/fitbit/WebClearFBAlert", mongoUserId);
     },
