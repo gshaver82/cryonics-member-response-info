@@ -19,6 +19,7 @@ import { lightTheme, darkTheme } from "./quickstartComponents/DarkMode/Theme";
 import TOSPage from "./pages/TOSFolder/TOSPage";
 import AppPage from "./pages/AppFolder/AppPage";
 import AlcorPage from "./pages/AlcorFolder/AlcorPage";
+import AppProfileDeletePage from "./pages/AppProfileDelete/AppProfileDeletePage";
 import CIPage from "./pages/CIFolder/CIPage";
 import ClockfaceCards from "./pages/ClockfaceFolder/ClockfaceCards";
 import test from "./pages/TestFolder/test";
@@ -52,6 +53,7 @@ function App() {
                                     <Route exact path="/PrivacyPolicyPage" component={PrivacyPolicyPage} />
                                     <Route exact path="/AutoheartwatchSignup" component={AutoheartwatchSignup} />
                                     <Route exact path="/Login" component={Login} />
+                                    <Route exact path="/AppProfileDelete" component={AppProfileDeletePage} />
                                     <Route exact path="/AlcorPage" component={AlcorPage} />
                                     <Route exact path="/CIPage" component={CIPage} />
                                     <Route exact path="/ClockfaceCards" component={ClockfaceCards} />
