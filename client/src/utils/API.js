@@ -67,8 +67,8 @@ export default {
             }
         });
     },        
-    appProfileDelete: function (number) {
-        return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", number,{
+    appProfileDelete: function (delRequest) {
+        return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", delRequest,{
             headers: {
                 'semisecret': "delectable"
             }

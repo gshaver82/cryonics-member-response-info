@@ -8,8 +8,8 @@ async function AppProfileDelete() {
 
     async function handleDelReq() {
         try {
-            let number = 3456
-            const response = await API.appProfileDelete(number)
+            const delRequest = { number: 4561 };
+            const response = await API.appProfileDelete(delRequest)
             console.log("🚀 ~ AppProfileDelete ~ response:", response)
         } catch (error) {
             console.log("🚀 ~ handleDelReq ~ error:", error)
