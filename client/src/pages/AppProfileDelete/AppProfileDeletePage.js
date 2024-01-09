@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import API from "../../utils/API";
 
-async function AppProfileDelete() {
+function AppProfileDelete() {
     useEffect(() => {
         console.log("use effect AppProfileDelete")
         handleDelReq()
