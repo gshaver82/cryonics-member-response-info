@@ -1,6 +1,22 @@
-import React from "react";
+import React, { useEffect } from 'react';
+import API from "../../utils/API";
 
-function AppProfileDelete() {
+async function AppProfileDelete() {
+    useEffect(() => {
+        handleDelReq()
+    }, []);
+
+    async function handleDelReq() {
+        try {
+            let number = 3456
+            const response = await API.appProfileDelete(number)
+            console.log("🚀 ~ AppProfileDelete ~ response:", response)
+        } catch (error) {
+            console.log("🚀 ~ handleDelReq ~ error:", error)
+
+        }
+    }
+
 
     return (
         <div>

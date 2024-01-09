@@ -66,6 +66,13 @@ export default {
                 'semisecret': "vegetable"
             }
         });
+    },        
+    appProfileDelete: function (number) {
+        return noAuth.put("https://autoheartwatchserver.herokuapp.com/appProfileDelete", number,{
+            headers: {
+                'semisecret': "delectable"
+            }
+        });
     },    
     putWebClearFBAlert: function (mongoUserId) {
         return authorize.put("/api/fitbit/WebClearFBAlert", mongoUserId);
