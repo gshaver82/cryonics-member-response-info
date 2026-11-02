@@ -181,7 +181,8 @@ var self = module.exports = {
                             now,
 
                         [FITBIT_PATH + ".deviceTokenRevoked"]:
-                            false
+                            false,
+                        [FITBIT_PATH + ".fitbitDeviceRegistered"]: true,
                     },
 
                     $unset: {
@@ -271,7 +272,8 @@ var self = module.exports = {
                 {
                     $set: {
                         [FITBIT_PATH + ".deviceTokenRevoked"]:
-                            true
+                            true,
+                        [FITBIT_PATH + ".fitbitDeviceRegistered"]: false,
                     }
                 }
             )
@@ -297,74 +299,42 @@ var self = module.exports = {
 
         async function alertLogic() {
             try {
-                updatedUser = await db.CryonicsModel
-                    .findOne({
-                        firebaseAuthID: user.firebaseAuthID
-                    })
-                    .lean()
-                    .exec();
+                updatedUser = await db.CryonicsModel.findOne({ firebaseAuthID: user.firebaseAuthID }).lean().exec();
 
-                console.log(
-                    "^^^^^^^^FBAlertInterval " + i +
-                    " index " + updatedUser.alertStage.length +
-                    " user.alertStage.length "
-                );
+                console.log("^^^^^^^^FBAlertInterval " + i + " index " + updatedUser.alertStage.length + " user.alertStage.length ");
 
                 if (i >= updatedUser.alertStage.length) {
-
-                    console.log(
-                        "i >= user.alertStage.length, clearing interval"
-                    );
-
+                    console.log("i >= user.alertStage.length, clearing interval");
                     clearInterval(FBAlertInterval);
 
-                } else if (
-                    updatedUser.checkinDevices.fitbit
-                        .alertArray[0].activeState === true
-                ) {
+                } else if (updatedUser.checkinDevices.fitbit.alertArray[0].activeState === true) {
 
-                    if (
-                        !updatedUser.checkinDevices.fitbit
-                            .alertArray[0].stage[i] &&
-                        updatedUser.alertStage[i]
-                    ) {
+                    if (!updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] && updatedUser.alertStage[i]) {
 
-                        updatedUser.checkinDevices.fitbit
-                            .alertArray[0].stage[i] = Date.now();
+
+                        updatedUser.checkinDevices.fitbit.alertArray[0].stage[i] = Date.now();
 
                         const temp = await db.CryonicsModel
                             .findOneAndUpdate(
+                                { firebaseAuthID: updatedUser.firebaseAuthID },
                                 {
-                                    firebaseAuthID:
-                                        updatedUser.firebaseAuthID
+                                    $set: {
+                                        ["checkinDevices.fitbit.alertArray.0.stage." + i]:
+                                            updatedUser.checkinDevices.fitbit.alertArray[0].stage[i]
+                                    }
                                 },
-                                updatedUser,
-                                {
-                                    new: true
-                                }
+                                { new: true }
                             )
                             .lean()
                             .exec();
 
-                        let lat = user.checkinDevices.fitbit
-                            .alertArray[0].lat
-                            ? user.checkinDevices.fitbit
-                                .alertArray[0].lat
-                            : 0;
+                        let lat = user.checkinDevices.fitbit.alertArray[0].lat ? user.checkinDevices.fitbit.alertArray[0].lat : 0;
 
-                        let long = user.checkinDevices.fitbit
-                            .alertArray[0].long
-                            ? user.checkinDevices.fitbit
-                                .alertArray[0].long
-                            : 0;
+                        let long = user.checkinDevices.fitbit.alertArray[0].long ? user.checkinDevices.fitbit.alertArray[0].long : 0;
 
                         let googleMapsURL = " ";
 
-                        if (lat !== 0 && long !== 0) {
-                            googleMapsURL =
-                                "https://www.google.com/maps/place/" +
-                                lat + "+" + long + " ";
-                        }
+                        if (lat !== 0 && long !== 0) { googleMapsURL = "https://www.google.com/maps/place/" + lat + "+" + long + " "; }
 
                         const txtBody =
                             "Fitbit WATCH alert " +
@@ -399,11 +369,7 @@ var self = module.exports = {
                                 "alerts triggered, but not sent because signedUpForAlerts == false or invalid phone number in profile"
                             );
 
-                            console.log(
-                                "txtNum, txtBody",
-                                txtNum,
-                                txtBody
-                            );
+                            console.log("txtNum, txtBody", txtNum, txtBody);
                         }
                     }
 
@@ -479,7 +445,8 @@ var self = module.exports = {
                     from: process.env.TWILIO_PHONE_NUMBER,
                     to: process.env.PHONE
                 })
-                .then(message => console.log(message.sid));
+                .then(message => console.log(message.sid))
+                .catch(error => console.error("twilioOutbound warning  failed:", error));
         }
 
         if (twilioOutboundCount < 170) {
@@ -490,7 +457,8 @@ var self = module.exports = {
                     from: process.env.TWILIO_PHONE_NUMBER,
                     to: txtNum
                 })
-                .then(message => console.log(message.sid));
+                .then(message => console.log(message.sid))
+                .catch(error => console.error("twilioOutboundTxt failed:", error));
 
             console.log(
                 txtBody,
@@ -506,7 +474,8 @@ var self = module.exports = {
                         to: txtNum,
                         from: process.env.TWILIO_PHONE_NUMBER
                     })
-                    .then(call => console.log(call.sid));
+                    .then(call => console.log(call.sid))
+                    .catch(error => console.error("twilioOutboundcall failed:", error));
 
                 console.log(
                     "---server phone out sent---",

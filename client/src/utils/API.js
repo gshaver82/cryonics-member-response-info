@@ -7,20 +7,19 @@ const firebase = firebaseEnvConfigs.firebase_;
 const authorize = axios.create();
 const noAuth = axios.create();
 // Observing firebase.auth() to listen signin/signout.
-firebase.auth().onAuthStateChanged(function (user) {
-    if (user) {
-        user.getIdToken().then(function (idToken) {
-            // Intercepting any request and appending token to the header.
-            authorize.interceptors.request.use(function (config) {
-                config.headers.authorization = idToken;
-                return config;
-            });
-        }).catch(function (error) {
-            console.log("[API] Error:", error);
-        });
-    } else {
-        console.log("[API] User is not signed in");
+authorize.interceptors.request.use(async function (config) {
+    const currentUser = firebase.auth().currentUser;
+
+    if (!currentUser) {
+        throw new Error("Sign-in required");
     }
+
+    const idToken = await currentUser.getIdToken();
+
+    config.headers = config.headers || {};
+    config.headers.authorization = "Bearer " + idToken;
+
+    return config;
 });
 
 export default {
