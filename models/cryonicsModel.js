@@ -1,14 +1,7 @@
+
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
-
-//things that will go in firebase database
-//youtube vid, profile pic, HCD or other Docs/PDFs
-
-//emergency contact (people who are expected to know where the user is. significant other etc)
-//emergency contact (HCD health care agent. people who are expected to the HCD details but may or may not know day to day details. )
-//GPS location
-//street name location if available
-//building location if available (like a hospital)
 
 const cryonicsSchema = new Schema({
     firebaseAuthID: {
@@ -72,15 +65,76 @@ const cryonicsSchema = new Schema({
                 }
             ]
         },
+
+        // =====================================================
+        // FITBIT WATCH
+        // =====================================================
+
         fitbit: {
             fitbitDeviceRegistered: {
                 type: Boolean,
                 required: true,
                 default: false,
             },
+
+            // =================================================
+            // NEW DEVICE PAIRING AND AUTHENTICATION
+            // =================================================
+
+            // SHA-256 HMAC of temporary six-digit code.
+            // Raw pairing code is never stored in MongoDB.
+            pairingCodeHash: {
+                type: String,
+                required: false,
+                select: false,
+            },
+
+            // Temporary pairing code expiration.
+            pairingCodeExpiresAt: {
+                type: Date,
+                required: false,
+            },
+
+            // SHA-256 hash of persistent 256-bit device token.
+            // Raw token is stored only by the phone companion.
+            deviceTokenHash: {
+                type: String,
+                required: false,
+                select: false,
+            },
+
+            // Public six-character ID shown on the watch.
+            // Example: K7M2P9
+            displayId: {
+                type: String,
+                required: false,
+                uppercase: true,
+                trim: true,
+                match: /^[A-Z0-9]{6}$/,
+            },
+
+            // Date when the watch was paired.
+            pairedAt: {
+                type: Date,
+                required: false,
+            },
+
+            // Allows server-side device revocation.
+            deviceTokenRevoked: {
+                type: Boolean,
+                required: true,
+                default: false,
+            },
+
+            // =================================================
+            // LEGACY FITBIT API FIELDS
+            // Preserved for existing records.
+            // No longer required for new registrations.
+            // =================================================
+
             user_id: {
                 type: String,
-                required: true,
+                required: false,
             },
             authToken: {
                 type: String,
@@ -103,6 +157,11 @@ const cryonicsSchema = new Schema({
                 required: true,
                 default: 0,
             },
+
+            // =================================================
+            // EXISTING CHECK-IN HISTORY
+            // =================================================
+
             checkinArray: [
                 {
                     dateCreated: {
@@ -111,6 +170,12 @@ const cryonicsSchema = new Schema({
                     },
                 }
             ],
+
+            // =================================================
+            // EXISTING SYNC ALERT HISTORY
+            // Preserved for historical compatibility.
+            // =================================================
+
             syncAlertArray: [
                 {
                     date: {
@@ -130,6 +195,12 @@ const cryonicsSchema = new Schema({
                     ]
                 }
             ],
+
+            // =================================================
+            // EXISTING WATCH EMERGENCY ALERTS
+            // Preserve structure for Twilio alert chain.
+            // =================================================
+
             alertArray: [
                 {
                     date: {
@@ -158,6 +229,7 @@ const cryonicsSchema = new Schema({
                 }
             ]
         },
+
         exampleDevice: {
             exampleDeviceRegistered: {
                 type: Boolean,
@@ -183,6 +255,7 @@ const cryonicsSchema = new Schema({
             ]
         },
     },
+
     alertStage: [
         {
             num: {
@@ -195,22 +268,82 @@ const cryonicsSchema = new Schema({
             },
         }
     ],
+
     description: {
         type: String,
         required: false,
     },
+
     cryonicsProvider: {
         type: String,
         enum: ['Alcor', 'Cryonics Institute', 'None'],
         required: false,
     },
+
     photoURL: {
         type: String,
         required: false,
     },
-}
-);
+});
+
+// =====================================================
+// DATABASE INDEXES
+// =====================================================
+
+// Existing index, preserved.
 cryonicsSchema.index({ "loc": "2dsphere" });
 
-const cryonicsModel = mongoose.model("cryonicsTable", cryonicsSchema);
+// Prevent two devices from sharing the same display ID.
+// Only index documents where a display ID exists.
+cryonicsSchema.index(
+    { "checkinDevices.fitbit.displayId": 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            "checkinDevices.fitbit.displayId": {
+                $type: "string"
+            }
+        }
+    }
+);
+
+// Fast token lookup and protection against duplicate
+// device-token hashes.
+cryonicsSchema.index(
+    { "checkinDevices.fitbit.deviceTokenHash": 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            "checkinDevices.fitbit.deviceTokenHash": {
+                $type: "string"
+            }
+        }
+    }
+);
+
+// Look up temporary pairing codes.
+// A unique index prevents multiple accounts from
+// simultaneously using the same six-digit code.
+cryonicsSchema.index(
+    { "checkinDevices.fitbit.pairingCodeHash": 1 },
+    {
+        unique: true,
+        partialFilterExpression: {
+            "checkinDevices.fitbit.pairingCodeHash": {
+                $type: "string"
+            }
+        }
+    }
+);
+
+// =====================================================
+// MODEL EXPORT
+// =====================================================
+
+const cryonicsModel = mongoose.model(
+    "cryonicsTable",
+    cryonicsSchema
+);
+
 module.exports = cryonicsModel;
+

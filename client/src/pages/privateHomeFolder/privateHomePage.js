@@ -1,399 +1,452 @@
-import React, { useState, useEffect } from 'react';
-import firebaseEnvConfigs from '../../firebase';
-// import { Link } from 'react-router-dom';
+
+import React, { useState, useEffect } from "react";
+import firebaseEnvConfigs from "../../firebase";
 import API from "../../utils/API";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom";
 
 const firebase = firebaseEnvConfigs.firebase_;
 
 function PrivateHomePage() {
-    const firebaseUserID = firebase.auth().currentUser.uid
-    //this loads a dummy user that later gets checked on. no user should ever have this value
-    //this is because the use effect immediately tries to pull user date from database.
-    //if the DB doesnt have the user, itll put NULL into the user
-    //if it does have the user, then user info gets put in.
-    //the reason to have this complex setup is to prevent the create profile button from flashing
-    //across the screen as the web page waits for the DB to respond
-    const [user, setUser] = useState("starting user condition");
-    const [isLoading, setisLoading] = useState(true);
-    // const [lat, setLat] = useState(null);
-    // const [lng, setLng] = useState(null);
-    // const [status, setStatus] = useState(null);
-    let history = useHistory();
-    // const [userList, setUsers] = useState([]);
-    // const [fitbitObject, setfitbitObject] = useState(false);
-    const [fitbitFULLURL, setfitbitFULLURL] = useState(false);
-    // const [fitbitUserHRDataResponse, setfitbitUserHRDataResponse] = useState(false);
-    // const [fitbitNewestTime, setfitbitNewestTime] = useState(false);
-    const [AlertResponse, setAlertResponse] = useState("init");
 
-    useEffect(() => {
-        // geolocator()
-        API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const [user, setUser] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [isSaving, setIsSaving] = useState(false);
 
-    useEffect(() => {
-        startupcode();
+    const [pairingCode, setPairingCode] = useState("");
+    const [pairingExpiresAt, setPairingExpiresAt] = useState(null);
+    const [isGeneratingCode, setIsGeneratingCode] = useState(false);
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-    function startupcode() {
-        let basefitbitURL = "https://www.fitbit.com/oauth2/authorize?response_type=code"
-        let fitbitURLclientid = "&client_id=" + process.env.REACT_APP_CLIENT_ID
-        let fitbitURLredirect_uriNavPage = "privateHomePage";
-        let fitbitURLredirect_uri = ""
-        window.location.hostname === "localhost"
-            ? fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%3A3000%2F" + fitbitURLredirect_uriNavPage
-            : fitbitURLredirect_uri = "https%3A%2F%2F" + window.location.hostname + "%2F" + fitbitURLredirect_uriNavPage
+    const [message, setMessage] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
 
-        let fitbitURLscope = "&scope=activity%20heartrate%20location%20nutrition%20profile%20settings%20sleep%20social%20weight&"
-        let fitbitURLexpires_in = "expires_in=604800"
-        setfitbitFULLURL(basefitbitURL + fitbitURLclientid + "&redirect_uri=" + fitbitURLredirect_uri + fitbitURLscope + fitbitURLexpires_in);
-        if (window.location.search.substring(0, 6) === "?code=") {
-            fitbitGetAuthToken(fitbitURLredirect_uri)
-        }
-    };
-    async function fitbitGetAuthToken(fitbitURLredirect_uri) {
-        const fitbitAuthTokenNeededData = {
-            Authorization: "Basic " + process.env.REACT_APP_ENCODEDBASE,
-            clientId: process.env.REACT_APP_CLIENT_ID,
-            grant_type: 'authorization_code',
-            redirect_uri: fitbitURLredirect_uri,
-            code: window.location.search.substring(6),
-        }
-        let url = "https://api.fitbit.com/oauth2/token" + "?clientId=" + fitbitAuthTokenNeededData.clientId
-            + "&grant_type=" + fitbitAuthTokenNeededData.grant_type + "&redirect_uri=" + fitbitAuthTokenNeededData.redirect_uri
-            + "&code=" + fitbitAuthTokenNeededData.code;
-        let fitbitData = await fetch(url, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded',
-                'Authorization': fitbitAuthTokenNeededData.Authorization
-            },
-            referrerPolicy: 'no-referrer',
-        })
-            .then(response => response.json())
-            .catch(error => {
-                console.error('Error:', error);
-            });
-        //fitbitdata is stored fitbitobject for display on webpage
-        // setfitbitObject(fitbitData)
-        const fitbitObjectForDB = {
-            firebaseAuthID: firebaseUserID,
-            checkinDevices: {
-                fitbit: {
-                    fitbitDeviceRegistered: true,
-                    authToken: fitbitData.access_token,
-                    refreshToken: fitbitData.refresh_token,
-                    user_id: fitbitData.user_id,
-                },
-            }
-        }
-        // console.log("🚀 ~ fitbitGetAuthToken ~ fitbitObjectForDB")
-        API.putFitBitTokens(fitbitObjectForDB)
-            // .then(console.log("tokens sent to DB"))
-            .then(history.push("/privateHomePage"))
-            .catch(err => console.log(err));
-    }
+    // =====================================================
+    // LOAD USER PROFILE
+    // =====================================================
 
-    const handleGetHeartrate = async () => {
-        let fitBitDataJSON = 'starting value'
-        let fitBitDeviceDataJSON = 'starting value'
-        // let fitBitDeviceDataJSON = 'starting value'
-        let authTokens = 'starting value'
-        authTokens = await API.fitbitGetDBAuthToken(firebaseUserID)
-            .then(res => res.data)
-            .catch(err => console.log(err))
-        if (!authTokens) {
-            console.log("!authtokens")
-            return
-        } else {
-            fitBitDataJSON = await getFitBitData(authTokens)
-            fitBitDeviceDataJSON = await getFitBitDeviceData(authTokens)
+    const loadUser = async () => {
+
+        const currentUser = firebase.auth().currentUser;
+
+        if (!currentUser) {
+            setUser(null);
+            setIsLoading(false);
+            return;
         }
 
-        if (!fitBitDataJSON) {
-            console.log("!fitBitDataJSON")
-            return
-        } else if (fitBitDataJSON.success === false) {
-            console.log("failure to retrieve fitbit data", fitBitDataJSON.errors[0])
-            return
-        }
-
-        fitBitDataJSON = JSON.stringify(fitBitDataJSON);
-        fitBitDataJSON = fitBitDataJSON.replaceAll('-', '');
-        fitBitDataJSON = JSON.parse(fitBitDataJSON);
-        // const heartRate = fitBitDataJSON.activitiesheart[0].value.restingHeartRate;
-        // setfitbitUserHRDataResponse(heartRate)
-
-        //getting the most recent time from the fitbitdatajson
-        //if the current days entry does not exist then skip
-        if (fitBitDataJSON.activitiesheartintraday.dataset) {
-            setisLoading(true)
-            try {
-                let YoungestFitbitHR = fitBitDataJSON.activitiesheartintraday.dataset.pop();
-                YoungestFitbitHR = YoungestFitbitHR.time;
-                YoungestFitbitHR = YoungestFitbitHR.replaceAll(':', '')
-                YoungestFitbitHR = YoungestFitbitHR.slice(0, 4)
-                // setfitbitNewestTime(YoungestFitbitHR)
-                //convert to current date code
-                //this will take todays date and then put in the hours and minutes that was retrieved from fitbit
-                let hours = YoungestFitbitHR.slice(0, 2)
-                let minutes = YoungestFitbitHR.slice(2, 4)
-                const FBcheckinDateCode = new Date(new Date().setHours(hours, minutes, '00'));
-                const newArrayEntry = { dateCreated: FBcheckinDateCode }
-                let fitbitCheckinObjectForDB = {
-                    firebaseAuthID: firebaseUserID,
-                    newArrayEntry
-                }
-                API.putFitBitManualCheckin(fitbitCheckinObjectForDB)
-                    .catch(err => console.log(err));
-                fitBitDeviceDataJSON[0].firebaseAuthID = firebaseUserID
-                API.putFitBitDeviceManualCheckin(fitBitDeviceDataJSON[0])
-                    .catch(err => console.log(err));
-
-                API.getOneUserByFirebaseID(firebaseUserID)
-                    .then(res => setUser(res.data))
-                    .then(setisLoading(false))
-                    .catch(err => console.log(err));
-            } catch (error) {
-                setisLoading(false)
-                console.log("fitbit dataset pop failed", error);
-            }
-        }
-    }
-
-    async function getFitBitData(authTokens) {
-        if (authTokens) {
-            let url = "https://api.fitbit.com/1/user/-/activities/heart/date/today/1d/1min.json"
-            const response = await fetch(url, {
-                method: 'GET', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': 'Bearer ' + authTokens.authToken
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer'
-            });
-            return response.json(); // parses JSON response into native JavaScript objects
-        } else {
-            console.log("no auth tokens")
-        }
-    }
-    async function getFitBitDeviceData(authTokens) {
-        if (authTokens) {
-            const url = "https://api.fitbit.com/1/user/-/devices.json"
-            const response = await fetch(url, {
-                method: 'GET', // *GET, POST, PUT, DELETE, etc.
-                mode: 'cors', // no-cors, *cors, same-origin
-                cache: 'no-cache', // *default, no-cache, reload, force-cache, only-if-cached
-                credentials: 'same-origin', // include, *same-origin, omit
-                headers: {
-                    'Content-Type': 'application/json',
-                    'authorization': 'Bearer ' + authTokens.authToken
-                },
-                redirect: 'follow', // manual, *follow, error
-                referrerPolicy: 'no-referrer'
-            });
-            return response.json(); // parses JSON response into native JavaScript objects
-        } else {
-            console.log("no auth tokens")
-        }
-    }
-
-    const handleAlertsOn = async () => {
-        setisLoading(true)
         try {
-            const editedUser = {
-                firebaseAuthID: firebaseUserID,
-                signedUpForAlerts: true,
-            }
-            await API.edituser(editedUser)
-                .catch(err => console.log(err));
-            await API.getOneUserByFirebaseID(firebaseUserID)
-                .then(res => setUser(res.data))
-                .catch(err => console.log(err));
+            const response = await API.getOneUserByFirebaseID(
+                currentUser.uid
+            );
 
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-            const response = await API.putClearFBAlert(user._id)
-                .then(setisLoading(false))
-                .catch(err => console.log(err));
-            //this console log will expose the put URL. only use for testing purposes
-            // console.log("api response", response)
+            setUser(response.data);
+
         } catch (error) {
-            console.error(error);
-            setisLoading(false)
+            console.error("Error loading user:", error);
+            setErrorMessage("Unable to load user profile.");
+
+        } finally {
+            setIsLoading(false);
         }
     };
-    // async function newCheckinDataFunction(lat = 0, lng = 0) {
-    // //defaults to 0 if lat and long are not detected
-    // console.log("🚀 ~ newCheckinDataFunction ~ lat", lat)
-    //     let newCheckinData = {
-    //         dateCreated: Date.now(),
-    //         loc: {
-    //             type: "Point",
-    //             coordinates: [lat, lng],
-    //         }
-    //     }
-    //     return newCheckinData
-    // }
-    const handleAlertsOff = async () => {
-        setisLoading(true)
-        const editedUser = {
-            firebaseAuthID: firebaseUserID,
-            signedUpForAlerts: false,
+
+    useEffect(() => {
+        loadUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    // =====================================================
+    // ENABLE / DISABLE ALERTS
+    // =====================================================
+
+    const updateAlertSetting = async (enabled) => {
+
+        const currentUser = firebase.auth().currentUser;
+        if (!currentUser) return;
+
+        setIsSaving(true);
+        setMessage("");
+        setErrorMessage("");
+
+        try {
+
+            const editedUser = {
+                firebaseAuthID: currentUser.uid,
+                signedUpForAlerts: enabled
+            };
+
+            await API.edituser(editedUser);
+
+            await loadUser();
+
+            setMessage(
+                enabled
+                    ? "Text and phone alerts enabled."
+                    : "Text and phone alerts disabled."
+            );
+
+        } catch (error) {
+
+            console.error("Error updating alerts:", error);
+            setErrorMessage("Unable to update alert settings.");
+
+        } finally {
+            setIsSaving(false);
         }
-        await API.edituser(editedUser)
-            .catch(err => console.log(err));
-        await API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
     };
 
-    // function geolocator() {if (!navigator.geolocation) {
-    //         setStatus('Geolocation is not supported by your browser');
-    //     } else {
-    //         setStatus('Locating...');
-    //         navigator.geolocation.getCurrentPosition((position) => {
-    //             setStatus(null);
-    //             setLat(position.coords.latitude);
-    //             setLng(position.coords.longitude);
-    //         }, () => {setStatus('Unable to retrieve your location');});
-    //     }}
+    // =====================================================
+    // GENERATE WATCH PAIRING CODE
+    // =====================================================
 
+    const generatePairingCode = async () => {
 
-    const handleWebClearFBAlert = async () => {
-        setisLoading(true)
-        let mongoUserId = { _id: user._id }
-        const response = await API.putWebClearFBAlert(mongoUserId)
-            .then(res => setAlertResponse(res.data))
-            .catch(err => console.log(err));
-        await API.getOneUserByFirebaseID(firebaseUserID)
-            .then(res => setUser(res.data))
-            .then(setisLoading(false))
-            .catch(err => console.log(err));
-        let alertResponseTimer = setTimeout(async function () {
-            setAlertResponse("init")
-        }, 5000);
+        const currentUser = firebase.auth().currentUser;
+
+        if (!currentUser) {
+            setErrorMessage("You must be logged in.");
+            return;
+        }
+
+        setIsGeneratingCode(true);
+        setPairingCode("");
+        setPairingExpiresAt(null);
+        setMessage("");
+        setErrorMessage("");
+
+        try {
+
+            // Firebase authentication token.
+            const idToken = await currentUser.getIdToken();
+
+            // New endpoint implemented in server.js.
+            const response = await fetch(
+                "/cApi/device/pair-code",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": "Bearer " + idToken
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(
+                    "Server returned HTTP " + response.status
+                );
+            }
+
+            const data = await response.json();
+
+            if (
+                typeof data.pairingCode !== "string" ||
+                !/^[0-9]{6}$/.test(data.pairingCode)
+            ) {
+                throw new Error("Invalid pairing code response.");
+            }
+
+            setPairingCode(data.pairingCode);
+            setPairingExpiresAt(data.expiresAt);
+
+            setMessage("Pairing code generated successfully.");
+
+        } catch (error) {
+
+            console.error("Pairing code error:", error);
+            setErrorMessage(
+                "Unable to generate pairing code. Please try again."
+            );
+
+        } finally {
+            setIsGeneratingCode(false);
+        }
     };
+
+    // =====================================================
+    // CLEAR ACTIVE WATCH ALERT
+    // =====================================================
+
+    const handleClearAlert = async () => {
+
+        if (!user?._id) return;
+
+        setIsSaving(true);
+        setMessage("");
+        setErrorMessage("");
+
+        try {
+
+            const mongoUserId = {
+                _id: user._id
+            };
+
+            await API.putWebClearFBAlert(mongoUserId);
+
+            await loadUser();
+
+            setMessage("Watch alert cleared successfully.");
+
+        } catch (error) {
+
+            console.error("Error clearing alert:", error);
+            setErrorMessage("Unable to clear watch alert.");
+
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    // =====================================================
+    // PAGE STATUS
+    // =====================================================
 
     if (isLoading) {
-        return (<h3>Loading Profile....</h3>)
+        return <h3>Loading Profile...</h3>;
     }
-    else if (!user) {
-        return (<div>
-            <h3>No profile found, please create a profile to view the private home page. </h3>
-        </div>)
-    } else if (user !== "starting user condition") {
-        return (<div>
-            <h3>Welcome <span>{user.name}</span></h3>
+
+    if (!user) {
+        return (
+            <div>
+                <h3>
+                    No profile found. Please create a profile
+                    to access the control panel.
+                </h3>
+            </div>
+        );
+    }
+
+    const fitbit = user.checkinDevices?.fitbit;
+
+    const activeAlert =
+        fitbit?.alertArray?.[0]?.activeState === true;
+
+    const alertsEnabled =
+        user.signedUpForAlerts === true;
+
+    const displayId = fitbit?.displayId;
+
+    const isPaired =
+        fitbit?.fitbitDeviceRegistered === true &&
+        fitbit?.deviceTokenRevoked === false &&
+        typeof displayId === "string" &&
+        /^[A-Z0-9]{6}$/.test(displayId);
+
+    // =====================================================
+    // RENDER CONTROL PANEL
+    // =====================================================
+
+    return (
+        <div>
+
+            <h3>
+                Welcome <span>{user.name}</span>
+            </h3>
+
+            <h2>Control Panel</h2>
+
+            {message && (
+                <p style={{ color: "green" }}>
+                    {message}
+                </p>
+            )}
+
+            {errorMessage && (
+                <p style={{ color: "red" }}>
+                    {errorMessage}
+                </p>
+            )}
+
+            {/* ==========================================
+                EMERGENCY ALERT STATUS
+            ========================================== */}
+
             <div className="recipe-card recipe-border-2">
-                {
-                    //if no alert "no active alert" if there is an alert, clear alert button. when response comes back display response
-                    AlertResponse !== "init" ?
-                        <div>
-                            {AlertResponse?.watchalert?.nModified === 1
-                                ?
-                                <p>watchalert cleared</p>
-                                : <p>watchalert was not active</p>
-                            }
-                            {AlertResponse?.syncAlert?.nModified === 1
-                                ? <p>syncAlert cleared</p>
-                                : <p>syncAlert was not active</p>
-                            }
-                        </div>
-                        :
-                        <div>
-                            {
-                                user.checkinDevices?.fitbit?.alertArray[0]?.activeState ?
-                                    <div>
-                                        <p>alert active</p>
-                                        <button onClick={handleWebClearFBAlert}>
-                                            Clear Alert
-                                        </button>
-                                    </div>
-                                    :
-                                    <p>No active alert</p>
-                            }
-                        </div>
-                }
 
+                <h3>Emergency Alert Status</h3>
 
-                {user.signedUpForAlerts ? <p><b>Text/Phone alerts ON</b></p> : <p><b>Text/Phone alerts OFF</b></p>}
-                <button onClick={handleAlertsOn}>
+                {activeAlert ? (
+                    <div>
+
+                        <p style={{
+                            color: "red",
+                            fontWeight: "bold"
+                        }}>
+                            ACTIVE WATCH ALERT
+                        </p>
+
+                        <button
+                            onClick={handleClearAlert}
+                            disabled={isSaving}
+                        >
+                            Clear Alert
+                        </button>
+
+                    </div>
+                ) : (
+                    <p style={{ color: "green" }}>
+                        No active alert
+                    </p>
+                )}
+
+            </div>
+
+            {/* ==========================================
+                TEXT AND PHONE ALERT SETTINGS
+            ========================================== */}
+
+            <div className="recipe-card recipe-border-2">
+
+                <h3>Text / Phone Alerts</h3>
+
+                <p>
+                    <b>
+                        Alerts are currently:
+                        {" "}
+                        <span style={{
+                            color: alertsEnabled
+                                ? "green"
+                                : "red"
+                        }}>
+                            {alertsEnabled ? "ON" : "OFF"}
+                        </span>
+                    </b>
+                </p>
+
+                <button
+                    onClick={() => updateAlertSetting(true)}
+                    disabled={isSaving || alertsEnabled}
+                >
                     Alerts ON
                 </button>
-                <button onClick={handleAlertsOff}>
+
+                {" "}
+
+                <button
+                    onClick={() => updateAlertSetting(false)}
+                    disabled={isSaving || !alertsEnabled}
+                >
                     Alerts OFF
                 </button>
+
                 <p>
-                    Your device will monitor your heart rate. if it does not detect a heartrate it will send and alert to this server and then send out text and phone alerts to the numbers in your profile
+                    When alerts are ON, emergency alerts
+                    received from your watch can trigger
+                    text messages and phone calls to the
+                    contacts configured in your profile.
                 </p>
+
                 <p>
-                    if you want to pause, or turn off phone/text alerts, turn the alerts OFF. the server will still monitor heart rate, but will send no phone/txt messages
+                    Turning alerts OFF disables outgoing
+                    text and phone notifications. The
+                    watch can still monitor heart rate
+                    and send alerts to the server.
                 </p>
+
             </div>
+
+            {/* ==========================================
+                FITBIT WATCH PAIRING
+            ========================================== */}
 
             <div className="recipe-card recipe-border-2">
-                <div>
-                    <b>FITBIT</b>
-                    {user.checkinDevices.fitbit.fitbitDeviceRegistered && user.checkinDevices.fitbit.checkinArray[0]
-                        ? <div>
-                            <p>Latest Fitbit reading:
-                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toDateString())} {" "}
-                                {(new Date(user.checkinDevices.fitbit.checkinArray[0].dateCreated).toTimeString())}
-                            </p>
-                        </div>
-                        : <p>fitbit device not registered</p>
-                    }
 
-                    {user.checkinDevices?.fitbit?.fbDeviceName && user.checkinDevices?.fitbit?.fbDeviceBat
-                        ? <p>
-                            Fitbit {user.checkinDevices.fitbit.fbDeviceName} Battery {user.checkinDevices.fitbit.fbDeviceBat}%
+                <h3>Watch Pairing</h3>
+
+                {isPaired ? (
+                    <div>
+
+                        <p style={{ color: "green" }}>
+                            <b>Watch Paired</b>
                         </p>
-                        : <p>fitbit device not registered</p>
-                    }
 
-                    <p>Link to fitbit step by step walkthrough
-                        <Link to="/ClockfaceCards">
-                            HERE
-                        </Link>
-                    </p>
-                </div>
-                <div className="recipe-card recipe-border-2">
+                        <p>
+                            Watch ID:
+                            {" "}
+                            <b>{displayId}</b>
+                        </p>
+
+                    </div>
+                ) : (
                     <p>
-                        click here to go to fitbit, log in and register your fitbit with this website.
+                        No watch currently paired.
                     </p>
-                    {fitbitFULLURL && <a target="_blank" href={fitbitFULLURL}>FITBIT LOGIN</a>}
-                </div>
-                <div className="recipe-card recipe-border-2">
-                    <p>
-                        click here to manually check with fitbit for the most recent heart rate timestamp.
-                        Please note that the server will automatically be doing this every 10-15 minutes for registered devices
-                    </p>
-                    <button onClick={handleGetHeartrate}>
-                        Get most recent heart rate and sign up for alerts
-                    </button>
-                </div>
+                )}
 
+                <hr />
 
+                <h4>Generate Pairing Code</h4>
 
+                <p>
+                    Generate a temporary six-digit pairing
+                    code to connect your Fitbit Sense
+                    clockface to this account.
+                </p>
 
+                <button
+                    onClick={generatePairingCode}
+                    disabled={isGeneratingCode}
+                >
+                    {isGeneratingCode
+                        ? "Generating..."
+                        : "Generate Pairing Code"}
+                </button>
+
+                {pairingCode && (
+                    <div style={{
+                        marginTop: "20px",
+                        textAlign: "center"
+                    }}>
+
+                        <p>Your Pairing Code:</p>
+
+                        <h2 style={{
+                            fontSize: "36px",
+                            letterSpacing: "6px"
+                        }}>
+                            {pairingCode}
+                        </h2>
+
+                        <p>
+                            Enter this code in your Fitbit
+                            clockface settings.
+                        </p>
+
+                        {pairingExpiresAt && (
+                            <p>
+                                Expires:
+                                {" "}
+                                {new Date(
+                                    pairingExpiresAt
+                                ).toLocaleTimeString()}
+                            </p>
+                        )}
+
+                    </div>
+                )}
+
+                <p>
+                    After entering the pairing code,
+                    the Fitbit phone companion will
+                    exchange it for a secure device
+                    token and a six-character watch ID.
+                </p>
+
+                <p>
+                    The watch ID will be displayed on
+                    your Fitbit clockface after pairing
+                    completes.
+                </p>
+
+                <button
+                    onClick={loadUser}
+                    disabled={isSaving || isGeneratingCode}
+                >
+                    Refresh Pairing Status
+                </button>
 
             </div>
-        </div>)
-    } else {
-        return (<h3>Loading Profile....</h3>)
-    }
+
+        </div>
+    );
 }
 
 export default PrivateHomePage;

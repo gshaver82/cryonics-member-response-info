@@ -1,78 +1,159 @@
+
 const router = require("express").Router();
+
 const apiRoutes = require("./api");
 const cApiRoutes = require("./cApi");
 const smsRoutes = require("./sms");
-const admin = require('firebase-admin');
+
+const admin = require("firebase-admin");
 
 
-//this will attempt to load firebase stuff from local service account key
-//if not avaiable because this is being run from heroku, itll load from there automagically
-
-//database URL is the url of the realtime database under firebase
 try {
-    const serviceAccount = require("../config/serviceAccountKey.json");
+    const serviceAccount =
+        require("../config/serviceAccountKey.json");
+
     admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount),
-        // databaseURL: ""
+        credential: admin.credential.cert(serviceAccount)
     });
+
 } catch (error) {
+
     admin.initializeApp({
         credential: admin.credential.cert({
-            "client_email": process.env.FIREBASE_CLIENT_EMAIL,
-            "private_key": process.env.FIREBASE_PRIVATE_KEY,
-            "project_id": process.env.FIREBASE_PROJECT_ID,
-        }),
-        // databaseURL: ""
+            client_email: process.env.FIREBASE_CLIENT_EMAIL,
+            private_key: process.env.FIREBASE_PRIVATE_KEY,
+            project_id: process.env.FIREBASE_PROJECT_ID
+        })
     });
 }
 
-//any incoming routes with /api/* will flow through here. they must pass the auth check. 
+// =====================================================
+// WEBSITE AUTHENTICATION
+// =====================================================
 
-function checkAuth(req, res, next) {
-    if (req.headers.authorization) {
-        admin.auth().verifyIdToken(req.headers.authorization)
-            .then(() => {
-                next()
-            }).catch(() => {
-                console.log("[SERVER] Found unauthorized token");
-                res.status(403).send('Unauthorized')
-            });
-    } else if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET) {
-        console.log("[SERVER] semi secret token found");
-        res.status(403).send('Unauthorized but unconfigured semi secret')
-    } else {
-        console.log("[SERVER] No Authorization token found");
-        res.status(403).send('Unauthorized')
+// Keep compatibility with the existing website.
+// Accept either a raw Firebase ID token or a Bearer token.
+
+async function checkAuth(req, res, next) {
+
+    const authorization = req.headers.authorization;
+
+    if (!authorization) {
+        console.log("[SERVER] No authorization token");
+        return res.status(403).send("Unauthorized");
+    }
+
+    const token = authorization.replace(
+        /^Bearer\s+/i,
+        ""
+    );
+
+    try {
+        const decodedToken = await admin
+            .auth()
+            .verifyIdToken(token);
+
+        // Make authenticated user ID available to routes.
+        req.firebaseAuthID = decodedToken.uid;
+
+        next();
+
+    } catch (error) {
+        console.log("[SERVER] Invalid Firebase token");
+        return res.status(403).send("Unauthorized");
     }
 }
 
 router.use("/api", checkAuth);
 router.use("/api", apiRoutes);
 
-//any incoming routes with /cApi/* will flow through here. they must pass the semi secret check
-//this is for the fitbit or other devices to post alerts to the server without full login and auth tokens. 
-//if the semi secret is found out, the device controller will still need a matching ID to do anything. 
+// =====================================================
+// COMPANION / DEVICE AUTHENTICATION
+// =====================================================
 
 function checkCompanion(req, res, next) {
-    if (req.headers.semisecret && req.headers.semisecret === process.env.SEMISECRET
+
+    // NEW DEVICE TOKEN AUTHENTICATION
+    //
+    // The middleware in server.js validates the
+    // bearer token and attaches req.pairedDevice.
+    //
+    // Only the emergency-alert endpoint is allowed
+    // to use this new authentication mechanism.
+
+    if (
+        req.method === "PUT" &&
+        req.path === "/device" &&
+        req.pairedDevice &&
+        req.pairedDevice.firebaseAuthID
     ) {
-        console.log("[SERVER] correct semi secret token found");
-        next()
+        return next();
+    }
+
+    // LEGACY AUTHENTICATION
+    //
+    // Preserve the old shared secret for other
+    // existing device endpoints until migrated.
+    //
+    // The PUT /cApi/device endpoint must NOT
+    // fall back to the old shared secret.
+
+    if (
+        req.method === "PUT" &&
+        req.path === "/device"
+    ) {
+        console.log(
+            "[SERVER] Device token authentication required"
+        );
+
+        return res.status(401).send(
+            "Device authentication required"
+        );
+    }
+
+    if (
+        req.headers.semisecret &&
+        req.headers.semisecret ===
+            process.env.SEMISECRET &&
+        process.env.SEMISECRET
+    ) {
+
+        console.log(
+            "[SERVER] Legacy device authenticated"
+        );
+
+        return next();
+
     } else {
-        console.log("[SERVER] incorrect or No companion Authorization token found");
-        res.status(403).send('Unauthorized companion')
+
+        console.log(
+            "[SERVER] Unauthorized companion request"
+        );
+
+        return res.status(403).send(
+            "Unauthorized companion"
+        );
     }
 }
+
 router.use("/cApi", checkCompanion);
 router.use("/cApi", cApiRoutes);
 
-//any incoming routes with /sms/* will flow through here.  
+// =====================================================
+// SMS / VOICE ROUTES
+// =====================================================
 
 function smsFunction(req, res, next) {
-    console.log("[SERVER] outer index.js incoming SMS or voice call info");
-    next()
+
+    console.log(
+        "[SERVER] Incoming SMS or voice request"
+    );
+
+    next();
 }
+
 router.use("/sms", smsFunction);
 router.use("/sms", smsRoutes);
 
 module.exports = router;
+
