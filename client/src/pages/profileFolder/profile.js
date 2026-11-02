@@ -23,7 +23,6 @@ function Profile() {
     const [photoURL, setPhotoURL] = useState('');
     const [signedUpForAlerts, setsignedUpForAlerts] = useState(false);
     const [dateCreated, setdateCreated] = useState('starting date value');
-    const [checkinDevices, setcheckinDevices] = useState('starting checkinDevices value');
     const [isEditing, setisEditing] = useState(false);
 
     const [stage1AlertNum, setstage1AlertNum] = useState("none");
@@ -68,7 +67,6 @@ function Profile() {
         setstage6AlertMethod(user.alertStage[5].method)
         setname(user.name)
         setdateCreated(user.dateCreated)
-        setcheckinDevices(user.checkinDevices)
         setdescription(user.description)
         setcryonicsProvider(user.cryonicsProvider)
         setPhotoURL(user.photoURL)
@@ -136,34 +134,13 @@ function Profile() {
                     method: stage6AlertMethod
                 }
                 ],
-                checkinDevices: {
-                    WebsiteCheckIn: {
-                        checkinArray: [
-                            {
-                                dateCreated: Date.now(),
-                                loc: {
-                                    type: "Point",
-                                    coordinates: [0, 0],
-                                }
-                            }
-                        ]
-                    },
-                },
             }
             //this will put in the date profile was created if that is available from user state. otherwise defaults to date.now
             if (dateCreated !== 'starting date value') {
                 editedUser.dateCreated = dateCreated
             }
-            if (checkinDevices !== 'starting checkinDevices value') {
-                editedUser.checkinDevices = checkinDevices
-            }
             let foo = await API.edituser(editedUser).catch(error => console.error(error));
             setUser(foo.data)
-
-            //this does not work I DONT KNOW WHY. user.stage1Alert is undefined
-            // API.edituser(editedUser)
-            //     .then(res => setUser(res.data))
-            //     .catch(error => console.error(error));
 
             setisEditing(false)
             setisLoading(false)

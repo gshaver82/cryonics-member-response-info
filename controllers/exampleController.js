@@ -124,7 +124,6 @@ module.exports = {
                             "photoURL": req.body.photoURL,
                             "signedUpForAlerts": req.body.signedUpForAlerts,
                             "alertStage": req.body.alertStage,
-                            "checkinDevices": req.body.checkinDevices,
                         }
                     },
                     {
